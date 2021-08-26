@@ -4,7 +4,6 @@ description: Run linter on the PR title
 inputs:
   command:
     description: Lint command to run
-    required: true
     default: 'npm run lint:commit'
 
 runs:
