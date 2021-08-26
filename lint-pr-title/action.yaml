@@ -18,5 +18,7 @@ runs:
         cache: npm
     - name: Install dependencies
       run: npm ci
+      shell: bash
     - name: Lint title
       run: echo -n "${{ github.event.pull_request.title }}" | ${{ inputs.command }}
+      shell: bash
