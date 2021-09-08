@@ -6,11 +6,12 @@ inputs:
     description: Token for sending the status
     required: true
 
+env:
+  CI_STATE: pending
+  CI_DESCRIPTION: Waiting
+
 runs:
   using: composite
-  env:
-    CI_STATE: pending
-    CI_DESCRIPTION: Waiting
   steps:
     - name: Set initial state
       if: github.event.action == 'requested'
