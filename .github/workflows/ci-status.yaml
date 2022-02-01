@@ -4,6 +4,9 @@ on:
   workflow_run:
     workflows: CI
   workflow_call:
+    secrets:
+      token:
+        required: true
 
 concurrency:
   group: ci-status-${{ github.event.workflow_run.head_sha }}
@@ -42,4 +45,4 @@ jobs:
           context: Status / CI
           state: ${{ env.CI_STATE }}
           description: ${{ env.CI_DESCRIPTION }}
-          GITHUB_TOKEN: ${{ secrets.BRANOHOLY_BOT_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.token }}
