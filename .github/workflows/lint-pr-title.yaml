@@ -1,0 +1,22 @@
+name: Lint PR title
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+  workflow_call:
+    inputs:
+      command:
+        type: string
+        description: Lint command to run
+        default: 'npm run lint:commit'
+
+jobs:
+  lint-pr-title:
+    name: Lint PR title
+    runs-on: ubuntu-latest
+    if: github.event.action != 'opened' || github.event.pull_request.user.login != 'dependabot[bot]'
+    steps:
+      - name: Install
+        uses: cluenar/actions/install@main
+      - name: Lint title
+        run: echo -n "${{ github.event.pull_request.title }}" | ${{ inputs.command }}
