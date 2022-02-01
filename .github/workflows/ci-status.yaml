@@ -1,0 +1,45 @@
+name: CI status
+
+on:
+  workflow_run:
+    workflows: CI
+  workflow_call:
+
+concurrency:
+  group: ci-status-${{ github.event.workflow_run.head_sha }}
+  cancel-in-progress: true
+
+jobs:
+  send-status:
+    name: Send status
+    runs-on: ubuntu-latest
+    env:
+      CI_STATE: pending
+      CI_DESCRIPTION: Waiting
+    steps:
+      - name: Set initial state
+        if: github.event.action == 'requested'
+        run: |
+          echo "CI_STATE=pending" >> $GITHUB_ENV &&
+          echo "CI_DESCRIPTION=In progress" >> $GITHUB_ENV
+      - name: Set success state
+        if: github.event.action == 'completed' && github.event.workflow_run.conclusion == 'success'
+        run: |
+          echo "CI_STATE=success" >> $GITHUB_ENV &&
+          echo "CI_DESCRIPTION=Passed" >> $GITHUB_ENV
+      - name: Set failure state
+        if: github.event.action == 'completed' && github.event.workflow_run.conclusion == 'failure'
+        run: |
+          echo "CI_STATE=failure" >> $GITHUB_ENV &&
+          echo "CI_DESCRIPTION=Failed" >> $GITHUB_ENV
+      - name: Send status
+        uses: octokit/request-action@v2.1.0
+        with:
+          route: POST /repos/{owner}/{repo}/statuses/{sha}
+          owner: ${{ github.event.repository.owner.login }}
+          repo: ${{ github.event.repository.name }}
+          sha: ${{ github.event.workflow_run.head_sha }}
+          context: Status / CI
+          state: ${{ env.CI_STATE }}
+          description: ${{ env.CI_DESCRIPTION }}
+          GITHUB_TOKEN: ${{ secrets.BRANOHOLY_BOT_TOKEN }}
