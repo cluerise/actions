@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   send-status:
-    name: Send status
+    name: Send CI status
     runs-on: ubuntu-latest
     env:
       CI_STATE: pending
