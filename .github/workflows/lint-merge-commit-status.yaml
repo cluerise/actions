@@ -1,0 +1,48 @@
+name: Lint merge commit status
+
+on:
+  workflow_run:
+    workflows: 'Lint merge commit'
+  workflow_call:
+    secrets:
+      token:
+        required: true
+
+concurrency:
+  group: lint-merge-commit-status-${{ github.event.workflow_run.head_sha }}
+  cancel-in-progress: true
+
+jobs:
+  send-status:
+    name: Send merge commit status
+    runs-on: ubuntu-latest
+    env:
+      LINT_STATE: pending
+      LINT_DESCRIPTION: Waiting
+    steps:
+      - name: Set initial state
+        if: github.event.action == 'requested'
+        run: |
+          echo "LINT_STATE=pending" >> $GITHUB_ENV &&
+          echo "LINT_DESCRIPTION=In progress" >> $GITHUB_ENV
+      - name: Set success state
+        if: github.event.action == 'completed' && github.event.workflow_run.conclusion == 'success'
+        run: |
+          echo "LINT_STATE=success" >> $GITHUB_ENV &&
+          echo "LINT_DESCRIPTION=Passed" >> $GITHUB_ENV
+      - name: Set failure state
+        if: github.event.action == 'completed' && github.event.workflow_run.conclusion == 'failure'
+        run: |
+          echo "LINT_STATE=failure" >> $GITHUB_ENV &&
+          echo "LINT_DESCRIPTION=Failed, check merge commit message" >> $GITHUB_ENV
+      - name: Send status
+        uses: octokit/request-action@v2.1.0
+        with:
+          route: POST /repos/{owner}/{repo}/statuses/{sha}
+          owner: ${{ github.event.repository.owner.login }}
+          repo: ${{ github.event.repository.name }}
+          sha: ${{ github.event.workflow_run.head_sha }}
+          context: Status / Lint merge commit
+          state: ${{ env.LINT_STATE }}
+          description: ${{ env.LINT_DESCRIPTION }}
+          GITHUB_TOKEN: ${{ secrets.token }}
