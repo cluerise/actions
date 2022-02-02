@@ -9,6 +9,7 @@ runs:
     - name: Check lock file version
         run: >-
           grep '"lockfileVersion": 2' package-lock.json
+        shell: bash
     - name: Setup Node.js
       uses: actions/setup-node@v2.5.1
       with:
