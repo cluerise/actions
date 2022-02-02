@@ -1,0 +1,44 @@
+name: Update lock file
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      manager:
+        type: string
+        description: Package manager (npm or yarn)
+        default: npm
+    secrets:
+      token:
+        required: true
+
+jobs:
+  update-lock-file:
+    name: Update lock file
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.4.0
+      - name: Setup Node.js
+        uses: actions/setup-node@v2.5.1
+        with:
+          node-version: 17.4.0
+      - name: Update the NPM lock file
+        if: inputs.manager == 'npm'
+        run: rm package-lock.json && npm i
+      - name: Update the Yarn lock file
+        if: inputs.manager == 'yarn'
+        run: rm yarn.lock && yarn
+      - name: Create a pull request with the updated file
+        uses: branoholy/update-files-action@main
+        with:
+          token: ${{ secrets.token }}
+          branch.name: deps-update-lock-file
+          branch.recreate: true
+          commit.paths: package-lock.json
+          commit.message: 'deps(lock): Update lock file'
+          commit.token: ${{ secrets.GITHUB_TOKEN }}
+          pull-request.body: Automatic update of dependencies in `package-lock.json`.
+          pull-request.labels: |
+            type: deps
+            scope: lock
