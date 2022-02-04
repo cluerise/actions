@@ -6,7 +6,7 @@ on:
   workflow_call:
 
 concurrency:
-  group: lint-merge-commit-${{ github.event.number }}
+  group: lint-merge-commit-${{ github.event.pull_request.number }}
   cancel-in-progress: true
 
 jobs:
