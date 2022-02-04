@@ -8,14 +8,13 @@ on:
       token:
         required: true
 
-concurrency:
-  group: lint-merge-commit-status-${{ github.event.workflow_run.head_sha }}
-  cancel-in-progress: true
-
 jobs:
   send-status:
     name: Send merge commit status
     runs-on: ubuntu-latest
+    concurrency:
+      group: lint-merge-commit-status-${{ github.event.workflow_run.head_sha }}
+      cancel-in-progress: true
     env:
       LINT_STATE: pending
       LINT_DESCRIPTION: Waiting

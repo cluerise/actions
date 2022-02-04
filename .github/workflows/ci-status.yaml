@@ -8,14 +8,13 @@ on:
       token:
         required: true
 
-concurrency:
-  group: ci-status-${{ github.event.workflow_run.head_sha }}
-  cancel-in-progress: true
-
 jobs:
   send-status:
     name: Send CI status
     runs-on: ubuntu-latest
+    concurrency:
+      group: ci-status-${{ github.event.workflow_run.head_sha }}
+      cancel-in-progress: true
     env:
       CI_STATE: pending
       CI_DESCRIPTION: Waiting
