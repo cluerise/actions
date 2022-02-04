@@ -5,14 +5,13 @@ on:
     types: [auto_merge_enabled, auto_merge_disabled, edited, synchronize]
   workflow_call:
 
-concurrency:
-  group: lint-merge-commit-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
-
 jobs:
   lint-merge-commit:
     name: Lint merge commit
     runs-on: ubuntu-latest
+    concurrency:
+      group: lint-merge-commit-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
     if: github.event.pull_request.auto_merge != null
     steps:
       - name: Install
