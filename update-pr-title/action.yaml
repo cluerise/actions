@@ -1,0 +1,42 @@
+name: Update PR title
+description: Update Dependabot's PR title
+
+inputs:
+  token:
+    description: GitHub token to use for the API call
+    required: true
+
+outputs:
+  title:
+    description: Updated pull request title
+    value: ${{ steps.update-title.outputs.title }}
+
+runs:
+  using: composite
+  steps:
+    - name: Update title
+      id: update-title
+      if: >-
+        (
+          github.event.action == 'opened' ||
+          github.event.action == 'synchronize' ||
+          github.event.action == 'reopened'
+        ) &&
+        github.event.pull_request.user.login == 'dependabot[bot]'
+      uses: actions/github-script@v5.1.0
+      with:
+        github-token: ${{ inputs.token }}
+        script: |
+          const {title} = context.payload.pull_request;
+          const formattedTitle = title.replace(': bump', ': Bump');
+
+          if (formattedTitle !== title) {
+            core.setOutput('title', formattedTitle);
+
+            github.rest.issues.update({
+              issue_number: context.payload.pull_request.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: formattedTitle
+            });
+          }
