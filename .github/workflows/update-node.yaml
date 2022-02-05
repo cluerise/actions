@@ -1,0 +1,36 @@
+name: Update Node.js
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    secrets:
+      token:
+        required: true
+
+jobs:
+  update-node:
+    name: Update Node.js
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install
+        uses: cluenar/actions/install@main
+      - name: Update Node.js versions
+        id: update-node-versions
+        run: npm run node-versions-update && npm i
+      - name: Create a pull request with the updated files
+        uses: branoholy/update-files-action@main
+        with:
+          token: ${{ secrets.token }}
+          branch.name: deps-update-node
+          branch.recreate: true
+          commit.paths: |
+            .nvmrc
+            package.json
+            package-lock.json
+            .github/workflows/*.yaml
+          commit.message: 'deps(dev): Update Node.js to ${{ steps.update-node-versions.outputs.version }}'
+          commit.token: ${{ secrets.GITHUB_TOKEN }}
+          pull-request.body: Automatic update of Node.js to version ${{ steps.update-node-versions.outputs.version }}.
+          pull-request.labels: |
+            type: deps
+            scope: dev
