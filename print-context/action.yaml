@@ -1,0 +1,8 @@
+name: Print GitHub context
+
+runs:
+  using: composite
+  steps:
+    - name: Dump GitHub context
+      run: echo '${{ toJSON(github) }}'
+      shell: bash
