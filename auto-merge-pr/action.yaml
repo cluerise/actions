@@ -6,8 +6,7 @@ inputs:
     description: GitHub token to use for the API call
     required: true
   title:
-    description: Pull request title
-    required: true
+    description: Custom pull request title
 
 runs:
   using: composite
@@ -34,4 +33,4 @@ runs:
             }
           }
         id: ${{ github.event.pull_request.node_id }}
-        message: '"${{ inputs.title }} (#${{ github.event.pull_request.number }})"'
+        message: '"${{ inputs.title || github.event.pull_request.title }} (#${{ github.event.pull_request.number }})"'
