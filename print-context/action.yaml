@@ -1,8 +1,15 @@
-name: Print GitHub context
+name: Print context
+
+inputs:
+  data:
+    description: Input data to print
 
 runs:
   using: composite
   steps:
     - name: Dump GitHub context
       run: echo '${{ toJSON(github) }}'
+      shell: bash
+    - name: Dump inputs
+      run: echo '${{ toJSON(inputs.data) }}'
       shell: bash
