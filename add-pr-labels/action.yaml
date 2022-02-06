@@ -1,0 +1,38 @@
+name: Add PR labels
+description: Add labels to pull request
+
+inputs:
+  token:
+    description: GitHub token to use for the API call
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Add labels
+      if: github.event.action == 'opened' || github.event.action == 'edited'
+      uses: actions/github-script@v5.1.0
+      with:
+        github-token: ${{ inputs.token }}
+        script: |
+          const types = ['chore', 'deps', 'docs', 'feat', 'fix', 'perf', 'refactor', 'release', 'revert', 'style', 'test'];
+          const scopes = ['actions', 'dev', 'lock', 'prod', 'security'];
+
+          const {title} = context.payload.pull_request;
+
+          const type = types.find(type => title.startsWith(`${type}:`) || title.startsWith(`${type}!:`) || title.startsWith(`${type}(`));
+          const scope = scopes.find(scope => title.includes(`(${scope}):`) || title.includes(`(${scope})!:`));
+
+          const typeLabel = type ? `type: ${type}` : null;
+          const scopeLabel = scope ? `scope: ${scope}` : null;
+
+          const labels = [typeLabel, scopeLabel].filter(Boolean);
+
+          if (labels.length > 0) {
+            github.rest.issues.addLabels({
+              issue_number: context.payload.pull_request.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels
+            });
+          }

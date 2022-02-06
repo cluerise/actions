@@ -1,0 +1,24 @@
+name: Assign PR author
+description: Assign author to the pull request
+
+inputs:
+  token:
+    description: GitHub token to use for the API call
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Assign author
+      if: github.event.action == 'opened' && github.event.pull_request.user.type == 'User'
+      uses: octokit/graphql-action@v2.2.20
+      with:
+        token: ${{ inputs.token }}
+        query: |
+          mutation addAssigneesToAssignable($id: ID!, $assignee: ID!) {
+            addAssigneesToAssignable(input: {assignableId: $id, assigneeIds: [$assignee]}) {
+              clientMutationId
+            }
+          }
+        id: ${{ github.event.pull_request.node_id }}
+        assignee: ${{ github.event.pull_request.user.node_id }}
