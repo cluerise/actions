@@ -1,0 +1,92 @@
+name: Review PR
+description: Approve a pull request or request a review
+
+inputs:
+  token:
+    description: GitHub token to use for the API call
+    required: true
+  trusted-user:
+    description: Approve all pull requests from the trusted user
+    required: true
+  release-user:
+    description: A user for releasing new versions
+    required: true
+  reviewer:
+    description: A user for requesting reviews
+    required: true
+  dependency-approved:
+    description: A list of approved dependencies
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Approve
+      if: >-
+        (
+          github.event.action == 'opened' ||
+          github.event.action == 'synchronize' ||
+          github.event.action == 'reopened'
+        ) &&
+        (
+          github.event.pull_request.user.login == inputs.trusted-user ||
+          (
+            github.event.pull_request.user.login == inputs.release-user &&
+            !startsWith(github.head_ref, 'release-')
+          ) ||
+          (
+            github.event.pull_request.user.login == 'dependabot[bot]' &&
+            inputs.approved-dependency
+          )
+        )
+      uses: octokit/graphql-action@v2.2.20
+      with:
+        token: ${{ inputs.token }}
+        query: |
+          mutation addPullRequestReview($id: ID!) {
+            addPullRequestReview(input: {pullRequestId: $id, event: APPROVE}) {
+              clientMutationId
+            }
+          }
+        id: ${{ github.event.pull_request.node_id }}
+
+    - name: Get user for review
+      id: get-user-id
+      uses: octokit/graphql-action@v2.2.20
+      with:
+        token: ${{ inputs.token }}
+        query: |
+          query getUserId($login: String!) {
+            user(login: $login) {
+              id
+            }
+          }
+        login: ${{ inputs.reviewer }}
+    - name: Request review
+      if: >-
+        (
+          github.event.action == 'opened' ||
+          github.event.action == 'synchronize' ||
+          github.event.action == 'reopened'
+        ) &&
+        (
+          (
+            github.event.pull_request.user.login == inputs.release-user &&
+            startsWith(github.head_ref, 'release-')
+          ) ||
+          (
+            github.event.pull_request.user.login == 'dependabot[bot]' &&
+            !inputs.approved-dependency
+          )
+        )
+      uses: octokit/graphql-action@v2.2.20
+      with:
+        token: ${{ inputs.token }}
+        query: |
+          mutation requestReviews($id: ID!, $user: ID!) {
+            requestReviews(input: {pullRequestId: $id, userIds: [$user]}) {
+              clientMutationId
+            }
+          }
+        id: ${{ github.event.pull_request.node_id }}
+        user: ${{ fromJSON(steps.get-user-id.outputs.data).user.id }}
