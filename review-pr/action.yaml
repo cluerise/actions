@@ -36,7 +36,7 @@ runs:
           ) ||
           (
             github.event.pull_request.user.login == 'dependabot[bot]' &&
-            inputs.approved-dependency
+            inputs.dependency-approved
           )
         )
       uses: octokit/graphql-action@v2.2.20
@@ -76,7 +76,7 @@ runs:
           ) ||
           (
             github.event.pull_request.user.login == 'dependabot[bot]' &&
-            !inputs.approved-dependency
+            !inputs.dependency-approved
           )
         )
       uses: octokit/graphql-action@v2.2.20
