@@ -1,0 +1,65 @@
+name: Check suitability
+description: Check whether CI should run on the commit. For Dependabot PRs, run only on the latest unassigned PR.
+
+inputs:
+  token:
+    description: GitHub token to use for the API call
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Get pull request info
+      id: get-pr-info
+      uses: octokit/graphql-action@v2.2.20
+      with:
+        token: ${{ inputs.token }}
+        query: |
+          query getPullRequestInfo($owner: String!, $repo: String!, $oid: GitObjectID!, $search: String!) {
+            repository(owner: $owner, name: $repo) {
+              object(oid: $oid) {
+                ... on Commit {
+                  associatedPullRequests(first: 1) {
+                    nodes {
+                      number
+                      author {
+                        login
+                      }
+                      mergeCommit {
+                        oid
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            search(query: $search, type: ISSUE, first: 1) {
+              nodes {
+                ... on PullRequest {
+                  number
+                }
+              }
+            }
+          }
+        owner: ${{ github.event.repository.owner.login }}
+        repo: ${{ github.event.repository.name }}
+        oid: ${{ github.sha }}
+        search: 'is:pr is:open no:assignee author:app/dependabot sort:created-asc repo:${{ github.repository }}'
+    - name: Print pull request info
+      env:
+        number: ${{ fromJSON(steps.get-pr-info.outputs.data).repository.object.associatedPullRequests.nodes[0].number }}
+        author: ${{ fromJSON(steps.get-pr-info.outputs.data).repository.object.associatedPullRequests.nodes[0].author.login }}
+        merge-commit: ${{ fromJSON(steps.get-pr-info.outputs.data).repository.object.associatedPullRequests.nodes[0].mergeCommit != null }}
+        dependabot-pr-number: ${{ fromJSON(steps.get-pr-info.outputs.data).search.nodes[0].number }}
+      run: |
+        echo 'number: ${{ env.number }}';
+        echo 'author: ${{ env.author }}';
+        echo 'merge-commit: ${{ env.merge-commit }}';
+        echo 'dependabot-pr-number: ${{ env.dependabot-pr-number }}';
+        echo 'number=${{ env.number }}' >> $GITHUB_ENV;
+        echo 'author=${{ env.author }}' >> $GITHUB_ENV;
+        echo 'merge-commit=${{ env.merge-commit }}' >> $GITHUB_ENV;
+        echo 'dependabot-pr-number=${{ env.dependabot-pr-number }}' >> $GITHUB_ENV;
+    - name: Cancel workflow
+      if: env.merge-commit == 'false' && env.author == 'dependabot' && env.number != env.dependabot-pr-number
+      run: exit 1
