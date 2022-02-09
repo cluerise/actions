@@ -60,6 +60,8 @@ runs:
         echo 'author=${{ env.author }}' >> $GITHUB_ENV;
         echo 'merge-commit=${{ env.merge-commit }}' >> $GITHUB_ENV;
         echo 'dependabot-pr-number=${{ env.dependabot-pr-number }}' >> $GITHUB_ENV;
+      shell: bash
     - name: Cancel workflow
       if: env.merge-commit == 'false' && env.author == 'dependabot' && env.number != env.dependabot-pr-number
       run: exit 1
+      shell: bash
