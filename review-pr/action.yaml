@@ -15,7 +15,7 @@ inputs:
     description: A user for requesting reviews
     required: true
   dependency-approved:
-    description: A list of approved dependencies
+    description: A boolean whether the updated dependency should be approved.
     required: true
 
 runs:
@@ -36,7 +36,7 @@ runs:
           ) ||
           (
             github.event.pull_request.user.login == 'dependabot[bot]' &&
-            inputs.dependency-approved
+            inputs.dependency-approved == 'true'
           )
         )
       uses: octokit/graphql-action@v2.2.20
@@ -76,7 +76,7 @@ runs:
           ) ||
           (
             github.event.pull_request.user.login == 'dependabot[bot]' &&
-            !inputs.dependency-approved
+            inputs.dependency-approved == 'false'
           )
         )
       uses: octokit/graphql-action@v2.2.20
