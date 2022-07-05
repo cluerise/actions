@@ -22,7 +22,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2.5.1
         with:
-          node-version: 17.4.0
+          node-version-file: '.nvmrc'
       - name: Update the NPM lock file
         if: inputs.manager == 'npm'
         run: rm package-lock.json && npm i
