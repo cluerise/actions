@@ -5,9 +5,17 @@ on:
   workflow_call:
     inputs:
       manager:
-        type: string
+        type: choice
+        options: [npm, yarn]
         description: Package manager (npm or yarn)
         default: npm
+      node-version:
+        type: string
+        description: 'Version Spec of the version to use. Examples: 12.x, 10.15.1, >=10.15.0'
+      node-version-file:
+        type: string
+        description: 'File containing the version Spec of the version to use. Default: .nvmrc'
+        default: .nvmrc
     secrets:
       token:
         required: true
@@ -22,7 +30,9 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2.5.1
         with:
-          node-version-file: '.nvmrc'
+          cache: ${{ inputs.manager }}
+          node-version: ${{ inputs.node-version }}
+          node-version-file: ${{ inputs.node-version-file }}
       - name: Update the NPM lock file
         if: inputs.manager == 'npm'
         run: rm package-lock.json && npm i

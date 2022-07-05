@@ -3,10 +3,18 @@ description: Checkout and install dependencies
 
 inputs:
   fetch-depth:
+    type: number
     description: 'Number of commits to fetch. 0 indicates all history for all branches and tags. Default: 1'
+  manager:
+    type: choice
+    options: [npm, yarn]
+    description: Package manager (npm or yarn)
+    default: npm
   node-version:
+    type: string
     description: 'Version Spec of the version to use. Examples: 12.x, 10.15.1, >=10.15.0'
   node-version-file:
+    type: string
     description: 'File containing the version Spec of the version to use. Default: .nvmrc'
     default: .nvmrc
 
@@ -18,15 +26,21 @@ runs:
       with:
         fetch-depth: ${{ inputs.fetch-depth }}
     - name: Check lock file version
+      if: inputs.manager == 'npm'
       run: >-
         grep '"lockfileVersion": 2' package-lock.json
       shell: bash
     - name: Setup Node.js
       uses: actions/setup-node@v2.5.1
       with:
+        cache: ${{ inputs.manager }}
         node-version: ${{ inputs.node-version }}
         node-version-file: ${{ inputs.node-version-file }}
-        cache: npm
-    - name: Install dependencies
+    - name: Install NPM dependencies
+      if: inputs.manager == 'npm'
       run: npm ci
+      shell: bash
+    - name: Install Yarn dependencies
+      if: inputs.manager == 'yarn'
+      run: yarn
       shell: bash

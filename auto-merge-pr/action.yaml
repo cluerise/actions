@@ -3,9 +3,11 @@ description: Enable auto-merge for bot's PR
 
 inputs:
   token:
+    type: string
     description: GitHub token to use for the API call
     required: true
   title:
+    type: string
     description: Custom pull request title
 
 runs:

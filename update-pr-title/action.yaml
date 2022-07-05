@@ -3,6 +3,7 @@ description: Update Dependabot's PR title
 
 inputs:
   token:
+    type: string
     description: GitHub token to use for the API call
     required: true
 

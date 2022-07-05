@@ -3,12 +3,15 @@ description: Add labels to pull request
 
 inputs:
   token:
+    type: string
     description: GitHub token to use for the API call
     required: true
   types:
+    type: string
     description: Valid commit types (JSON array)
     default: '["chore", "deps", "docs", "feat", "fix", "perf", "refactor", "release", "revert", "style", "test"]'
   scopes:
+    type: string
     description: Valid commit scopes (JSON array)
     default: '["actions", "dev", "lock", "prod", "security"]'
 
