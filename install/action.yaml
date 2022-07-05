@@ -6,8 +6,7 @@ inputs:
     type: number
     description: 'Number of commits to fetch. 0 indicates all history for all branches and tags. Default: 1'
   manager:
-    type: choice
-    options: [npm, yarn]
+    type: string
     description: Package manager (npm or yarn)
     default: npm
   node-version:

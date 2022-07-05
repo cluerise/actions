@@ -5,8 +5,7 @@ on:
   workflow_call:
     inputs:
       manager:
-        type: choice
-        options: [npm, yarn]
+        type: string
         description: Package manager (npm or yarn)
         default: npm
       node-version:
