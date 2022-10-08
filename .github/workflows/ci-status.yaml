@@ -20,7 +20,7 @@ jobs:
       CI_DESCRIPTION: Waiting
     steps:
       - name: Set initial state
-        if: github.event.action == 'requested'
+        if: github.event.action == 'requested' || github.event.action == 'in_progress'
         run: |
           echo "CI_STATE=pending" >> $GITHUB_ENV &&
           echo "CI_DESCRIPTION=In progress" >> $GITHUB_ENV
