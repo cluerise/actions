@@ -20,7 +20,7 @@ jobs:
       LINT_DESCRIPTION: Waiting
     steps:
       - name: Set initial state
-        if: github.event.action == 'requested' || github.event.action == 'in_progress'
+        if: github.event.action == 'requested'
         run: |
           echo "LINT_STATE=pending" >> $GITHUB_ENV &&
           echo "LINT_DESCRIPTION=In progress" >> $GITHUB_ENV
@@ -44,4 +44,5 @@ jobs:
           context: Status / Lint merge commit
           state: ${{ env.LINT_STATE }}
           description: ${{ env.LINT_DESCRIPTION }}
+          target_url: ${{ github.event.workflow_run.html_url }}
           GITHUB_TOKEN: ${{ secrets.token }}
