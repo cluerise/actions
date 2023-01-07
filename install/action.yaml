@@ -27,7 +27,7 @@ runs:
     - name: Check lock file version
       if: inputs.manager == 'npm'
       run: >-
-        grep '"lockfileVersion": 2' package-lock.json
+        grep '"lockfileVersion": 3' package-lock.json
       shell: bash
     - name: Setup Node.js
       uses: actions/setup-node@v2.5.1
