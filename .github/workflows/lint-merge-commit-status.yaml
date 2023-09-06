@@ -25,13 +25,13 @@ jobs:
 
     steps:
       - name: Check required secrets
-        if: secret.token == '' && (secrets.appId == '' || secret.privateKey == '')
+        if: secrets.token == '' && (secrets.appId == '' || secrets.privateKey == '')
         run: exit 1
         shell: bash
 
       - name: Get bot token
         id: get-bot-token
-        if: secret.token == ''
+        if: secrets.token == ''
         uses: cluenar/actions/get-github-app-token@main
         with:
           appId: ${{ secrets.appId }}
