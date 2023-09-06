@@ -6,7 +6,14 @@ on:
   workflow_call:
     secrets:
       token:
-        required: true
+        type: string
+        description: GitHub access token
+      appId:
+        type: string
+        description: GitHub app ID
+      privateKey:
+        type: string
+        description: GitHub app private key
 
 jobs:
   send-status:
@@ -18,22 +25,39 @@ jobs:
     env:
       LINT_STATE: pending
       LINT_DESCRIPTION: Waiting
+
     steps:
+      - name: Check required secrets
+        if: secret.token == '' && (secrets.appId == '' || secret.privateKey == '')
+        run: exit 1
+        shell: bash
+
+      - name: Get bot token
+        id: get-bot-token
+        if: secret.token == ''
+        uses: cluenar/actions/get-github-app-token@main
+        with:
+          appId: ${{ secrets.appId }}
+          privateKey: ${{ secrets.privateKey }}
+
       - name: Set initial state
         if: github.event.action == 'requested'
         run: |
           echo "LINT_STATE=pending" >> $GITHUB_ENV &&
           echo "LINT_DESCRIPTION=In progress" >> $GITHUB_ENV
+
       - name: Set success state
         if: github.event.action == 'completed' && github.event.workflow_run.conclusion == 'success'
         run: |
           echo "LINT_STATE=success" >> $GITHUB_ENV &&
           echo "LINT_DESCRIPTION=Passed" >> $GITHUB_ENV
+
       - name: Set failure state
         if: github.event.action == 'completed' && github.event.workflow_run.conclusion == 'failure'
         run: |
           echo "LINT_STATE=failure" >> $GITHUB_ENV &&
           echo "LINT_DESCRIPTION=Failed, check merge commit message" >> $GITHUB_ENV
+
       - name: Send status
         uses: octokit/request-action@v2.1.0
         with:
@@ -45,4 +69,4 @@ jobs:
           state: ${{ env.LINT_STATE }}
           description: ${{ env.LINT_DESCRIPTION }}
           target_url: ${{ github.event.workflow_run.html_url }}
-          GITHUB_TOKEN: ${{ secrets.token }}
+          GITHUB_TOKEN: ${{ secrets.token || steps.get-bot-token.outputs.token }}

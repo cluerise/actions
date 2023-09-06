@@ -24,21 +24,25 @@ runs:
       uses: actions/checkout@v2.4.0
       with:
         fetch-depth: ${{ inputs.fetch-depth }}
+
     - name: Check lock file version
       if: inputs.manager == 'npm'
       run: >-
         grep '"lockfileVersion": 3' package-lock.json
       shell: bash
+
     - name: Setup Node.js
       uses: actions/setup-node@v2.5.1
       with:
         cache: ${{ inputs.manager }}
         node-version: ${{ inputs.node-version }}
         node-version-file: ${{ inputs.node-version-file }}
+
     - name: Install NPM dependencies
       if: inputs.manager == 'npm'
       run: npm ci
       shell: bash
+
     - name: Install Yarn dependencies
       if: inputs.manager == 'yarn'
       run: yarn

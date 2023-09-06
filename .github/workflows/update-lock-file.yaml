@@ -17,31 +17,56 @@ on:
         default: .nvmrc
     secrets:
       token:
-        required: true
+        type: string
+        description: GitHub access token
+      appId:
+        type: string
+        description: GitHub app ID
+      privateKey:
+        type: string
+        description: GitHub app private key
 
 jobs:
   update-lock-file:
     name: Update lock file
     runs-on: ubuntu-latest
+
     steps:
+      - name: Check required secrets
+        if: secret.token == '' && (secrets.appId == '' || secret.privateKey == '')
+        run: exit 1
+        shell: bash
+
+      - name: Get bot token
+        id: get-bot-token
+        if: secret.token == ''
+        uses: cluenar/actions/get-github-app-token@main
+        with:
+          appId: ${{ secrets.appId }}
+          privateKey: ${{ secrets.privateKey }}
+
       - name: Checkout
         uses: actions/checkout@v2.4.0
+
       - name: Setup Node.js
         uses: actions/setup-node@v2.5.1
         with:
           cache: ${{ inputs.manager }}
           node-version: ${{ inputs.node-version }}
           node-version-file: ${{ inputs.node-version-file }}
+
       - name: Update the NPM lock file
         if: inputs.manager == 'npm'
         run: rm package-lock.json && npm i
+
       - name: Update the Yarn lock file
         if: inputs.manager == 'yarn'
         run: rm yarn.lock && yarn
+
       - name: Create a pull request with the updated file
         uses: branoholy/update-files-action@main
         with:
-          token: ${{ secrets.token }}
+          token: ${{ secrets.token || steps.get-bot-token.outputs.token }}
           branch.name: deps-update-lock-file
           branch.recreate: true
           commit.paths: package-lock.json

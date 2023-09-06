@@ -10,6 +10,7 @@ runs:
     - name: Dump GitHub context
       run: echo '${{ toJSON(github) }}'
       shell: bash
+
     - name: Dump inputs
       run: echo '${{ toJSON(inputs.data) }}'
       shell: bash

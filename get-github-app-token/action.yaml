@@ -1,0 +1,49 @@
+name: Get GH app token
+description: Get GitHub app token
+
+inputs:
+  appId:
+    type: string
+    description: GitHub app ID
+    required: true
+  privateKey:
+    type: string
+    description: GitHub app private key
+    required: true
+
+outputs:
+  token:
+    description: GitHub app installation access token
+    value: ${{ steps.get-token.outputs.token }}
+
+runs:
+  using: composite
+  steps:
+    - name: Install Octokit
+      run: npm install octokit
+
+    - name: Get token
+      id: get-token
+      uses: actions/github-script@v6.4.1
+      with:
+        script: |
+          const { App } = require('octokit');
+
+          const app = new App({
+            appId: core.getInput('appId'),
+            privateKey: core.getInput('privateKey')
+          });
+
+          const installation = await app.octokit.rest.apps.getRepoInstallation({
+            owner: context.repo.owner,
+            repo: context.repo.repo
+          });
+
+          const installationAccessToken = await app.octokit.rest.apps.createInstallationAccessToken({
+            installation_id: installation.data.id
+          });
+
+          const accessToken = installationAccessToken.data.token;
+
+          core.setSecret(accessToken);
+          core.setOutput('token', accessToken);
