@@ -27,16 +27,20 @@ jobs:
   update-lock-file:
     name: Update lock file
     runs-on: ubuntu-latest
+    env:
+      SECRETS_TOKEN: ${{ secrets.token }}
+      SECRETS_APP_ID: ${{ secrets.appId }}
+      SECRETS_PRIVATE_KEY: ${{ secrets.privateKey }}
 
     steps:
       - name: Check required secrets
-        if: secrets.token == '' && (secrets.appId == '' || secrets.privateKey == '')
+        if: env.SECRETS_TOKEN == null && (env.SECRETS_APP_ID == null || env.SECRETS_PRIVATE_KEY == null)
         run: exit 1
         shell: bash
 
       - name: Get bot token
         id: get-bot-token
-        if: secrets.token == ''
+        if: env.SECRETS_TOKEN == null
         uses: cluenar/actions/get-github-app-token@main
         with:
           appId: ${{ secrets.appId }}
