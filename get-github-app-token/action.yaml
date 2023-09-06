@@ -21,6 +21,7 @@ runs:
   steps:
     - name: Install Octokit
       run: npm install octokit
+      shell: bash
 
     - name: Get token
       id: get-token
