@@ -31,8 +31,8 @@ runs:
           const { App } = require('octokit');
 
           const app = new App({
-            appId: core.getInput('appId'),
-            privateKey: core.getInput('privateKey')
+            appId: core.getInput('appId', { required: true }),
+            privateKey: core.getInput('privateKey', { required: true })
           });
 
           const installation = await app.octokit.rest.apps.getRepoInstallation({
@@ -48,3 +48,5 @@ runs:
 
           core.setSecret(accessToken);
           core.setOutput('token', accessToken);
+        appId: ${{ inputs.appId }}
+        privateKey: ${{ inputs.privateKey }}
