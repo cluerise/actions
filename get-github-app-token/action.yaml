@@ -28,11 +28,17 @@ runs:
       uses: actions/github-script@v6.4.1
       with:
         script: |
-          const { App } = require('octokit');
+          const { App, Octokit } = require('octokit');
+          const fetch = require('node-fetch');
 
           const app = new App({
             appId: core.getInput('appId', { required: true }),
-            privateKey: core.getInput('privateKey', { required: true })
+            privateKey: core.getInput('privateKey', { required: true }),
+            Octokit: Octokit.defaults({
+              request: {
+                fetch
+              }
+            })
           });
 
           const installation = await app.octokit.rest.apps.getRepoInstallation({
