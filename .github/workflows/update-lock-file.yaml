@@ -17,13 +17,10 @@ on:
         default: .nvmrc
     secrets:
       token:
-        type: string
         description: GitHub access token
       appId:
-        type: string
         description: GitHub app ID
       privateKey:
-        type: string
         description: GitHub app private key
 
 jobs:
