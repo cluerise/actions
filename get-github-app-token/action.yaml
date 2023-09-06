@@ -29,7 +29,6 @@ runs:
       with:
         script: |
           const { App, Octokit } = require('octokit');
-          const fetch = require('node-fetch');
 
           const app = new App({
             appId: core.getInput('appId', { required: true }),
