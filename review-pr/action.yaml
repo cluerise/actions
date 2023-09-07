@@ -10,9 +10,9 @@ inputs:
     type: string
     description: Approve all pull requests from the trusted user
     required: true
-  release-user:
+  trusted-bot:
     type: string
-    description: A user for releasing new versions
+    description: Approve all pull requests from the trusted bot except for releases
     required: true
   reviewer:
     type: string
@@ -36,7 +36,7 @@ runs:
         (
           github.event.pull_request.user.login == inputs.trusted-user ||
           (
-            github.event.pull_request.user.login == inputs.release-user &&
+            github.event.pull_request.user.login == inputs.trusted-bot &&
             !startsWith(github.head_ref, 'release-')
           ) ||
           (
@@ -77,7 +77,7 @@ runs:
         ) &&
         (
           (
-            github.event.pull_request.user.login == inputs.release-user &&
+            github.event.pull_request.user.login == inputs.trusted-bot &&
             startsWith(github.head_ref, 'release-')
           ) ||
           (

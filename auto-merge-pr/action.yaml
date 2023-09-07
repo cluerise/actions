@@ -9,6 +9,9 @@ inputs:
   title:
     type: string
     description: Custom pull request title
+  trusted-bot:
+    type: string
+    description: Enable auto merge for all pull requests from the trusted bot
 
 runs:
   using: composite
@@ -23,7 +26,8 @@ runs:
         (
           github.event.pull_request.user.login == 'dependabot[bot]' ||
           github.event.pull_request.user.login == 'github-actions[bot]' ||
-          github.event.pull_request.user.login == 'branoholy-bot'
+          github.event.pull_request.user.login == 'branoholy-bot' ||
+          github.event.pull_request.user.login == inputs.trusted-bot
         )
       uses: octokit/graphql-action@v2.2.20
       with:

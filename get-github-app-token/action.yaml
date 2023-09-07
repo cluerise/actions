@@ -2,11 +2,11 @@ name: Get GH app token
 description: Get GitHub app token
 
 inputs:
-  appId:
+  app-id:
     type: string
     description: GitHub app ID
     required: true
-  privateKey:
+  private-key:
     type: string
     description: GitHub app private key
     required: true
@@ -31,8 +31,8 @@ runs:
           const { App, Octokit } = require('octokit');
 
           const app = new App({
-            appId: core.getInput('appId', { required: true }),
-            privateKey: core.getInput('privateKey', { required: true }),
+            appId: core.getInput('app-id', { required: true }),
+            privateKey: core.getInput('private-key', { required: true }),
             Octokit: Octokit.defaults({
               request: {
                 fetch
@@ -53,5 +53,5 @@ runs:
 
           core.setSecret(accessToken);
           core.setOutput('token', accessToken);
-        appId: ${{ inputs.appId }}
-        privateKey: ${{ inputs.privateKey }}
+        app-id: ${{ inputs.app-id }}
+        private-key: ${{ inputs.private-key }}

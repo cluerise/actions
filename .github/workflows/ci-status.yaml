@@ -7,9 +7,9 @@ on:
     secrets:
       token:
         description: GitHub access token
-      appId:
+      app-id:
         description: GitHub app ID
-      privateKey:
+      private-key:
         description: GitHub app private key
 
 jobs:
@@ -23,8 +23,8 @@ jobs:
       CI_STATE: pending
       CI_DESCRIPTION: Waiting
       SECRETS_TOKEN: ${{ secrets.token }}
-      SECRETS_APP_ID: ${{ secrets.appId }}
-      SECRETS_PRIVATE_KEY: ${{ secrets.privateKey }}
+      SECRETS_APP_ID: ${{ secrets.app-id }}
+      SECRETS_PRIVATE_KEY: ${{ secrets.private-key }}
 
     steps:
       - name: Check required secrets
@@ -37,8 +37,8 @@ jobs:
         if: env.SECRETS_TOKEN == null
         uses: cluenar/actions/get-github-app-token@main
         with:
-          appId: ${{ secrets.appId }}
-          privateKey: ${{ secrets.privateKey }}
+          app-id: ${{ secrets.app-id }}
+          private-key: ${{ secrets.private-key }}
 
       - name: Set initial state
         if: github.event.action == 'requested'
