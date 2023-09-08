@@ -1,0 +1,59 @@
+name: Create release PR
+
+on:
+  workflow_dispatch:
+  workflow_call:
+    secrets:
+      token:
+        description: GitHub access token
+      app-id:
+        description: GitHub app ID
+      private-key:
+        description: GitHub app private key
+
+jobs:
+  create-release-pr:
+    name: Create release PR
+    runs-on: ubuntu-latest
+    env:
+      SECRET_TOKEN: ${{ secrets.token }}
+      SECRET_APP_ID: ${{ secrets.app-id || secrets.CLUENAR_PUBLIC_BOT_APP_ID }}
+      SECRET_PRIVATE_KEY: ${{ secrets.private-key || secrets.CLUENAR_PUBLIC_BOT_PRIVATE_KEY }}
+
+    steps:
+      - name: Check required secrets
+        if: env.SECRET_TOKEN == null && (env.SECRET_APP_ID == null || env.SECRET_PRIVATE_KEY == null)
+        run: exit 1
+        shell: bash
+
+      - name: Get bot token
+        id: get-bot-token
+        if: env.SECRET_TOKEN == null
+        uses: cluenar/actions/get-github-app-token@main
+        with:
+          app-id: ${{ env.SECRET_APP_ID }}
+          private-key: ${{ env.SECRET_PRIVATE_KEY }}
+
+      - name: Install
+        uses: cluenar/actions/install@main
+        with:
+          fetch-depth: 0
+
+      - name: Run the release script
+        id: release
+        run: npm run release create
+
+      - name: Create a pull request with the release
+        uses: branoholy/update-files-action@main
+        with:
+          token: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
+          branch.name: release-${{ steps.release.outputs.version }}
+          branch.recreate: true
+          commit.paths: |
+            package.json
+            package-lock.json
+            CHANGELOG.md
+          commit.message: 'release: Version ${{ steps.release.outputs.version }}'
+          commit.token: ${{ steps.get-bot-token.outputs.token || secrets.GITHUB_TOKEN }}
+          pull-request.body: Release ${{ steps.release.outputs.version }}.
+          pull-request.labels: 'type: release'
