@@ -1,0 +1,22 @@
+# Build
+build/
+dist/
+
+# Dependencies
+node_modules/
+
+# .env
+.env
+
+# Lint Staged
+.lint-staged-temp-tsconfig.json
+
+# Misc
+.DS_Store
+etc/
+
+# Stryker
+.stryker-tmp/
+
+# Tests coverage
+coverage/

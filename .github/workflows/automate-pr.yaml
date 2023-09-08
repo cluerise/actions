@@ -1,0 +1,55 @@
+name: Automate PR
+
+on:
+  pull_request_target:
+    types: [opened, edited, synchronize, reopened]
+
+jobs:
+  automate-pr:
+    name: Automate PR
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get bot token
+        id: get-bot-token
+        uses: cluenar/actions/get-github-app-token@main
+        with:
+          app-id: ${{ secrets.CLUENAR_PUBLIC_BOT_APP_ID }}
+          private-key: ${{ secrets.CLUENAR_PUBLIC_BOT_PRIVATE_KEY }}
+
+      - name: Assign author
+        uses: cluenar/actions/assign-pr-author@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Add labels
+        uses: cluenar/actions/add-pr-labels@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Approve or request review
+        uses: cluenar/actions/review-pr@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          trusted-user: branoholy
+          trusted-bot: cluenar-public-bot[bot]
+          reviewer: branoholy
+          dependency-approved: >-
+            ${{
+              (
+                startsWith(github.head_ref, 'dependabot-github_actions-actions-setup-node-')
+              )
+            }}
+
+      - name: Update title
+        id: update-title
+        uses: cluenar/actions/update-pr-title@main
+        with:
+          token: ${{ steps.get-bot-token.outputs.token }}
+
+      - name: Auto-merge
+        uses: cluenar/actions/auto-merge-pr@main
+        with:
+          token: ${{ steps.get-bot-token.outputs.token }}
+          title: ${{ steps.update-title.outputs.title }}
+          trusted-bot: cluenar-public-bot[bot]

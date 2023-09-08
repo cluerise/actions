@@ -1,6 +1,8 @@
 name: Update Node.js
 
 on:
+  schedule:
+    - cron: '0 13 * * 0'
   workflow_dispatch:
   workflow_call:
     inputs:
@@ -28,30 +30,33 @@ jobs:
     name: Update Node.js
     runs-on: ubuntu-latest
     env:
-      SECRETS_TOKEN: ${{ secrets.token }}
-      SECRETS_APP_ID: ${{ secrets.app-id }}
-      SECRETS_PRIVATE_KEY: ${{ secrets.private-key }}
+      INPUT_MANAGER: ${{ inputs.manager || 'npm' }}
+      INPUT_NODE_VERSION: ${{ inputs.node-version }}
+      INPUT_NODE_VERSION_FILE: ${{ inputs.node-version-file || '.nvmrc' }}
+      SECRET_TOKEN: ${{ secrets.token }}
+      SECRET_APP_ID: ${{ secrets.app-id || secrets.CLUENAR_PUBLIC_BOT_APP_ID }}
+      SECRET_PRIVATE_KEY: ${{ secrets.private-key || secrets.CLUENAR_PUBLIC_BOT_PRIVATE_KEY }}
 
     steps:
       - name: Check required secrets
-        if: env.SECRETS_TOKEN == null && (env.SECRETS_APP_ID == null || env.SECRETS_PRIVATE_KEY == null)
+        if: env.SECRET_TOKEN == null && (env.SECRET_APP_ID == null || env.SECRET_PRIVATE_KEY == null)
         run: exit 1
         shell: bash
 
       - name: Get bot token
         id: get-bot-token
-        if: env.SECRETS_TOKEN == null
+        if: env.SECRET_TOKEN == null
         uses: cluenar/actions/get-github-app-token@main
         with:
-          app-id: ${{ secrets.app-id }}
-          private-key: ${{ secrets.private-key }}
+          app-id: ${{ env.SECRET_APP_ID }}
+          private-key: ${{ env.SECRET_PRIVATE_KEY }}
 
       - name: Install
         uses: cluenar/actions/install@main
         with:
-          manager: ${{ inputs.manager }}
-          node-version: ${{ inputs.node-version }}
-          node-version-file: ${{ inputs.node-version-file }}
+          manager: ${{ env.INPUT_MANAGER }}
+          node-version: ${{ env.INPUT_NODE_VERSION }}
+          node-version-file: ${{ env.INPUT_NODE_VERSION_FILE }}
 
       - name: Update Node.js versions
         id: update-node-versions
@@ -60,22 +65,22 @@ jobs:
       - name: Setup new Node.js
         uses: actions/setup-node@v2.5.1
         with:
-          cache: ${{ inputs.manager }}
-          node-version: ${{ inputs.node-version }}
-          node-version-file: ${{ inputs.node-version-file }}
+          cache: ${{ env.INPUT_MANAGER }}
+          node-version: ${{ env.INPUT_NODE_VERSION }}
+          node-version-file: ${{ env.INPUT_NODE_VERSION_FILE }}
 
       - name: Update the NPM lock file
-        if: inputs.manager == 'npm'
+        if: env.INPUT_MANAGER == 'npm'
         run: npm i
 
       - name: Update the Yarn lock file
-        if: inputs.manager == 'yarn'
+        if: env.INPUT_MANAGER == 'yarn'
         run: yarn
 
       - name: Create a pull request with the updated files
         uses: branoholy/update-files-action@main
         with:
-          token: ${{ secrets.token || steps.get-bot-token.outputs.token }}
+          token: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
           branch.name: deps-update-node
           branch.recreate: true
           commit.paths: |
@@ -84,7 +89,7 @@ jobs:
             package-lock.json
             .github/workflows/*.yaml
           commit.message: 'deps(dev): Update Node.js to ${{ steps.update-node-versions.outputs.version }}'
-          commit.token: ${{ secrets.GITHUB_TOKEN }}
+          commit.token: ${{ steps.get-bot-token.outputs.token || secrets.GITHUB_TOKEN }}
           pull-request.body: Automatic update of Node.js to version ${{ steps.update-node-versions.outputs.version }}.
           pull-request.labels: |
             type: deps

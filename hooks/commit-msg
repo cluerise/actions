@@ -1,0 +1,1 @@
+npm run __git-hook:commit-msg --if-present "$@"

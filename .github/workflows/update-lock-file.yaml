@@ -1,6 +1,8 @@
 name: Update lock file
 
 on:
+  schedule:
+    - cron: '0 14 * * 0'
   workflow_dispatch:
   workflow_call:
     inputs:
@@ -28,23 +30,26 @@ jobs:
     name: Update lock file
     runs-on: ubuntu-latest
     env:
-      SECRETS_TOKEN: ${{ secrets.token }}
-      SECRETS_APP_ID: ${{ secrets.app-id }}
-      SECRETS_PRIVATE_KEY: ${{ secrets.private-key }}
+      INPUT_MANAGER: ${{ inputs.manager || 'npm' }}
+      INPUT_NODE_VERSION: ${{ inputs.node-version }}
+      INPUT_NODE_VERSION_FILE: ${{ inputs.node-version-file || '.nvmrc' }}
+      SECRET_TOKEN: ${{ secrets.token }}
+      SECRET_APP_ID: ${{ secrets.app-id || secrets.CLUENAR_PUBLIC_BOT_APP_ID }}
+      SECRET_PRIVATE_KEY: ${{ secrets.private-key || secrets.CLUENAR_PUBLIC_BOT_PRIVATE_KEY }}
 
     steps:
       - name: Check required secrets
-        if: env.SECRETS_TOKEN == null && (env.SECRETS_APP_ID == null || env.SECRETS_PRIVATE_KEY == null)
+        if: env.SECRET_TOKEN == null && (env.SECRET_APP_ID == null || env.SECRET_PRIVATE_KEY == null)
         run: exit 1
         shell: bash
 
       - name: Get bot token
         id: get-bot-token
-        if: env.SECRETS_TOKEN == null
+        if: env.SECRET_TOKEN == null
         uses: cluenar/actions/get-github-app-token@main
         with:
-          app-id: ${{ secrets.app-id }}
-          private-key: ${{ secrets.private-key }}
+          app-id: ${{ env.SECRET_APP_ID }}
+          private-key: ${{ env.SECRET_PRIVATE_KEY }}
 
       - name: Checkout
         uses: actions/checkout@v2.4.0
@@ -52,27 +57,27 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2.5.1
         with:
-          cache: ${{ inputs.manager }}
-          node-version: ${{ inputs.node-version }}
-          node-version-file: ${{ inputs.node-version-file }}
+          cache: ${{ env.INPUT_MANAGER }}
+          node-version: ${{ env.INPUT_NODE_VERSION }}
+          node-version-file: ${{ env.INPUT_NODE_VERSION_FILE }}
 
       - name: Update the NPM lock file
-        if: inputs.manager == 'npm'
+        if: env.INPUT_MANAGER == 'npm'
         run: rm package-lock.json && npm i
 
       - name: Update the Yarn lock file
-        if: inputs.manager == 'yarn'
+        if: env.INPUT_MANAGER == 'yarn'
         run: rm yarn.lock && yarn
 
       - name: Create a pull request with the updated file
         uses: branoholy/update-files-action@main
         with:
-          token: ${{ secrets.token || steps.get-bot-token.outputs.token }}
+          token: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
           branch.name: deps-update-lock-file
           branch.recreate: true
           commit.paths: package-lock.json
           commit.message: 'deps(lock): Update lock file'
-          commit.token: ${{ secrets.GITHUB_TOKEN }}
+          commit.token: ${{ steps.get-bot-token.outputs.token || secrets.GITHUB_TOKEN }}
           pull-request.body: Automatic update of dependencies in `package-lock.json`.
           pull-request.labels: |
             type: deps

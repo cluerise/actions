@@ -3,6 +3,8 @@ name: CI status
 on:
   workflow_run:
     workflows: CI
+    types: completed
+    branches: [main, latest]
   workflow_call:
     secrets:
       token:
@@ -22,23 +24,23 @@ jobs:
     env:
       CI_STATE: pending
       CI_DESCRIPTION: Waiting
-      SECRETS_TOKEN: ${{ secrets.token }}
-      SECRETS_APP_ID: ${{ secrets.app-id }}
-      SECRETS_PRIVATE_KEY: ${{ secrets.private-key }}
+      SECRET_TOKEN: ${{ secrets.token }}
+      SECRET_APP_ID: ${{ secrets.app-id || secrets.CLUENAR_PUBLIC_BOT_APP_ID }}
+      SECRET_PRIVATE_KEY: ${{ secrets.private-key || secrets.CLUENAR_PUBLIC_BOT_PRIVATE_KEY }}
 
     steps:
       - name: Check required secrets
-        if: env.SECRETS_TOKEN == null && (env.SECRETS_APP_ID == null || env.SECRETS_PRIVATE_KEY == null)
+        if: env.SECRET_TOKEN == null && (env.SECRET_APP_ID == null || env.SECRET_PRIVATE_KEY == null)
         run: exit 1
         shell: bash
 
       - name: Get bot token
         id: get-bot-token
-        if: env.SECRETS_TOKEN == null
+        if: env.SECRET_TOKEN == null
         uses: cluenar/actions/get-github-app-token@main
         with:
-          app-id: ${{ secrets.app-id }}
-          private-key: ${{ secrets.private-key }}
+          app-id: ${{ env.SECRET_APP_ID }}
+          private-key: ${{ env.SECRET_PRIVATE_KEY }}
 
       - name: Set initial state
         if: github.event.action == 'requested'
@@ -69,4 +71,4 @@ jobs:
           state: ${{ env.CI_STATE }}
           description: ${{ env.CI_DESCRIPTION }}
           target_url: ${{ github.event.workflow_run.html_url }}
-          GITHUB_TOKEN: ${{ secrets.token || steps.get-bot-token.outputs.token }}
+          GITHUB_TOKEN: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}

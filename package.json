@@ -1,0 +1,20 @@
+{
+  "name": "@cluenar/actions",
+  "version": "0.1.0",
+  "description": "GitHub actions",
+  "author": "Branislav Holý <brano@holy.am>",
+  "repository": "github:cluenar/actions",
+  "bugs": {
+    "url": "https://github.com/cluenar/actions/issues"
+  },
+  "homepage": "https://github.com/cluenar/actions#readme",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">= 20.6.0"
+  },
+  "scripts": {
+    "lint": "echo lint",
+    "node-versions-update": "echo node-versions-update"
+  }
+}
