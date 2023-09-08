@@ -16,6 +16,9 @@ inputs:
     type: string
     description: 'File containing the version Spec of the version to use. Default: .nvmrc'
     default: .nvmrc
+  registry-url:
+    type: string
+    description: NPM package registry URL
 
 runs:
   using: composite
@@ -37,6 +40,7 @@ runs:
         cache: ${{ inputs.manager }}
         node-version: ${{ inputs.node-version }}
         node-version-file: ${{ inputs.node-version-file }}
+        registry-url: ${{ inputs.registry-url }}
 
     - name: Install NPM dependencies
       if: inputs.manager == 'npm'
