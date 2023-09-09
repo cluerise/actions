@@ -44,7 +44,7 @@ runs:
             inputs.dependency-approved == 'true'
           )
         )
-      uses: octokit/graphql-action@v2.2.20
+      uses: octokit/graphql-action@v2.2.25
       with:
         token: ${{ inputs.token }}
         query: |
@@ -57,7 +57,7 @@ runs:
 
     - name: Get user for review
       id: get-user-id
-      uses: octokit/graphql-action@v2.2.20
+      uses: octokit/graphql-action@v2.2.25
       with:
         token: ${{ inputs.token }}
         query: |
@@ -85,7 +85,7 @@ runs:
             inputs.dependency-approved == 'false'
           )
         )
-      uses: octokit/graphql-action@v2.2.20
+      uses: octokit/graphql-action@v2.2.25
       with:
         token: ${{ inputs.token }}
         query: |
