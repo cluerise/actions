@@ -20,7 +20,7 @@ runs:
   steps:
     - name: Add labels
       if: github.event.action == 'opened' || github.event.action == 'edited'
-      uses: actions/github-script@v5.1.0
+      uses: actions/github-script@v6.4.1
       with:
         github-token: ${{ inputs.token }}
         script: |
