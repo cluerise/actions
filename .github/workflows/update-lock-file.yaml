@@ -52,7 +52,7 @@ jobs:
           private-key: ${{ env.SECRET_PRIVATE_KEY }}
 
       - name: Checkout
-        uses: actions/checkout@v2.4.0
+        uses: actions/checkout@v4.0.0
 
       - name: Setup Node.js
         uses: actions/setup-node@v3.8.1
