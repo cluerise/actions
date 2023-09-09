@@ -12,7 +12,7 @@ runs:
   steps:
     - name: Get pull request info
       id: get-pr-info
-      uses: octokit/graphql-action@v2.2.20
+      uses: octokit/graphql-action@v2.2.25
       with:
         token: ${{ inputs.token }}
         query: |
