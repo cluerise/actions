@@ -8,7 +8,7 @@ updates:
       time: '11:00'
     pull-request-branch-name:
       separator: '-'
-    open-pull-requests-limit: 2
+    open-pull-requests-limit: 10
     versioning-strategy: increase
     commit-message:
       prefix: deps(prod)
@@ -24,7 +24,22 @@ updates:
       time: '11:30'
     pull-request-branch-name:
       separator: '-'
-    open-pull-requests-limit: 2
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: deps(actions)
+    labels:
+      - 'type: deps'
+      - 'scope: actions'
+
+  - package-ecosystem: github-actions
+    directory: /install
+    schedule:
+      interval: weekly
+      day: saturday
+      time: '11:30'
+    pull-request-branch-name:
+      separator: '-'
+    open-pull-requests-limit: 10
     commit-message:
       prefix: deps(actions)
     labels:
