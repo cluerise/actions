@@ -5,19 +5,9 @@ on: push
 concurrency: ci-${{ github.sha }}
 
 jobs:
-  check-suitability:
-    name: Check suitability
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check CI suitability
-        uses: cluenar/actions/check-ci-suitability@main
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-
   install:
     name: Install dependencies
     runs-on: ubuntu-latest
-    needs: check-suitability
     steps:
       - name: Install
         uses: cluenar/actions/install@main
