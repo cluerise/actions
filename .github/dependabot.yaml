@@ -32,7 +32,127 @@ updates:
       - 'scope: actions'
 
   - package-ecosystem: github-actions
+    directory: /add-pr-labels
+    schedule:
+      interval: weekly
+      day: saturday
+      time: '11:30'
+    pull-request-branch-name:
+      separator: '-'
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: deps(actions)
+    labels:
+      - 'type: deps'
+      - 'scope: actions'
+
+  - package-ecosystem: github-actions
+    directory: /assign-pr-author
+    schedule:
+      interval: weekly
+      day: saturday
+      time: '11:30'
+    pull-request-branch-name:
+      separator: '-'
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: deps(actions)
+    labels:
+      - 'type: deps'
+      - 'scope: actions'
+
+  - package-ecosystem: github-actions
+    directory: /auto-merge-pr
+    schedule:
+      interval: weekly
+      day: saturday
+      time: '11:30'
+    pull-request-branch-name:
+      separator: '-'
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: deps(actions)
+    labels:
+      - 'type: deps'
+      - 'scope: actions'
+
+  - package-ecosystem: github-actions
+    directory: /check-ci-suitability
+    schedule:
+      interval: weekly
+      day: saturday
+      time: '11:30'
+    pull-request-branch-name:
+      separator: '-'
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: deps(actions)
+    labels:
+      - 'type: deps'
+      - 'scope: actions'
+
+  - package-ecosystem: github-actions
+    directory: /get-github-app-token
+    schedule:
+      interval: weekly
+      day: saturday
+      time: '11:30'
+    pull-request-branch-name:
+      separator: '-'
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: deps(actions)
+    labels:
+      - 'type: deps'
+      - 'scope: actions'
+
+  - package-ecosystem: github-actions
     directory: /install
+    schedule:
+      interval: weekly
+      day: saturday
+      time: '11:30'
+    pull-request-branch-name:
+      separator: '-'
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: deps(actions)
+    labels:
+      - 'type: deps'
+      - 'scope: actions'
+
+  - package-ecosystem: github-actions
+    directory: /print-context
+    schedule:
+      interval: weekly
+      day: saturday
+      time: '11:30'
+    pull-request-branch-name:
+      separator: '-'
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: deps(actions)
+    labels:
+      - 'type: deps'
+      - 'scope: actions'
+
+  - package-ecosystem: github-actions
+    directory: /review-pr
+    schedule:
+      interval: weekly
+      day: saturday
+      time: '11:30'
+    pull-request-branch-name:
+      separator: '-'
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: deps(actions)
+    labels:
+      - 'type: deps'
+      - 'scope: actions'
+
+  - package-ecosystem: github-actions
+    directory: /update-pr-title
     schedule:
       interval: weekly
       day: saturday
