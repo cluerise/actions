@@ -11,11 +11,19 @@
   "license": "MIT",
   "type": "module",
   "engines": {
-    "node": ">= 20.6.0"
+    "node": ">= 20.5.1"
   },
   "scripts": {
-    "release": "echo release",
-    "lint": "echo lint",
-    "node-versions-update": "echo node-versions-update"
+    "release": "cluenar-tools release",
+    "lint": "cluenar-tools lint",
+    "node-versions-update": "cluenar-tools update-node-versions",
+    "__git-hook:commit-msg": "cluenar-tools format-commit-message",
+    "__git-hook:post-commit": "rm -f .lint-staged-temp-tsconfig.json",
+    "__git-hook:pre-commit": "npm run lint staged",
+    "__git-hook:prepare-commit-msg": "cluenar-tools create-commit-message",
+    "postinstall": "[ -d .git ] && git config --local core.hooksPath hooks || echo 'Info: Git hooks not set outside a git repository.'"
+  },
+  "devDependencies": {
+    "@cluenar/tools": "1.0.3"
   }
 }
