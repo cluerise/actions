@@ -42,7 +42,7 @@ jobs:
       - name: Set the release version env
         run: echo "RELEASE_VERSION=$(echo '${{ github.head_ref }}' | cut -d'-' -f 2)" >> $GITHUB_ENV
 
-      - name: Get id of the latest branch
+      - name: Get id of the repository and latest branch
         id: get-latest-ref
         uses: octokit/graphql-action@v2.2.25
         with:
@@ -50,6 +50,7 @@ jobs:
           query: |
             query getRef($owner: String!, $repo: String!, $name: String!) {
               repository(owner: $owner, name: $repo) {
+                id
                 ref(qualifiedName: $name) {
                   id
                 }
@@ -59,7 +60,23 @@ jobs:
           repo: ${{ github.event.repository.name }}
           name: latest
 
+      - name: Create the latest branch
+        if: fromJson(steps.get-latest-ref.outputs.data).repository.ref == null
+        uses: octokit/graphql-action@v2.2.25
+        with:
+          token: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
+          query: |
+            mutation createRef($id: ID!, $name: String!, $oid: GitObjectID!) {
+              createRef(input: {repositoryId: $id, name: $name, oid: $oid}) {
+                clientMutationId
+              }
+            }
+          id: ${{ fromJson(steps.get-latest-ref.outputs.data).repository.id }}
+          name: latest
+          oid: ${{ github.event.pull_request.merge_commit_sha }}
+
       - name: Reset the latest branch
+        if: fromJson(steps.get-latest-ref.outputs.data).repository.ref != null
         uses: octokit/graphql-action@v2.2.25
         with:
           token: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
