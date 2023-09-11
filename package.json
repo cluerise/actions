@@ -24,6 +24,6 @@
     "postinstall": "[ -d .git ] && git config --local core.hooksPath hooks || echo 'Info: Git hooks not set outside a git repository.'"
   },
   "devDependencies": {
-    "@cluenar/tools": "1.0.3"
+    "@cluenar/tools": "1.0.4"
   }
 }
