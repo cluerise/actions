@@ -14,7 +14,7 @@
     "node": ">= 20.6.1"
   },
   "scripts": {
-    "release": "cluenar-tools release create; ls -la .; cat CHANGELOG.md; echo",
+    "release": "cluenar-tools release create; ls -la .; cat CHANGELOG.md; git ls-files --exclude-standard --others CHANGELOG.md; git ls-files --exclude-standard --others CHANGELOG.md | wc -l; echo",
     "lint": "cluenar-tools lint",
     "node-versions-update": "cluenar-tools update-node-versions",
     "__git-hook:commit-msg": "cluenar-tools format-commit-message",
