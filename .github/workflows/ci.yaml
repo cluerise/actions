@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install
-        uses: cluenar/actions/install@main
+        uses: cluenar/actions/install@v1.0.0
 
   lint:
     name: Lint files
@@ -18,7 +18,7 @@ jobs:
     needs: install
     steps:
       - name: Install
-        uses: cluenar/actions/install@main
+        uses: cluenar/actions/install@v1.0.0
       - name: Lint files
         run: npm run lint all
         env:

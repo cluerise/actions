@@ -34,7 +34,7 @@ jobs:
       - name: Get bot token
         id: get-bot-token
         if: env.SECRET_TOKEN == null
-        uses: cluenar/actions/get-github-app-token@main
+        uses: cluenar/actions/get-github-app-token@v1.0.0
         with:
           app-id: ${{ env.SECRET_APP_ID }}
           private-key: ${{ env.SECRET_PRIVATE_KEY }}
@@ -90,7 +90,7 @@ jobs:
           oid: ${{ github.event.pull_request.merge_commit_sha }}
 
       - name: Install
-        uses: cluenar/actions/install@main
+        uses: cluenar/actions/install@v1.0.0
 
       - name: Extract the changelog
         id: extract-changelog
