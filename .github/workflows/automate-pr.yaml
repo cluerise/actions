@@ -12,23 +12,23 @@ jobs:
     steps:
       - name: Get bot token
         id: get-bot-token
-        uses: cluenar/actions/get-github-app-token@main
+        uses: cluenar/actions/get-github-app-token@v1.0.0
         with:
           app-id: ${{ secrets.CLUENAR_PUBLIC_BOT_APP_ID }}
           private-key: ${{ secrets.CLUENAR_PUBLIC_BOT_PRIVATE_KEY }}
 
       - name: Assign author
-        uses: cluenar/actions/assign-pr-author@main
+        uses: cluenar/actions/assign-pr-author@v1.0.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Add labels
-        uses: cluenar/actions/add-pr-labels@main
+        uses: cluenar/actions/add-pr-labels@v1.0.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Approve or request review
-        uses: cluenar/actions/review-pr@main
+        uses: cluenar/actions/review-pr@v1.0.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           trusted-user: branoholy
@@ -51,12 +51,12 @@ jobs:
 
       - name: Update title
         id: update-title
-        uses: cluenar/actions/update-pr-title@main
+        uses: cluenar/actions/update-pr-title@v1.0.0
         with:
           token: ${{ steps.get-bot-token.outputs.token }}
 
       - name: Auto-merge
-        uses: cluenar/actions/auto-merge-pr@main
+        uses: cluenar/actions/auto-merge-pr@v1.0.0
         with:
           token: ${{ steps.get-bot-token.outputs.token }}
           title: ${{ steps.update-title.outputs.title }}

@@ -29,13 +29,13 @@ jobs:
       - name: Get bot token
         id: get-bot-token
         if: env.SECRET_TOKEN == null
-        uses: cluenar/actions/get-github-app-token@main
+        uses: cluenar/actions/get-github-app-token@v1.0.0
         with:
           app-id: ${{ env.SECRET_APP_ID }}
           private-key: ${{ env.SECRET_PRIVATE_KEY }}
 
       - name: Install
-        uses: cluenar/actions/install@main
+        uses: cluenar/actions/install@v1.0.0
         with:
           fetch-depth: 0
 
@@ -44,6 +44,24 @@ jobs:
         run: npm run release create
 
       - name: Create a pull request with the release
+        if: github.event_name == 'workflow_dispatch'
+        uses: branoholy/update-files-action@main
+        with:
+          token: ${{ steps.get-bot-token.outputs.token }}
+          branch.name: release-${{ steps.release.outputs.version }}
+          branch.recreate: true
+          commit.paths: |
+            package.json
+            package-lock.json
+            CHANGELOG.md
+            .github/workflows/*.yaml
+          commit.message: 'release: Version ${{ steps.release.outputs.version }}'
+          commit.token: ${{ steps.get-bot-token.outputs.token }}
+          pull-request.body: Release ${{ steps.release.outputs.version }}.
+          pull-request.labels: 'type: release'
+
+      - name: Create a pull request with the release
+        if: github.event_name == 'workflow_call'
         uses: branoholy/update-files-action@main
         with:
           token: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
