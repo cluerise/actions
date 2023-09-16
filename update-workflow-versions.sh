@@ -1,5 +1,5 @@
 versionRegexp="[a-z0-9\.-]+"
-regexp="(CLUENAR_ACTIONS_VERSION: v)($versionRegexp)([ \n]*)"
+regexp="(cluenar\/actions\/.+@v)($versionRegexp)([ \n]*)"
 version=$(sed -n -E "s/\"version\": \"($versionRegexp)\",/\1/p" package.json | xargs)
 
 find . -type d -name "node_modules" -prune -o -type f -name "*.yaml" -o -name "*.yml" |

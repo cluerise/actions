@@ -30,7 +30,6 @@ jobs:
     name: Update lock file
     runs-on: ubuntu-latest
     env:
-      CLUENAR_ACTIONS_VERSION: v1.0.0
       INPUT_MANAGER: ${{ inputs.manager || 'npm' }}
       INPUT_NODE_VERSION: ${{ inputs.node-version }}
       INPUT_NODE_VERSION_FILE: ${{ inputs.node-version-file || '.nvmrc' }}
@@ -44,17 +43,24 @@ jobs:
         run: exit 1
         shell: bash
 
-      - name: Set cluenar/actions version
-        if: github.event_name != 'workflow_call'
-        run: echo "CLUENAR_ACTIONS_VERSION=main" >> $GITHUB_ENV
-
-      - name: Get bot token
-        id: get-bot-token
-        if: env.SECRET_TOKEN == null
-        uses: cluenar/actions/get-github-app-token@${{ env.CLUENAR_ACTIONS_VERSION }}
+      - name: Get bot token (main)
+        id: get-bot-token-main
+        if: github.event_name != 'workflow_call' && env.SECRET_TOKEN == null
+        uses: cluenar/actions/get-github-app-token@main
         with:
           app-id: ${{ env.SECRET_APP_ID }}
           private-key: ${{ env.SECRET_PRIVATE_KEY }}
+
+      - name: Get bot token (version)
+        id: get-bot-token-version
+        if: github.event_name == 'workflow_call' && env.SECRET_TOKEN == null
+        uses: cluenar/actions/get-github-app-token@v1.0.0
+        with:
+          app-id: ${{ env.SECRET_APP_ID }}
+          private-key: ${{ env.SECRET_PRIVATE_KEY }}
+
+      - name: Set bot token
+        run: echo "BOT_TOKEN=${{ steps.get-bot-token-main.outputs.token || steps.get-bot-token-version.outputs.token }}" >> $GITHUB_ENV
 
       - name: Checkout
         uses: actions/checkout@v4.0.0
@@ -77,12 +83,12 @@ jobs:
       - name: Create a pull request with the updated file
         uses: branoholy/update-files-action@main
         with:
-          token: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
+          token: ${{ env.SECRET_TOKEN || env.BOT_TOKEN }}
           branch.name: deps-update-lock-file
           branch.recreate: true
           commit.paths: package-lock.json
           commit.message: 'deps(lock): Update lock file'
-          commit.token: ${{ steps.get-bot-token.outputs.token || secrets.GITHUB_TOKEN }}
+          commit.token: ${{ env.BOT_TOKEN || secrets.GITHUB_TOKEN }}
           pull-request.body: Automatic update of dependencies in `package-lock.json`.
           pull-request.labels: |
             type: deps

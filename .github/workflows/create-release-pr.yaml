@@ -16,7 +16,6 @@ jobs:
     name: Create release PR
     runs-on: ubuntu-latest
     env:
-      CLUENAR_ACTIONS_VERSION: v1.0.0
       SECRET_TOKEN: ${{ secrets.token }}
       SECRET_APP_ID: ${{ secrets.app-id || secrets.CLUENAR_PUBLIC_BOT_APP_ID }}
       SECRET_PRIVATE_KEY: ${{ secrets.private-key || secrets.CLUENAR_PUBLIC_BOT_PRIVATE_KEY }}
@@ -27,20 +26,34 @@ jobs:
         run: exit 1
         shell: bash
 
-      - name: Set cluenar/actions version
-        if: github.event_name != 'workflow_call'
-        run: echo "CLUENAR_ACTIONS_VERSION=main" >> $GITHUB_ENV
-
-      - name: Get bot token
-        id: get-bot-token
-        if: env.SECRET_TOKEN == null
-        uses: cluenar/actions/get-github-app-token@${{ env.CLUENAR_ACTIONS_VERSION }}
+      - name: Get bot token (main)
+        id: get-bot-token-main
+        if: github.event_name != 'workflow_call' && env.SECRET_TOKEN == null
+        uses: cluenar/actions/get-github-app-token@main
         with:
           app-id: ${{ env.SECRET_APP_ID }}
           private-key: ${{ env.SECRET_PRIVATE_KEY }}
 
-      - name: Install
-        uses: cluenar/actions/install@${{ env.CLUENAR_ACTIONS_VERSION }}
+      - name: Get bot token (version)
+        id: get-bot-token-version
+        if: github.event_name == 'workflow_call' && env.SECRET_TOKEN == null
+        uses: cluenar/actions/get-github-app-token@v1.0.0
+        with:
+          app-id: ${{ env.SECRET_APP_ID }}
+          private-key: ${{ env.SECRET_PRIVATE_KEY }}
+
+      - name: Set bot token
+        run: echo "BOT_TOKEN=${{ steps.get-bot-token-main.outputs.token || steps.get-bot-token-version.outputs.token }}" >> $GITHUB_ENV
+
+      - name: Install (main)
+        if: github.event_name != 'workflow_call'
+        uses: cluenar/actions/install@main
+        with:
+          fetch-depth: 0
+
+      - name: Install (version)
+        if: github.event_name == 'workflow_call'
+        uses: cluenar/actions/install@v1.0.0
         with:
           fetch-depth: 0
 
@@ -52,7 +65,7 @@ jobs:
         if: github.event_name == 'workflow_dispatch'
         uses: branoholy/update-files-action@main
         with:
-          token: ${{ steps.get-bot-token.outputs.token }}
+          token: ${{ env.BOT_TOKEN }}
           branch.name: release-${{ steps.release.outputs.version }}
           branch.recreate: true
           commit.paths: |
@@ -61,7 +74,7 @@ jobs:
             CHANGELOG.md
             .github/workflows/*.yaml
           commit.message: 'release: Version ${{ steps.release.outputs.version }}'
-          commit.token: ${{ steps.get-bot-token.outputs.token }}
+          commit.token: ${{ env.BOT_TOKEN }}
           pull-request.body: Release ${{ steps.release.outputs.version }}.
           pull-request.labels: 'type: release'
 
@@ -69,7 +82,7 @@ jobs:
         if: github.event_name == 'workflow_call'
         uses: branoholy/update-files-action@main
         with:
-          token: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
+          token: ${{ env.SECRET_TOKEN || env.BOT_TOKEN }}
           branch.name: release-${{ steps.release.outputs.version }}
           branch.recreate: true
           commit.paths: |
@@ -77,6 +90,6 @@ jobs:
             package-lock.json
             CHANGELOG.md
           commit.message: 'release: Version ${{ steps.release.outputs.version }}'
-          commit.token: ${{ steps.get-bot-token.outputs.token || secrets.GITHUB_TOKEN }}
+          commit.token: ${{ env.BOT_TOKEN || secrets.GITHUB_TOKEN }}
           pull-request.body: Release ${{ steps.release.outputs.version }}.
           pull-request.labels: 'type: release'
