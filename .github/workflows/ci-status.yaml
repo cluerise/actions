@@ -30,7 +30,7 @@ jobs:
       - name: Get bot token
         id: get-bot-token
         if: secrets.token == null
-        uses: cluenar/actions/get-github-app-token@v1.0.0
+        uses: cluenar/actions/get-github-app-token@v1.0.1
         with:
           app-id: ${{ secrets.app-id }}
           private-key: ${{ secrets.private-key }}

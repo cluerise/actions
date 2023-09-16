@@ -1,3 +1,9 @@
+## [1.0.1](https://github.com/cluenar/actions/compare/v1.0.0...v1.0.1) (2023-09-16)
+
+### Fixes
+
+- Use action versions in workflows ([#36](https://github.com/cluenar/actions/issues/36)) ([6449c5d](https://github.com/cluenar/actions/commit/6449c5d16ad47cdeaa85eb76f6827bc46b0de57e))
+
 ## 1.0.0 (2023-09-15)
 
 ### Features
