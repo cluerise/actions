@@ -1,4 +1,4 @@
-name: CI status
+name: CI status (main)
 
 on:
   workflow_run:
