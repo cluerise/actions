@@ -17,24 +17,20 @@ jobs:
     if: >-
       startsWith(github.head_ref, 'release-') &&
       github.event.pull_request.merged == true
-    env:
-      SECRET_TOKEN: ${{ secrets.token }}
-      SECRET_APP_ID: ${{ secrets.app-id }}
-      SECRET_PRIVATE_KEY: ${{ secrets.private-key }}
 
     steps:
       - name: Check required secrets
-        if: env.SECRET_TOKEN == null && (env.SECRET_APP_ID == null || env.SECRET_PRIVATE_KEY == null)
+        if: secrets.token == null && (secrets.app-id == null || secrets.private-key == null)
         run: exit 1
         shell: bash
 
       - name: Get bot token
         id: get-bot-token
-        if: env.SECRET_TOKEN == null
+        if: secrets.token == null
         uses: cluenar/actions/get-github-app-token@v1.0.0
         with:
-          app-id: ${{ env.SECRET_APP_ID }}
-          private-key: ${{ env.SECRET_PRIVATE_KEY }}
+          app-id: ${{ secrets.app-id }}
+          private-key: ${{ secrets.private-key }}
 
       - name: Set the release version env
         run: echo "RELEASE_VERSION=$(echo '${{ github.head_ref }}' | cut -d'-' -f 2)" >> $GITHUB_ENV
@@ -61,7 +57,7 @@ jobs:
         if: fromJson(steps.get-latest-ref.outputs.data).repository.ref == null
         uses: octokit/graphql-action@v2.2.25
         with:
-          token: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
+          token: ${{ secrets.token || steps.get-bot-token.outputs.token }}
           query: |
             mutation createRef($id: ID!, $name: String!, $oid: GitObjectID!) {
               createRef(input: {repositoryId: $id, name: $name, oid: $oid}) {
@@ -76,7 +72,7 @@ jobs:
         if: fromJson(steps.get-latest-ref.outputs.data).repository.ref != null
         uses: octokit/graphql-action@v2.2.25
         with:
-          token: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
+          token: ${{ secrets.token || steps.get-bot-token.outputs.token }}
           query: |
             mutation updateRef($id: ID!, $oid: GitObjectID!) {
               updateRef(input: {refId: $id, oid: $oid}) {
@@ -103,4 +99,4 @@ jobs:
           target_commitish: ${{ github.event.pull_request.merge_commit_sha }}
           name: Version ${{ env.RELEASE_VERSION }}
           body: ${{ toJSON(steps.extract-changelog.outputs.changelog) }}
-          GITHUB_TOKEN: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token || secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.token || steps.get-bot-token.outputs.token || secrets.GITHUB_TOKEN }}
