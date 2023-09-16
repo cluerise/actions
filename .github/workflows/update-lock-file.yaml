@@ -54,7 +54,7 @@ jobs:
       - name: Get bot token (version)
         id: get-bot-token-version
         if: github.event_name == 'workflow_call' && env.SECRET_TOKEN == null
-        uses: cluenar/actions/get-github-app-token@v1.0.0
+        uses: cluenar/actions/get-github-app-token@v1.0.1
         with:
           app-id: ${{ env.SECRET_APP_ID }}
           private-key: ${{ env.SECRET_PRIVATE_KEY }}

@@ -28,7 +28,7 @@ jobs:
 
       - name: Install (version)
         if: github.event_name == 'workflow_call'
-        uses: cluenar/actions/install@v1.0.0
+        uses: cluenar/actions/install@v1.0.1
 
       - name: Lint commit message
         run: echo -n "${{ github.event.pull_request.auto_merge.commit_title }}\n\n${{ github.event.pull_request.auto_merge.commit_message }}" | ${{ env.INPUT_COMMAND }}
