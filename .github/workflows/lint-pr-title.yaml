@@ -19,7 +19,12 @@ jobs:
       INPUT_COMMAND: ${{ inputs.command || 'npm run lint commit' }}
 
     steps:
-      - name: Install
+      - name: Install (main)
+        if: github.event_name != 'workflow_call'
+        uses: cluenar/actions/install@main
+
+      - name: Install (version)
+        if: github.event_name == 'workflow_call'
         uses: cluenar/actions/install@v1.0.0
 
       - name: Lint title

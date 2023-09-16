@@ -43,15 +43,32 @@ jobs:
         run: exit 1
         shell: bash
 
-      - name: Get bot token
-        id: get-bot-token
-        if: env.SECRET_TOKEN == null
+      - name: Get bot token (main)
+        id: get-bot-token-main
+        if: github.event_name != 'workflow_call' && env.SECRET_TOKEN == null
+        uses: cluenar/actions/get-github-app-token@main
+        with:
+          app-id: ${{ env.SECRET_APP_ID }}
+          private-key: ${{ env.SECRET_PRIVATE_KEY }}
+
+      - name: Get bot token (version)
+        id: get-bot-token-version
+        if: github.event_name == 'workflow_call' && env.SECRET_TOKEN == null
         uses: cluenar/actions/get-github-app-token@v1.0.0
         with:
           app-id: ${{ env.SECRET_APP_ID }}
           private-key: ${{ env.SECRET_PRIVATE_KEY }}
 
-      - name: Install
+      - name: Install (main)
+        if: github.event_name != 'workflow_call'
+        uses: cluenar/actions/install@main
+        with:
+          manager: ${{ env.INPUT_MANAGER }}
+          node-version: ${{ env.INPUT_NODE_VERSION }}
+          node-version-file: ${{ env.INPUT_NODE_VERSION_FILE }}
+
+      - name: Install (version)
+        if: github.event_name == 'workflow_call'
         uses: cluenar/actions/install@v1.0.0
         with:
           manager: ${{ env.INPUT_MANAGER }}
@@ -80,7 +97,7 @@ jobs:
       - name: Create a pull request with the updated files
         uses: branoholy/update-files-action@main
         with:
-          token: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
+          token: ${{ env.SECRET_TOKEN || env.BOT_TOKEN }}
           branch.name: deps-update-node
           branch.recreate: true
           commit.paths: |
@@ -89,7 +106,7 @@ jobs:
             package-lock.json
             .github/workflows/*.yaml
           commit.message: 'deps(dev): Update Node.js to ${{ steps.update-node-versions.outputs.version }}'
-          commit.token: ${{ steps.get-bot-token.outputs.token || secrets.GITHUB_TOKEN }}
+          commit.token: ${{ env.BOT_TOKEN || secrets.GITHUB_TOKEN }}
           pull-request.body: Automatic update of Node.js to version ${{ steps.update-node-versions.outputs.version }}.
           pull-request.labels: |
             type: deps
