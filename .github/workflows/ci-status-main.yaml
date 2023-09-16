@@ -1,14 +1,10 @@
 name: CI status
 
 on:
-  workflow_call:
-    secrets:
-      token:
-        description: GitHub access token
-      app-id:
-        description: GitHub app ID
-      private-key:
-        description: GitHub app private key
+  workflow_run:
+    workflows: CI
+    types: completed
+    branches: main
 
 jobs:
   send-status:
@@ -33,7 +29,7 @@ jobs:
       - name: Get bot token
         id: get-bot-token
         if: env.SECRET_TOKEN == null
-        uses: cluenar/actions/get-github-app-token@v1.0.0
+        uses: cluenar/actions/get-github-app-token@main
         with:
           app-id: ${{ env.SECRET_APP_ID }}
           private-key: ${{ env.SECRET_PRIVATE_KEY }}

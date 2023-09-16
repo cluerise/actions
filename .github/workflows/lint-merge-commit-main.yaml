@@ -1,12 +1,8 @@
 name: Lint merge commit
 
 on:
-  workflow_call:
-    inputs:
-      command:
-        type: string
-        description: Lint command to run
-        default: 'npm run lint:commit'
+  pull_request:
+    types: [auto_merge_enabled, auto_merge_disabled, edited, synchronize]
 
 jobs:
   lint-merge-commit:
@@ -21,7 +17,7 @@ jobs:
 
     steps:
       - name: Install
-        uses: cluenar/actions/install@v1.0.0
+        uses: cluenar/actions/install@main
 
       - name: Lint commit message
         run: echo -n "${{ github.event.pull_request.auto_merge.commit_title }}\n\n${{ github.event.pull_request.auto_merge.commit_message }}" | ${{ env.INPUT_COMMAND }}
