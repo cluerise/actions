@@ -1,12 +1,8 @@
 name: Lint PR title
 
 on:
-  workflow_call:
-    inputs:
-      command:
-        type: string
-        description: Lint command to run
-        default: 'npm run lint:commit'
+  pull_request:
+    types: [opened, edited, synchronize]
 
 jobs:
   lint-pr-title:
@@ -18,7 +14,7 @@ jobs:
 
     steps:
       - name: Install
-        uses: cluenar/actions/install@v1.0.0
+        uses: cluenar/actions/install@main
 
       - name: Lint title
         run: echo -n "${{ github.event.pull_request.title }}" | ${{ env.INPUT_COMMAND }}
