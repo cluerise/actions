@@ -21,8 +21,8 @@ jobs:
       CI_STATE: pending
       CI_DESCRIPTION: Waiting
       SECRET_TOKEN: ${{ secrets.token }}
-      SECRET_APP_ID: ${{ secrets.app-id || secrets.CLUENAR_PUBLIC_BOT_APP_ID }}
-      SECRET_PRIVATE_KEY: ${{ secrets.private-key || secrets.CLUENAR_PUBLIC_BOT_PRIVATE_KEY }}
+      SECRET_APP_ID: ${{ secrets.app-id }}
+      SECRET_PRIVATE_KEY: ${{ secrets.private-key }}
 
     steps:
       - name: Check required secrets
