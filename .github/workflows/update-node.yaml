@@ -30,6 +30,7 @@ jobs:
     name: Update Node.js
     runs-on: ubuntu-latest
     env:
+      CLUENAR_ACTIONS_VERSION: v1.0.0
       INPUT_MANAGER: ${{ inputs.manager || 'npm' }}
       INPUT_NODE_VERSION: ${{ inputs.node-version }}
       INPUT_NODE_VERSION_FILE: ${{ inputs.node-version-file || '.nvmrc' }}
@@ -43,16 +44,20 @@ jobs:
         run: exit 1
         shell: bash
 
+      - name: Set cluenar/actions version
+        if: github.event_name != 'workflow_call'
+        run: echo "CLUENAR_ACTIONS_VERSION=main" >> $GITHUB_ENV
+
       - name: Get bot token
         id: get-bot-token
         if: env.SECRET_TOKEN == null
-        uses: cluenar/actions/get-github-app-token@v1.0.0
+        uses: cluenar/actions/get-github-app-token@${{ env.CLUENAR_ACTIONS_VERSION }}
         with:
           app-id: ${{ env.SECRET_APP_ID }}
           private-key: ${{ env.SECRET_PRIVATE_KEY }}
 
       - name: Install
-        uses: cluenar/actions/install@v1.0.0
+        uses: cluenar/actions/install@${{ env.CLUENAR_ACTIONS_VERSION }}
         with:
           manager: ${{ env.INPUT_MANAGER }}
           node-version: ${{ env.INPUT_NODE_VERSION }}

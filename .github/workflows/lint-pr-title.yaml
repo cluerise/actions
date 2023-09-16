@@ -16,11 +16,16 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.action != 'opened' || github.event.pull_request.user.login != 'dependabot[bot]'
     env:
+      CLUENAR_ACTIONS_VERSION: v1.0.0
       INPUT_COMMAND: ${{ inputs.command || 'npm run lint commit' }}
 
     steps:
+      - name: Set cluenar/actions version
+        if: github.event_name != 'workflow_call'
+        run: echo "CLUENAR_ACTIONS_VERSION=main" >> $GITHUB_ENV
+
       - name: Install
-        uses: cluenar/actions/install@v1.0.0
+        uses: cluenar/actions/install@${{ env.CLUENAR_ACTIONS_VERSION }}
 
       - name: Lint title
         run: echo -n "${{ github.event.pull_request.title }}" | ${{ env.INPUT_COMMAND }}
