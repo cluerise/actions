@@ -20,20 +20,23 @@ jobs:
     env:
       CI_STATE: pending
       CI_DESCRIPTION: Waiting
+      SECRET_TOKEN: ${{ secrets.token }}
+      SECRET_APP_ID: ${{ secrets.app-id }}
+      SECRET_PRIVATE_KEY: ${{ secrets.private-key }}
 
     steps:
       - name: Check required secrets
-        if: secrets.token == null && (secrets.app-id == null || secrets.private-key == null)
+        if: env.SECRET_TOKEN == null && (env.SECRET_APP_ID == null || env.SECRET_PRIVATE_KEY == null)
         run: exit 1
         shell: bash
 
       - name: Get bot token
         id: get-bot-token
-        if: secrets.token == null
+        if: env.SECRET_TOKEN == null
         uses: cluenar/actions/get-github-app-token@v1.0.1
         with:
-          app-id: ${{ secrets.app-id }}
-          private-key: ${{ secrets.private-key }}
+          app-id: ${{ env.SECRET_APP_ID }}
+          private-key: ${{ env.SECRET_PRIVATE_KEY }}
 
       - name: Set initial state
         if: github.event.action == 'requested'
@@ -64,4 +67,4 @@ jobs:
           state: ${{ env.CI_STATE }}
           description: ${{ env.CI_DESCRIPTION }}
           target_url: ${{ github.event.workflow_run.html_url }}
-          GITHUB_TOKEN: ${{ secrets.token || steps.get-bot-token.outputs.token }}
+          GITHUB_TOKEN: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
