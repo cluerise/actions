@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/cluenar/actions/compare/v1.0.1...v1.0.2) (2023-09-17)
+
+### Fixes
+
+- Require lint merge commit ([#46](https://github.com/cluenar/actions/issues/46)) ([45e4cea](https://github.com/cluenar/actions/commit/45e4cea37ce5afa0419c2d33051e2636067a805e))
+- Use env vars instead of secrets due to limitation in if expressions ([#47](https://github.com/cluenar/actions/issues/47)) ([35b2684](https://github.com/cluenar/actions/commit/35b2684600540ae252b6635134cd89666a8bf90a))
+
 ## [1.0.1](https://github.com/cluenar/actions/compare/v1.0.0...v1.0.1) (2023-09-16)
 
 ### Fixes
