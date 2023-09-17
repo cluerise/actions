@@ -11,11 +11,15 @@ jobs:
     concurrency:
       group: lint-merge-commit-${{ github.event.pull_request.number }}
       cancel-in-progress: true
-    if: github.event.pull_request.auto_merge != null
     env:
       INPUT_COMMAND: ${{ inputs.command || 'npm run lint commit' }}
 
     steps:
+      - name: Check auto merge
+        if: github.event.pull_request.auto_merge == null
+        run: |
+          echo "Error: Auto merge is not enabled" && exit 1
+
       - name: Install
         uses: cluenar/actions/install@main
 
