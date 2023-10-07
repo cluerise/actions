@@ -59,6 +59,9 @@ jobs:
           app-id: ${{ env.SECRET_APP_ID }}
           private-key: ${{ env.SECRET_PRIVATE_KEY }}
 
+      - name: Set bot token
+        run: echo "BOT_TOKEN=${{ steps.get-bot-token-main.outputs.token || steps.get-bot-token-version.outputs.token }}" >> $GITHUB_ENV
+
       - name: Install (main)
         if: github.event_name != 'workflow_call'
         uses: cluenar/actions/install@main
