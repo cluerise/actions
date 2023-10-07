@@ -1,3 +1,9 @@
+## [1.0.3](https://github.com/cluenar/actions/compare/v1.0.2...v1.0.3) (2023-10-07)
+
+### Fixes
+
+- Set bot token in update node workflow ([#53](https://github.com/cluenar/actions/issues/53)) ([a2a4f78](https://github.com/cluenar/actions/commit/a2a4f7883104d244c09b520eb28a0997fa08bea6))
+
 ## [1.0.2](https://github.com/cluenar/actions/compare/v1.0.1...v1.0.2) (2023-09-17)
 
 ### Fixes

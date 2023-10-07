@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Install
-        uses: cluenar/actions/install@v1.0.2
+        uses: cluenar/actions/install@v1.0.3
 
       - name: Lint title
         run: echo -n "${{ github.event.pull_request.title }}" | ${{ env.INPUT_COMMAND }}
