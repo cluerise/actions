@@ -61,7 +61,7 @@ jobs:
         id: release
         run: npm run release create
 
-      - name: Create a pull request with the release
+      - name: Create a pull request with the release (main)
         if: github.event_name == 'workflow_dispatch'
         uses: branoholy/update-files-action@main
         with:
@@ -78,7 +78,7 @@ jobs:
           pull-request.body: Release ${{ steps.release.outputs.version }}.
           pull-request.labels: 'type: release'
 
-      - name: Create a pull request with the release
+      - name: Create a pull request with the release (version)
         if: github.event_name == 'workflow_call'
         uses: branoholy/update-files-action@main
         with:

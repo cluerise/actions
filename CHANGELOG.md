@@ -1,3 +1,5 @@
+# Changelog
+
 ## [1.0.3](https://github.com/cluenar/actions/compare/v1.0.2...v1.0.3) (2023-10-07)
 
 ### Fixes

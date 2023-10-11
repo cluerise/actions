@@ -54,7 +54,7 @@ jobs:
               }
             }
           id: ${{ fromJson(steps.get-latest-ref.outputs.data).repository.id }}
-          name: latest
+          name: refs/heads/latest
           oid: ${{ github.event.pull_request.merge_commit_sha }}
 
       - name: Reset the latest branch
