@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.4](https://github.com/cluenar/actions/compare/v1.0.3...v1.0.4) (2023-10-11)
+
+### Fixes
+
+- Create latest branch using fully qualified name ([#58](https://github.com/cluenar/actions/issues/58)) ([f5cc4d2](https://github.com/cluenar/actions/commit/f5cc4d208baf6f515db35ac76f4c4cf0dc83102e))
+
 ## [1.0.3](https://github.com/cluenar/actions/compare/v1.0.2...v1.0.3) (2023-10-07)
 
 ### Fixes
