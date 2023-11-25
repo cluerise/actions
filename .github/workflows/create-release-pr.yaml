@@ -3,6 +3,11 @@ name: Create release PR
 on:
   workflow_dispatch:
   workflow_call:
+    inputs:
+      __external-call:
+        type: boolean
+        description: Do not use this input, it is an internal value to identify the workflow_call event
+        default: true
     secrets:
       token:
         description: GitHub access token
@@ -16,6 +21,7 @@ jobs:
     name: Create release PR
     runs-on: ubuntu-latest
     env:
+      INPUT_EXTERNAL_CALL: ${{ inputs.__external-call || false }}
       SECRET_TOKEN: ${{ secrets.token }}
       SECRET_APP_ID: ${{ secrets.app-id || secrets.CLUENAR_PUBLIC_BOT_APP_ID }}
       SECRET_PRIVATE_KEY: ${{ secrets.private-key || secrets.CLUENAR_PUBLIC_BOT_PRIVATE_KEY }}
@@ -28,7 +34,7 @@ jobs:
 
       - name: Get bot token (main)
         id: get-bot-token-main
-        if: github.event_name != 'workflow_call' && env.SECRET_TOKEN == null
+        if: ${{ !env.INPUT_EXTERNAL_CALL && env.SECRET_TOKEN == null }}
         uses: cluenar/actions/get-github-app-token@main
         with:
           app-id: ${{ env.SECRET_APP_ID }}
@@ -36,7 +42,7 @@ jobs:
 
       - name: Get bot token (version)
         id: get-bot-token-version
-        if: github.event_name == 'workflow_call' && env.SECRET_TOKEN == null
+        if: env.INPUT_EXTERNAL_CALL && env.SECRET_TOKEN == null
         uses: cluenar/actions/get-github-app-token@v1.0.4
         with:
           app-id: ${{ env.SECRET_APP_ID }}
@@ -46,13 +52,13 @@ jobs:
         run: echo "BOT_TOKEN=${{ steps.get-bot-token-main.outputs.token || steps.get-bot-token-version.outputs.token }}" >> $GITHUB_ENV
 
       - name: Install (main)
-        if: github.event_name != 'workflow_call'
+        if: ${{ !env.INPUT_EXTERNAL_CALL }}
         uses: cluenar/actions/install@main
         with:
           fetch-depth: 0
 
       - name: Install (version)
-        if: github.event_name == 'workflow_call'
+        if: env.INPUT_EXTERNAL_CALL
         uses: cluenar/actions/install@v1.0.4
         with:
           fetch-depth: 0
@@ -62,7 +68,7 @@ jobs:
         run: npm run release create
 
       - name: Create a pull request with the release (main)
-        if: github.event_name == 'workflow_dispatch'
+        if: ${{ !env.INPUT_EXTERNAL_CALL }}
         uses: branoholy/update-files-action@main
         with:
           token: ${{ env.BOT_TOKEN }}
@@ -79,7 +85,7 @@ jobs:
           pull-request.labels: 'type: release'
 
       - name: Create a pull request with the release (version)
-        if: github.event_name == 'workflow_call'
+        if: env.INPUT_EXTERNAL_CALL
         uses: branoholy/update-files-action@main
         with:
           token: ${{ env.SECRET_TOKEN || env.BOT_TOKEN }}
