@@ -50,7 +50,7 @@ jobs:
 
       - name: Get bot token (main)
         id: get-bot-token-main
-        if: ${{ !env.INPUT_EXTERNAL_CALL && env.SECRET_TOKEN == null }}
+        if: env.INPUT_EXTERNAL_CALL == 'false' && env.SECRET_TOKEN == null
         uses: cluenar/actions/get-github-app-token@main
         with:
           app-id: ${{ env.SECRET_APP_ID }}
@@ -58,7 +58,7 @@ jobs:
 
       - name: Get bot token (version)
         id: get-bot-token-version
-        if: env.INPUT_EXTERNAL_CALL && env.SECRET_TOKEN == null
+        if: env.INPUT_EXTERNAL_CALL == 'true' && env.SECRET_TOKEN == null
         uses: cluenar/actions/get-github-app-token@v1.0.4
         with:
           app-id: ${{ env.SECRET_APP_ID }}
