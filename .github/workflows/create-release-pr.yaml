@@ -34,7 +34,7 @@ jobs:
 
       - name: Get bot token (main)
         id: get-bot-token-main
-        if: ${{ !env.INPUT_EXTERNAL_CALL && env.SECRET_TOKEN == null }}
+        if: env.INPUT_EXTERNAL_CALL == 'false' && env.SECRET_TOKEN == null
         uses: cluenar/actions/get-github-app-token@main
         with:
           app-id: ${{ env.SECRET_APP_ID }}
@@ -42,7 +42,7 @@ jobs:
 
       - name: Get bot token (version)
         id: get-bot-token-version
-        if: env.INPUT_EXTERNAL_CALL && env.SECRET_TOKEN == null
+        if: env.INPUT_EXTERNAL_CALL == 'true' && env.SECRET_TOKEN == null
         uses: cluenar/actions/get-github-app-token@v1.0.4
         with:
           app-id: ${{ env.SECRET_APP_ID }}
@@ -52,13 +52,13 @@ jobs:
         run: echo "BOT_TOKEN=${{ steps.get-bot-token-main.outputs.token || steps.get-bot-token-version.outputs.token }}" >> $GITHUB_ENV
 
       - name: Install (main)
-        if: ${{ !env.INPUT_EXTERNAL_CALL }}
+        if: env.INPUT_EXTERNAL_CALL == 'false'
         uses: cluenar/actions/install@main
         with:
           fetch-depth: 0
 
       - name: Install (version)
-        if: env.INPUT_EXTERNAL_CALL
+        if: env.INPUT_EXTERNAL_CALL == 'true'
         uses: cluenar/actions/install@v1.0.4
         with:
           fetch-depth: 0
@@ -68,7 +68,7 @@ jobs:
         run: npm run release create
 
       - name: Create a pull request with the release (main)
-        if: ${{ !env.INPUT_EXTERNAL_CALL }}
+        if: env.INPUT_EXTERNAL_CALL == 'false'
         uses: branoholy/update-files-action@main
         with:
           token: ${{ env.BOT_TOKEN }}
@@ -85,7 +85,7 @@ jobs:
           pull-request.labels: 'type: release'
 
       - name: Create a pull request with the release (version)
-        if: env.INPUT_EXTERNAL_CALL
+        if: env.INPUT_EXTERNAL_CALL == 'true'
         uses: branoholy/update-files-action@main
         with:
           token: ${{ env.SECRET_TOKEN || env.BOT_TOKEN }}

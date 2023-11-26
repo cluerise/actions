@@ -50,7 +50,7 @@ jobs:
 
       - name: Get bot token (main)
         id: get-bot-token-main
-        if: ${{ !env.INPUT_EXTERNAL_CALL && env.SECRET_TOKEN == null }}
+        if: env.INPUT_EXTERNAL_CALL == 'false' && env.SECRET_TOKEN == null
         uses: cluenar/actions/get-github-app-token@main
         with:
           app-id: ${{ env.SECRET_APP_ID }}
@@ -58,7 +58,7 @@ jobs:
 
       - name: Get bot token (version)
         id: get-bot-token-version
-        if: env.INPUT_EXTERNAL_CALL && env.SECRET_TOKEN == null
+        if: env.INPUT_EXTERNAL_CALL == 'true' && env.SECRET_TOKEN == null
         uses: cluenar/actions/get-github-app-token@v1.0.4
         with:
           app-id: ${{ env.SECRET_APP_ID }}
@@ -68,7 +68,7 @@ jobs:
         run: echo "BOT_TOKEN=${{ steps.get-bot-token-main.outputs.token || steps.get-bot-token-version.outputs.token }}" >> $GITHUB_ENV
 
       - name: Install (main)
-        if: ${{ !env.INPUT_EXTERNAL_CALL }}
+        if: env.INPUT_EXTERNAL_CALL == 'false'
         uses: cluenar/actions/install@main
         with:
           manager: ${{ env.INPUT_MANAGER }}
@@ -76,7 +76,7 @@ jobs:
           node-version-file: ${{ env.INPUT_NODE_VERSION_FILE }}
 
       - name: Install (version)
-        if: env.INPUT_EXTERNAL_CALL
+        if: env.INPUT_EXTERNAL_CALL == 'true'
         uses: cluenar/actions/install@v1.0.4
         with:
           manager: ${{ env.INPUT_MANAGER }}
