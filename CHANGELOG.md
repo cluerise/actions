@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.5](https://github.com/cluenar/actions/compare/v1.0.4...v1.0.5) (2023-11-26)
+
+### Fixes
+
+- Correctly use action versions in workflows ([#80](https://github.com/cluenar/actions/issues/80)) ([006338a](https://github.com/cluenar/actions/commit/006338a0dc83c927d5da45f04dec38c5bc73eb89))
+
 ## [1.0.4](https://github.com/cluenar/actions/compare/v1.0.3...v1.0.4) (2023-10-11)
 
 ### Fixes
