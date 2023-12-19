@@ -35,7 +35,7 @@ runs:
       shell: bash
 
     - name: Setup Node.js
-      uses: actions/setup-node@v4.0.0
+      uses: actions/setup-node@v4.0.1
       with:
         cache: ${{ inputs.manager }}
         node-version: ${{ inputs.node-version }}
