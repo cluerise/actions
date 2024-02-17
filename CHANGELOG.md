@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.7](https://github.com/cluenar/actions/compare/v1.0.6...v1.0.7) (2024-2-17)
+
+### Dependency updates
+
+<details>
+<summary>Show all dependency updates</summary>
+
+- **actions:** Bump actions/setup-node from 4.0.1 to 4.0.2 ([#112](https://github.com/cluenar/actions/issues/112)) ([07e6683](https://github.com/cluenar/actions/commit/07e66836a004fbeab77edbc43d976105e097da2a))
+- **actions:** Bump actions/setup-node from 4.0.1 to 4.0.2 in /install ([#113](https://github.com/cluenar/actions/issues/113)) ([13e1bc7](https://github.com/cluenar/actions/commit/13e1bc7a9cdf24129df985354f4106978ad6e591))
+
+</details>
+
 ## [1.0.6](https://github.com/cluenar/actions/compare/v1.0.5...v1.0.6) (2023-12-19)
 
 ### Dependency updates
