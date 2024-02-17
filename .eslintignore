@@ -34,9 +34,11 @@ yarn.lock
 # Misc
 etc/
 
-# Sample of .env file
+# Sample of .env and .envrc files
 .env.example
 .env.sample
+.envrc.example
+.envrc.sample
 
 # Shell scripts
 *.sh
