@@ -1,6 +1,6 @@
 {
   "name": "@cluenar/actions",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "GitHub actions",
   "author": "Branislav Holý <brano@holy.am>",
   "repository": "github:cluenar/actions",

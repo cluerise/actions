@@ -33,7 +33,7 @@ jobs:
       - name: Get bot token
         id: get-bot-token
         if: env.SECRET_TOKEN == null
-        uses: cluenar/actions/get-github-app-token@v1.0.6
+        uses: cluenar/actions/get-github-app-token@v1.0.7
         with:
           app-id: ${{ env.SECRET_APP_ID }}
           private-key: ${{ env.SECRET_PRIVATE_KEY }}
