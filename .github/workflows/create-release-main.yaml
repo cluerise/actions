@@ -79,7 +79,7 @@ jobs:
         run: npm run release extract-changelog
 
       - name: Create a new GitHub release
-        uses: octokit/request-action@v2.1.9
+        uses: octokit/request-action@v2.2.0
         with:
           route: POST /repos/{owner}/{repo}/releases
           owner: ${{ github.event.repository.owner.login }}
