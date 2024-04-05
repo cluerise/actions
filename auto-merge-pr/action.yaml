@@ -29,7 +29,7 @@ runs:
           github.event.pull_request.user.login == 'branoholy-bot' ||
           github.event.pull_request.user.login == inputs.trusted-bot
         )
-      uses: octokit/graphql-action@v2.2.25
+      uses: octokit/graphql-action@v2.3.0
       with:
         token: ${{ inputs.token }}
         query: |
