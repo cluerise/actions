@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.0.8](https://github.com/cluenar/actions/compare/v1.0.7...v1.0.8) (2024-04-05)
+
+### Fixes
+
+- Lint merge commit body correctly ([#145](https://github.com/cluenar/actions/issues/145)) ([c98d3a2](https://github.com/cluenar/actions/commit/c98d3a2201dfc964f5c3cbcc563d4951ffad98ad))
+
+### Dependency updates
+
+<details>
+<summary>Show all dependency updates</summary>
+
+- **actions:** Bump actions/checkout from 4.1.1 to 4.1.2 ([#130](https://github.com/cluenar/actions/issues/130)) ([7dab889](https://github.com/cluenar/actions/commit/7dab88990fd2d982f746266720801db331636769))
+- **actions:** Bump actions/checkout from 4.1.1 to 4.1.2 in /install ([#131](https://github.com/cluenar/actions/issues/131)) ([dc85bab](https://github.com/cluenar/actions/commit/dc85bab5ae98ddd816ebe1bbb137e207c8a5a4d0))
+- **actions:** Bump octokit/graphql-action from 2.2.25 to 2.3.0 ([#138](https://github.com/cluenar/actions/issues/138)) ([05cbcdd](https://github.com/cluenar/actions/commit/05cbcdd75851350aca1949671281431f6b5667d9))
+- **actions:** Bump octokit/graphql-action from 2.2.25 to 2.3.0 in /assign-pr-author ([#143](https://github.com/cluenar/actions/issues/143)) ([606bde0](https://github.com/cluenar/actions/commit/606bde03eb13c3981f1feda460f1553d12a3111b))
+- **actions:** Bump octokit/graphql-action from 2.2.25 to 2.3.0 in /auto-merge-pr ([#141](https://github.com/cluenar/actions/issues/141)) ([ddbb2e3](https://github.com/cluenar/actions/commit/ddbb2e353fafaaeb40092e5cb989850e62d2a996))
+- **actions:** Bump octokit/graphql-action from 2.2.25 to 2.3.0 in /check-ci-suitability ([#142](https://github.com/cluenar/actions/issues/142)) ([6ab4e36](https://github.com/cluenar/actions/commit/6ab4e36e673fd096cbc05fec3e7866163216f213))
+- **actions:** Bump octokit/graphql-action from 2.2.25 to 2.3.0 in /review-pr ([#144](https://github.com/cluenar/actions/issues/144)) ([22c6f73](https://github.com/cluenar/actions/commit/22c6f734db247f73697b4b2735a5952e8f6a3c25))
+- **actions:** Bump octokit/request-action from 2.1.9 to 2.2.0 ([#127](https://github.com/cluenar/actions/issues/127)) ([34eac23](https://github.com/cluenar/actions/commit/34eac23c5efa72d29f1e768eeb1a2c548e552996))
+- **actions:** Bump octokit/request-action from 2.2.0 to 2.3.0 ([#139](https://github.com/cluenar/actions/issues/139)) ([2caccc6](https://github.com/cluenar/actions/commit/2caccc684afd4b90e8e7e52ff7023c8435299d07))
+
+</details>
+
 ## [1.0.7](https://github.com/cluenar/actions/compare/v1.0.6...v1.0.7) (2024-2-17)
 
 ### Dependency updates
