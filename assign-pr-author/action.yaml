@@ -12,7 +12,7 @@ runs:
   steps:
     - name: Assign author
       if: github.event.action == 'opened' && github.event.pull_request.user.type == 'User'
-      uses: octokit/graphql-action@v2.2.25
+      uses: octokit/graphql-action@v2.3.0
       with:
         token: ${{ inputs.token }}
         query: |
