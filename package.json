@@ -11,7 +11,7 @@
   "license": "MIT",
   "type": "module",
   "engines": {
-    "node": "21.7.1"
+    "node": "21.7.2"
   },
   "scripts": {
     "release": "cluenar-tools release",
