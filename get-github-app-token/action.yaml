@@ -20,7 +20,7 @@ runs:
   using: composite
   steps:
     - name: Install Octokit
-      run: npm install octokit
+      run: npm install octokit && npm pkg set type=module
       shell: bash
 
     - name: Get token
@@ -28,7 +28,7 @@ runs:
       uses: actions/github-script@v7.0.1
       with:
         script: |
-          import { App, Octokit } from 'octokit';
+          const { App, Octokit } = await import('octokit');
 
           const app = new App({
             appId: core.getInput('app-id', { required: true }),
