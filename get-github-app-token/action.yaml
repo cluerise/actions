@@ -28,7 +28,7 @@ runs:
       uses: actions/github-script@v7.0.1
       with:
         script: |
-          const { App, Octokit } = await import('octokit');
+          const { App, Octokit } = await import('${{ github.workspace }}/node_modules/octokit/dist-bundle/index.js');
 
           const app = new App({
             appId: core.getInput('app-id', { required: true }),
