@@ -59,7 +59,7 @@ jobs:
       - name: Get bot token (version)
         id: get-bot-token-version
         if: env.INPUT_EXTERNAL_CALL == 'true' && env.SECRET_TOKEN == null
-        uses: cluenar/actions/get-github-app-token@v1.0.8
+        uses: cluenar/actions/get-github-app-token@v1.0.9
         with:
           app-id: ${{ env.SECRET_APP_ID }}
           private-key: ${{ env.SECRET_PRIVATE_KEY }}

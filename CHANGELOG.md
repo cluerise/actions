@@ -1,5 +1,32 @@
 # Changelog
 
+## [1.0.9](https://github.com/cluenar/actions/compare/v1.0.8...v1.0.9) (2024-05-08)
+
+### Fixes
+
+- Use absolute import for octokit ([#170](https://github.com/cluenar/actions/issues/170)) ([cd201eb](https://github.com/cluenar/actions/commit/cd201eb33a0086b190835c689cefe2015e7e981b))
+- Use dynamic import for octokit ([#169](https://github.com/cluenar/actions/issues/169)) ([0d5e137](https://github.com/cluenar/actions/commit/0d5e1372d70d7b0ab7bd003e07f85d6b253c6332))
+- Use ESM octokit for getting GitHub app token ([#168](https://github.com/cluenar/actions/issues/168)) ([cbefae6](https://github.com/cluenar/actions/commit/cbefae61a9b15aa5c5bc198a2b4d84ed06c1eb0e))
+
+### Dependency updates
+
+<details>
+<summary>Show all dependency updates</summary>
+
+- **actions:** Bump actions/checkout from 4.1.2 to 4.1.3 ([#154](https://github.com/cluenar/actions/issues/154)) ([527bf49](https://github.com/cluenar/actions/commit/527bf49fcaaa85db9a5811070cbb2239907c77da))
+- **actions:** Bump actions/checkout from 4.1.2 to 4.1.3 in /install ([#159](https://github.com/cluenar/actions/issues/159)) ([9b04c9f](https://github.com/cluenar/actions/commit/9b04c9f0145928a27e6278e691f5344eeec92584))
+- **actions:** Bump actions/checkout from 4.1.3 to 4.1.4 ([#163](https://github.com/cluenar/actions/issues/163)) ([fed8917](https://github.com/cluenar/actions/commit/fed89179f8e06e307fde1813b3f987df11c03e7d))
+- **actions:** Bump actions/checkout from 4.1.3 to 4.1.4 in /install ([#162](https://github.com/cluenar/actions/issues/162)) ([6dd1a48](https://github.com/cluenar/actions/commit/6dd1a488396452ab6dcd5e9b115959d81ce84d36))
+- **actions:** Bump actions/checkout from 4.1.4 to 4.1.5 ([#172](https://github.com/cluenar/actions/issues/172)) ([2f1aa0a](https://github.com/cluenar/actions/commit/2f1aa0a1eae4b138a8087cacdc82e22e5be15353))
+- **actions:** Bump actions/checkout from 4.1.4 to 4.1.5 in /install ([#173](https://github.com/cluenar/actions/issues/173)) ([00b32c7](https://github.com/cluenar/actions/commit/00b32c7ead4c5200a80784e8c8a5dd2ad25e08cc))
+- **actions:** Bump octokit/graphql-action from 2.3.0 to 2.3.1 ([#155](https://github.com/cluenar/actions/issues/155)) ([2c86e0d](https://github.com/cluenar/actions/commit/2c86e0de6e38d4599e171ece817e3872daa85d86))
+- **actions:** Bump octokit/graphql-action from 2.3.0 to 2.3.1 in /assign-pr-author ([#160](https://github.com/cluenar/actions/issues/160)) ([d7ba83b](https://github.com/cluenar/actions/commit/d7ba83b15991dba10f2e4277d08c409d5c6a08e5))
+- **actions:** Bump octokit/graphql-action from 2.3.0 to 2.3.1 in /auto-merge-pr ([#158](https://github.com/cluenar/actions/issues/158)) ([ac7a99c](https://github.com/cluenar/actions/commit/ac7a99c2323f3435baba1b027ee16ac7014df3e8))
+- **actions:** Bump octokit/graphql-action from 2.3.0 to 2.3.1 in /check-ci-suitability ([#157](https://github.com/cluenar/actions/issues/157)) ([b0fa08f](https://github.com/cluenar/actions/commit/b0fa08f44219d184bfa9b7e9263e2d19aa011b38))
+- **actions:** Bump octokit/graphql-action from 2.3.0 to 2.3.1 in /review-pr ([#156](https://github.com/cluenar/actions/issues/156)) ([c51c81b](https://github.com/cluenar/actions/commit/c51c81b294a0c7a8c6e4200390d3477931512ac7))
+
+</details>
+
 ## [1.0.8](https://github.com/cluenar/actions/compare/v1.0.7...v1.0.8) (2024-04-05)
 
 ### Fixes
