@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.0.0](https://github.com/cluerise/actions/compare/v1.0.9...v2.0.0) (2024-05-10)
+
+### ⚠ BREAKING CHANGES !!
+
+- Rename organization to Cluerise (#175)
+
+### Features
+
+- Rename organization to Cluerise ([#175](https://github.com/cluerise/actions/issues/175)) ([95fb9e0](https://github.com/cluerise/actions/commit/95fb9e01b714b729728fb63b0709d520cb964ac9))
+
 ## [1.0.9](https://github.com/cluerise/actions/compare/v1.0.8...v1.0.9) (2024-05-08)
 
 ### Fixes
