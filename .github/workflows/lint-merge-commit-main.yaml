@@ -21,7 +21,7 @@ jobs:
           echo "Error: Auto merge is not enabled" && exit 1
 
       - name: Install
-        uses: cluenar/actions/install@main
+        uses: cluerise/actions/install@main
 
       - name: Lint commit message
         run: echo -en "${{ github.event.pull_request.auto_merge.commit_title }}\n\n${{ github.event.pull_request.auto_merge.commit_message }}" | ${{ env.INPUT_COMMAND }}

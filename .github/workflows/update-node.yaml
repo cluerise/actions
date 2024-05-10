@@ -39,8 +39,8 @@ jobs:
       INPUT_NODE_VERSION_FILE: ${{ inputs.node-version-file || '.nvmrc' }}
       INPUT_EXTERNAL_CALL: ${{ inputs.__external-call || false }}
       SECRET_TOKEN: ${{ secrets.token }}
-      SECRET_APP_ID: ${{ secrets.app-id || secrets.CLUENAR_PUBLIC_BOT_APP_ID }}
-      SECRET_PRIVATE_KEY: ${{ secrets.private-key || secrets.CLUENAR_PUBLIC_BOT_PRIVATE_KEY }}
+      SECRET_APP_ID: ${{ secrets.app-id || vars.CLUERISE_PUBLIC_BOT_APP_ID }}
+      SECRET_PRIVATE_KEY: ${{ secrets.private-key || secrets.CLUERISE_PUBLIC_BOT_PRIVATE_KEY }}
 
     steps:
       - name: Check required secrets
@@ -51,7 +51,7 @@ jobs:
       - name: Get bot token (main)
         id: get-bot-token-main
         if: env.INPUT_EXTERNAL_CALL == 'false' && env.SECRET_TOKEN == null
-        uses: cluenar/actions/get-github-app-token@main
+        uses: cluerise/actions/get-github-app-token@main
         with:
           app-id: ${{ env.SECRET_APP_ID }}
           private-key: ${{ env.SECRET_PRIVATE_KEY }}
@@ -59,7 +59,7 @@ jobs:
       - name: Get bot token (version)
         id: get-bot-token-version
         if: env.INPUT_EXTERNAL_CALL == 'true' && env.SECRET_TOKEN == null
-        uses: cluenar/actions/get-github-app-token@v1.0.9
+        uses: cluerise/actions/get-github-app-token@v1.0.9
         with:
           app-id: ${{ env.SECRET_APP_ID }}
           private-key: ${{ env.SECRET_PRIVATE_KEY }}
@@ -69,7 +69,7 @@ jobs:
 
       - name: Install (main)
         if: env.INPUT_EXTERNAL_CALL == 'false'
-        uses: cluenar/actions/install@main
+        uses: cluerise/actions/install@main
         with:
           manager: ${{ env.INPUT_MANAGER }}
           node-version: ${{ env.INPUT_NODE_VERSION }}
@@ -77,7 +77,7 @@ jobs:
 
       - name: Install (version)
         if: env.INPUT_EXTERNAL_CALL == 'true'
-        uses: cluenar/actions/install@v1.0.9
+        uses: cluerise/actions/install@v1.0.9
         with:
           manager: ${{ env.INPUT_MANAGER }}
           node-version: ${{ env.INPUT_NODE_VERSION }}
