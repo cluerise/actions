@@ -9,7 +9,7 @@ const changelogTypes = [...defaultChangelogTypes, { type: 'deps', scope: 'action
 
 export default createReleaseConfig({
   host: 'https://github.com',
-  owner: 'cluenar',
+  owner: 'cluerise',
   repository: 'actions',
   releaseRules,
   changelogTypes

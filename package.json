@@ -1,13 +1,13 @@
 {
-  "name": "@cluenar/actions",
+  "name": "@cluerise/actions",
   "version": "1.0.9",
   "description": "GitHub actions",
   "author": "Branislav Holý <brano@holy.am>",
-  "repository": "github:cluenar/actions",
+  "repository": "github:cluerise/actions",
   "bugs": {
-    "url": "https://github.com/cluenar/actions/issues"
+    "url": "https://github.com/cluerise/actions/issues"
   },
-  "homepage": "https://github.com/cluenar/actions#readme",
+  "homepage": "https://github.com/cluerise/actions#readme",
   "license": "MIT",
   "type": "module",
   "engines": {
