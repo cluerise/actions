@@ -1,1 +1,1 @@
-export { default } from '@cluenar/tools/dist/configs/commitlint.config';
+export { default } from '@cluerise/tools/dist/configs/commitlint.config';

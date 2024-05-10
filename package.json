@@ -14,18 +14,18 @@
     "node": "22.1.0"
   },
   "scripts": {
-    "release": "cluenar-tools release",
+    "release": "cluerise-tools release",
     "postrelease": "bash update-workflow-versions.sh",
-    "lint": "cluenar-tools lint",
-    "node-versions-update": "cluenar-tools update-node-versions",
-    "__git-hook:commit-msg": "cluenar-tools format-commit-message",
+    "lint": "cluerise-tools lint",
+    "node-versions-update": "cluerise-tools update-node-versions",
+    "__git-hook:commit-msg": "cluerise-tools format-commit-message",
     "__git-hook:post-commit": "rm -f .lint-staged-temp-tsconfig.json",
     "__git-hook:pre-commit": "npm run lint staged",
-    "__git-hook:prepare-commit-msg": "cluenar-tools create-commit-message",
+    "__git-hook:prepare-commit-msg": "cluerise-tools create-commit-message",
     "postinstall": "[ -d .git ] && git config --local core.hooksPath hooks || echo 'Info: Git hooks not set outside a git repository.'"
   },
   "devDependencies": {
-    "@cluenar/tools": "2.0.1",
+    "@cluerise/tools": "3.0.1",
     "typescript": "5.4.5"
   }
 }

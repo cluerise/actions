@@ -37,7 +37,7 @@ jobs:
           dependency-approved: >-
             ${{
               (
-                startsWith(github.head_ref, 'dependabot-npm_and_yarn-cluenar-tools-') ||
+                startsWith(github.head_ref, 'dependabot-npm_and_yarn-cluerise-tools-') ||
                 startsWith(github.head_ref, 'dependabot-npm_and_yarn-typescript-') ||
                 startsWith(github.head_ref, 'dependabot-github_actions-octokit-graphql-action-') ||
                 startsWith(github.head_ref, 'dependabot-github_actions-assign-pr-author-octokit-graphql-action-') ||
