@@ -1,4 +1,4 @@
 {
-  "prettier.ignorePath": "node_modules/@cluenar/tools/dist/configs/.prettierignore",
+  "prettier.ignorePath": "node_modules/@cluerise/tools/dist/configs/.prettierignore",
   "typescript.tsdk": "node_modules/typescript/lib"
 }

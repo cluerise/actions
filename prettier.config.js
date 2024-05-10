@@ -1,1 +1,1 @@
-export { default } from '@cluenar/tools/dist/configs/prettier.config.js';
+export { default } from '@cluerise/tools/dist/configs/prettier.config.js';

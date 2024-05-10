@@ -1,5 +1,5 @@
 {
-  "extends": "./node_modules/@cluenar/tools/dist/configs/tsconfig.json",
+  "extends": "./node_modules/@cluerise/tools/dist/configs/tsconfig.json",
   "compilerOptions": {
     "types": ["node"]
   }
