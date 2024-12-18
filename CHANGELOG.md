@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.1.1](https://github.com/cluerise/actions/compare/v2.1.0...v2.1.1) (2024-12-18)
+
+### Fixes
+
+- Search all dirs for Xcode project ([#258](https://github.com/cluerise/actions/issues/258)) ([84e9648](https://github.com/cluerise/actions/commit/84e9648f27c1ad47d9e6090b811c7698375e968e))
+
 ## [2.1.0](https://github.com/cluerise/actions/compare/v2.0.0...v2.1.0) (2024-12-18)
 
 ### Features
