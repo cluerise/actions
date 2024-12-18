@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - name: Install
-        uses: cluerise/actions/install@v2.0.0
+        uses: cluerise/actions/install@v2.1.0
 
       - name: Lint title
         run: echo -n "${{ github.event.pull_request.title }}" | ${{ env.INPUT_COMMAND }}

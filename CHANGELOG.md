@@ -1,5 +1,42 @@
 # Changelog
 
+## [2.1.0](https://github.com/cluerise/actions/compare/v2.0.0...v2.1.0) (2024-12-18)
+
+### Features
+
+- Xcode project release support ([#256](https://github.com/cluerise/actions/issues/256)) ([a3c8da6](https://github.com/cluerise/actions/commit/a3c8da6804cb891a55fc03f6014895b4619ed447))
+
+### Dependency updates
+
+<details>
+<summary>Show all dependency updates</summary>
+
+- **actions:** Bump actions/checkout from 4.1.5 to 4.1.6 ([#182](https://github.com/cluerise/actions/issues/182)) ([4c991fe](https://github.com/cluerise/actions/commit/4c991fe75c808983794ac91a2ffbc80fda5f1daa))
+- **actions:** Bump actions/checkout from 4.1.5 to 4.1.6 in /install ([#180](https://github.com/cluerise/actions/issues/180)) ([6a053ce](https://github.com/cluerise/actions/commit/6a053ceb30b7b9317bae3f7602a6d998a336e342))
+- **actions:** Bump actions/checkout from 4.1.6 to 4.1.7 ([#194](https://github.com/cluerise/actions/issues/194)) ([eb8f313](https://github.com/cluerise/actions/commit/eb8f313f6574450224318e1385843a867cedff9a))
+- **actions:** Bump actions/checkout from 4.1.6 to 4.1.7 in /install ([#193](https://github.com/cluerise/actions/issues/193)) ([b6075c7](https://github.com/cluerise/actions/commit/b6075c7e6e06393e6f6b30291844210f0b8b6503))
+- **actions:** Bump actions/checkout from 4.1.7 to 4.2.0 ([#226](https://github.com/cluerise/actions/issues/226)) ([fef42a8](https://github.com/cluerise/actions/commit/fef42a8deea260f53f6ad5c2565a06c886eea509))
+- **actions:** Bump actions/checkout from 4.1.7 to 4.2.0 in /install ([#227](https://github.com/cluerise/actions/issues/227)) ([c3f1bbf](https://github.com/cluerise/actions/commit/c3f1bbf42890e31f3ffc96434edbad9c02832d16))
+- **actions:** Bump actions/checkout from 4.2.0 to 4.2.1 ([#232](https://github.com/cluerise/actions/issues/232)) ([5ddddaa](https://github.com/cluerise/actions/commit/5ddddaa7d2dc9b1162f00ae5312a21620a8e20bc))
+- **actions:** Bump actions/checkout from 4.2.0 to 4.2.1 in /install ([#231](https://github.com/cluerise/actions/issues/231)) ([f71ed8b](https://github.com/cluerise/actions/commit/f71ed8b290d3e74acd41fc6a33072405f50ad504))
+- **actions:** Bump actions/checkout from 4.2.1 to 4.2.2 ([#240](https://github.com/cluerise/actions/issues/240)) ([c2c60a6](https://github.com/cluerise/actions/commit/c2c60a63f5e1100c5ca623394e33a41dabbf83be))
+- **actions:** Bump actions/checkout from 4.2.1 to 4.2.2 in /install ([#237](https://github.com/cluerise/actions/issues/237)) ([b156540](https://github.com/cluerise/actions/commit/b156540dc98e2f8bf4c53ca30c484ffacb0919c7))
+- **actions:** Bump actions/setup-node from 4.0.2 to 4.0.3 ([#204](https://github.com/cluerise/actions/issues/204)) ([4dd396a](https://github.com/cluerise/actions/commit/4dd396a0d67c5dffdfecab18b95d2d80e176fc6c))
+- **actions:** Bump actions/setup-node from 4.0.2 to 4.0.3 in /install ([#203](https://github.com/cluerise/actions/issues/203)) ([d1633a7](https://github.com/cluerise/actions/commit/d1633a70a8dfed0b09daf65e4c18edab87bffd9e))
+- **actions:** Bump actions/setup-node from 4.0.3 to 4.0.4 ([#223](https://github.com/cluerise/actions/issues/223)) ([96749df](https://github.com/cluerise/actions/commit/96749dfc054b6b3935afbe6aaba6698162351bdf))
+- **actions:** Bump actions/setup-node from 4.0.3 to 4.0.4 in /install ([#222](https://github.com/cluerise/actions/issues/222)) ([db1c2e3](https://github.com/cluerise/actions/commit/db1c2e3b0b36c17306ca4a21dad0e313b41de5a5))
+- **actions:** Bump actions/setup-node from 4.0.4 to 4.1.0 ([#239](https://github.com/cluerise/actions/issues/239)) ([29dbd1f](https://github.com/cluerise/actions/commit/29dbd1fe0fedc051eedf8d53840b2e8e55b792c6))
+- **actions:** Bump actions/setup-node from 4.0.4 to 4.1.0 in /install ([#238](https://github.com/cluerise/actions/issues/238)) ([93eb41b](https://github.com/cluerise/actions/commit/93eb41bc93bccf3c824c95256db30ae0549edc71))
+- **actions:** Bump octokit/graphql-action from 2.3.1 to 2.3.2 ([#186](https://github.com/cluerise/actions/issues/186)) ([a464705](https://github.com/cluerise/actions/commit/a464705d74c60253eb72bda91328180aa31da1cd))
+- **actions:** Bump octokit/graphql-action from 2.3.1 to 2.3.2 in /assign-pr-author ([#188](https://github.com/cluerise/actions/issues/188)) ([bd1f10c](https://github.com/cluerise/actions/commit/bd1f10cad64252e0bdde650a82a8921a714f2603))
+- **actions:** Bump octokit/graphql-action from 2.3.1 to 2.3.2 in /auto-merge-pr ([#187](https://github.com/cluerise/actions/issues/187)) ([b25b47b](https://github.com/cluerise/actions/commit/b25b47b08e6603c97d8f71265e65bce9bc6c0d79))
+- **actions:** Bump octokit/graphql-action from 2.3.1 to 2.3.2 in /check-ci-suitability ([#185](https://github.com/cluerise/actions/issues/185)) ([390b09a](https://github.com/cluerise/actions/commit/390b09aa0b814db9602df00bc9963520225ec78a))
+- **actions:** Bump octokit/graphql-action from 2.3.1 to 2.3.2 in /review-pr ([#189](https://github.com/cluerise/actions/issues/189)) ([1bbb460](https://github.com/cluerise/actions/commit/1bbb46095b0ee06f11534a8e978cc23f16d236c8))
+- **actions:** Bump octokit/request-action from 2.3.0 to 2.3.1 ([#181](https://github.com/cluerise/actions/issues/181)) ([0e29e3b](https://github.com/cluerise/actions/commit/0e29e3bb5cddcf297f182273ee7b28a18362814e))
+- **actions:** Bump octokit/request-action from 2.3.1 to 2.4.0 ([#229](https://github.com/cluerise/actions/issues/229)) ([8c94727](https://github.com/cluerise/actions/commit/8c9472794b5fcdbc400318e5f4d9b1887e8be949))
+
+</details>
+
 ## [2.0.0](https://github.com/cluerise/actions/compare/v1.0.9...v2.0.0) (2024-05-10)
 
 ### ⚠ BREAKING CHANGES !!
