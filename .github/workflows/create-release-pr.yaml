@@ -95,6 +95,7 @@ jobs:
             package.json
             package-lock.json
             CHANGELOG.md
+            *.pbxproj
           commit.message: 'release: Version ${{ steps.release.outputs.version }}'
           commit.token: ${{ env.BOT_TOKEN || secrets.GITHUB_TOKEN }}
           pull-request.body: Release ${{ steps.release.outputs.version }}.
