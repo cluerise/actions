@@ -24,10 +24,13 @@ on:
     secrets:
       token:
         description: GitHub access token
+        required: false
       app-id:
         description: GitHub app ID
+        required: false
       private-key:
         description: GitHub app private key
+        required: false
 
 jobs:
   update-node:

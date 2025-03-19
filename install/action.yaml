@@ -2,22 +2,22 @@ name: Install
 description: Checkout and install dependencies
 
 inputs:
+  ref:
+    description: >
+      The branch, tag or SHA to checkout. When checking out the repository that
+      triggered a workflow, this defaults to the reference or SHA for that
+      event. Otherwise, uses the default branch.
   fetch-depth:
-    type: number
     description: 'Number of commits to fetch. 0 indicates all history for all branches and tags. Default: 1'
   manager:
-    type: string
     description: Package manager (npm or yarn)
     default: npm
   node-version:
-    type: string
     description: 'Version Spec of the version to use. Examples: 12.x, 10.15.1, >=10.15.0'
   node-version-file:
-    type: string
     description: 'File containing the version Spec of the version to use. Default: .nvmrc'
     default: .nvmrc
   registry-url:
-    type: string
     description: NPM package registry URL
 
 runs:
@@ -26,6 +26,7 @@ runs:
     - name: Checkout
       uses: actions/checkout@v4.2.2
       with:
+        ref: ${{ inputs.ref }}
         fetch-depth: ${{ inputs.fetch-depth }}
 
     - name: Check lock file version
