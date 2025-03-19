@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.2.0](https://github.com/cluerise/actions/compare/v2.1.1...v2.2.0) (2025-03-19)
+
+### Features
+
+- Checkout custom ref in the install action ([#288](https://github.com/cluerise/actions/issues/288)) ([5106285](https://github.com/cluerise/actions/commit/5106285eefc7dfc10875818d4137ac23727da863))
+
+### Dependency updates
+
+<details>
+<summary>Show all dependency updates</summary>
+
+- **actions:** Bump actions/setup-node from 4.1.0 to 4.2.0 ([#270](https://github.com/cluerise/actions/issues/270)) ([8cb3cbf](https://github.com/cluerise/actions/commit/8cb3cbf96e1fd8d1e0407ae5dd76b2d183acfdc4))
+- **actions:** Bump actions/setup-node from 4.1.0 to 4.2.0 in /install ([#271](https://github.com/cluerise/actions/issues/271)) ([3eb07d2](https://github.com/cluerise/actions/commit/3eb07d28b71bc468baaae5af68ade7807e6c9cef))
+
+</details>
+
 ## [2.1.1](https://github.com/cluerise/actions/compare/v2.1.0...v2.1.1) (2024-12-18)
 
 ### Fixes
