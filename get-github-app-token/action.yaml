@@ -3,11 +3,9 @@ description: Get GitHub app token
 
 inputs:
   app-id:
-    type: string
     description: GitHub app ID
     required: true
   private-key:
-    type: string
     description: GitHub app private key
     required: true
 

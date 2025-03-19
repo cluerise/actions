@@ -3,7 +3,6 @@ description: Assign author to the pull request
 
 inputs:
   token:
-    type: string
     description: GitHub token to use for the API call
     required: true
 

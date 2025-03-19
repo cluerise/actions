@@ -3,23 +3,18 @@ description: Approve a pull request or request a review
 
 inputs:
   token:
-    type: string
     description: GitHub token to use for the API call
     required: true
   trusted-user:
-    type: string
     description: Approve all pull requests from the trusted user
     required: true
   trusted-bot:
-    type: string
     description: Approve all pull requests from the trusted bot except for releases
     required: true
   reviewer:
-    type: string
     description: A user for requesting reviews
     required: true
   dependency-approved:
-    type: boolean
     description: A boolean whether the updated dependency should be approved.
     required: true
 

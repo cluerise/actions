@@ -1,4 +1,5 @@
 name: Print context
+description: Print GitHub context
 
 inputs:
   data:

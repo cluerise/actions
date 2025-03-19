@@ -3,7 +3,6 @@ description: Check whether CI should run on the commit. For Dependabot PRs, run 
 
 inputs:
   token:
-    type: string
     description: GitHub token to use for the API call
     required: true
 
