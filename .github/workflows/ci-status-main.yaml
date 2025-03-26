@@ -44,7 +44,7 @@ jobs:
           echo "CI_DESCRIPTION=Failed" >> $GITHUB_ENV
 
       - name: Send status
-        uses: octokit/request-action@v2.4.0
+        uses: octokit/request-action@dad4362715b7fb2ddedf9772c8670824af564f0d
         with:
           route: POST /repos/{owner}/{repo}/statuses/{sha}
           owner: ${{ github.event.repository.owner.login }}
