@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.2.1](https://github.com/cluerise/actions/compare/v2.2.0...v2.2.1) (2025-03-26)
+
+### Fixes
+
+- Downloading of octokit/request-action by using a commit hash ([#294](https://github.com/cluerise/actions/issues/294)) ([bd90ba6](https://github.com/cluerise/actions/commit/bd90ba60af81707438cab473b0a3ea991f90bf2c))
+
+### Dependency updates
+
+<details>
+<summary>Show all dependency updates</summary>
+
+- **actions:** Bump actions/setup-node from 4.2.0 to 4.3.0 ([#290](https://github.com/cluerise/actions/issues/290)) ([1e7d3bd](https://github.com/cluerise/actions/commit/1e7d3bd9c082dc5420a434a6f73cc457e2d50f28))
+- **actions:** Bump actions/setup-node from 4.2.0 to 4.3.0 in /install ([#291](https://github.com/cluerise/actions/issues/291)) ([8121d8f](https://github.com/cluerise/actions/commit/8121d8fd6fd5dbcc00e039f4ff1256937435d4de))
+
+</details>
+
 ## [2.2.0](https://github.com/cluerise/actions/compare/v2.1.1...v2.2.0) (2025-03-19)
 
 ### Features
