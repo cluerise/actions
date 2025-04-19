@@ -91,7 +91,7 @@ jobs:
         run: npm run node-versions-update
 
       - name: Setup new Node.js
-        uses: actions/setup-node@v4.3.0
+        uses: actions/setup-node@v4.4.0
         with:
           cache: ${{ env.INPUT_MANAGER }}
           node-version: ${{ env.INPUT_NODE_VERSION }}
