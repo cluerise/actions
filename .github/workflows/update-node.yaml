@@ -8,7 +8,7 @@ on:
     inputs:
       manager:
         type: string
-        description: Package manager (npm or yarn)
+        description: Package manager (pnpm, npm, or yarn)
         default: npm
       node-version:
         type: string
@@ -86,9 +86,32 @@ jobs:
           node-version: ${{ env.INPUT_NODE_VERSION }}
           node-version-file: ${{ env.INPUT_NODE_VERSION_FILE }}
 
-      - name: Update Node.js versions
-        id: update-node-versions
+      - name: Update Node.js versions (PNPM)
+        id: update-node-versions-pnpm
+        if: env.INPUT_MANAGER == 'pnpm'
+        run: pnpm run node-versions-update
+
+      - name: Set updated Node.js version (PNPM)
+        if: env.INPUT_MANAGER == 'pnpm'
+        run: echo "UPDATED_NODE_VERSION=${{ steps.update-node-versions-pnpm.outputs.version }}" >> $GITHUB_ENV
+
+      - name: Update Node.js versions (NPM)
+        id: update-node-versions-npm
+        if: env.INPUT_MANAGER == 'npm'
         run: npm run node-versions-update
+
+      - name: Set updated Node.js version (NPM)
+        if: env.INPUT_MANAGER == 'npm'
+        run: echo "UPDATED_NODE_VERSION=${{ steps.update-node-versions-npm.outputs.version }}" >> $GITHUB_ENV
+
+      - name: Update Node.js versions (Yarn)
+        id: update-node-versions-yarn
+        if: env.INPUT_MANAGER == 'yarn'
+        run: yarn node-versions-update
+
+      - name: Set updated Node.js version (Yarn)
+        if: env.INPUT_MANAGER == 'yarn'
+        run: echo "UPDATED_NODE_VERSION=${{ steps.update-node-versions-yarn.outputs.version }}" >> $GITHUB_ENV
 
       - name: Setup new Node.js
         uses: actions/setup-node@v4.4.0
@@ -97,9 +120,13 @@ jobs:
           node-version: ${{ env.INPUT_NODE_VERSION }}
           node-version-file: ${{ env.INPUT_NODE_VERSION_FILE }}
 
+      - name: Update the PNPM lock file
+        if: env.INPUT_MANAGER == 'pnpm'
+        run: pnpm install
+
       - name: Update the NPM lock file
         if: env.INPUT_MANAGER == 'npm'
-        run: npm i
+        run: npm install
 
       - name: Update the Yarn lock file
         if: env.INPUT_MANAGER == 'yarn'
@@ -114,11 +141,13 @@ jobs:
           commit.paths: |
             .nvmrc
             package.json
+            pnpm-lock.yaml
             package-lock.json
+            yarn.lock
             .github/workflows/*.yaml
-          commit.message: 'deps(dev): Update Node.js to ${{ steps.update-node-versions.outputs.version }}'
+          commit.message: 'deps(dev): Update Node.js to ${{ env.UPDATED_NODE_VERSION }}'
           commit.token: ${{ env.BOT_TOKEN || secrets.GITHUB_TOKEN }}
-          pull-request.body: Automatic update of Node.js to version ${{ steps.update-node-versions.outputs.version }}.
+          pull-request.body: Automatic update of Node.js to version ${{ env.UPDATED_NODE_VERSION }}.
           pull-request.labels: |
             type: deps
             scope: dev

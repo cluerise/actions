@@ -4,6 +4,14 @@ on:
   workflow_dispatch:
   workflow_call:
     inputs:
+      manager:
+        type: string
+        description: Package manager (pnpm, npm, or yarn)
+        default: npm
+      release-command:
+        type: string
+        description: Release command to run
+        default: npm run release create
       __external-call:
         type: boolean
         description: Do not use this input, it is an internal value to identify the workflow_call event
@@ -24,6 +32,8 @@ jobs:
     name: Create release PR
     runs-on: ubuntu-latest
     env:
+      INPUT_MANAGER: ${{ inputs.manager || 'npm' }}
+      INPUT_RELEASE_COMMAND: ${{ inputs.release-command || 'npm run release create' }}
       INPUT_EXTERNAL_CALL: ${{ inputs.__external-call || false }}
       SECRET_TOKEN: ${{ secrets.token }}
       SECRET_APP_ID: ${{ secrets.app-id || vars.CLUERISE_PUBLIC_BOT_APP_ID }}
@@ -64,11 +74,12 @@ jobs:
         if: env.INPUT_EXTERNAL_CALL == 'true'
         uses: cluerise/actions/install@v2.2.1
         with:
+          manager: ${{ env.INPUT_MANAGER }}
           fetch-depth: 0
 
       - name: Run the release script
         id: release
-        run: npm run release create
+        run: ${{ env.INPUT_RELEASE_COMMAND }}
 
       - name: Create a pull request with the release (main)
         if: env.INPUT_EXTERNAL_CALL == 'false'
@@ -79,7 +90,9 @@ jobs:
           branch.recreate: true
           commit.paths: |
             package.json
+            pnpm-lock.yaml
             package-lock.json
+            yarn.lock
             CHANGELOG.md
             .github/workflows/*.yaml
           commit.message: 'release: Version ${{ steps.release.outputs.version }}'
@@ -96,7 +109,9 @@ jobs:
           branch.recreate: true
           commit.paths: |
             package.json
+            pnpm-lock.yaml
             package-lock.json
+            yarn.lock
             CHANGELOG.md
             **/*.pbxproj
           commit.message: 'release: Version ${{ steps.release.outputs.version }}'
