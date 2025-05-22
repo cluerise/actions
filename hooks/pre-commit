@@ -1,1 +1,1 @@
-npm run --if-present __git-hook:pre-commit "$@"
+pnpm run --if-present __git-hook:pre-commit "$@"

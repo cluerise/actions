@@ -9,11 +9,10 @@ on:
       manager:
         type: string
         description: Package manager (pnpm, npm, or yarn)
-        default: npm
       extract-changelog-command:
         type: string
         description: Extract changelog command to run
-        default: npm run release extract-changelog
+        default: pnpm run release extract-changelog
       __external-call:
         type: boolean
         description: Do not use this input, it is an internal value to identify the workflow_call event
@@ -37,8 +36,8 @@ jobs:
       startsWith(github.head_ref, 'release-') &&
       github.event.pull_request.merged == true
     env:
-      INPUT_MANAGER: ${{ inputs.manager || 'npm' }}
-      INPUT_EXTRACT_CHANGELOG_COMMAND: ${{ inputs.extract-changelog-command || 'npm run release extract-changelog' }}
+      INPUT_MANAGER: ${{ inputs.manager }}
+      INPUT_EXTRACT_CHANGELOG_COMMAND: ${{ inputs.extract-changelog-command || 'pnpm run release extract-changelog' }}
       INPUT_EXTERNAL_CALL: ${{ inputs.__external-call || false }}
       SECRET_TOKEN: ${{ secrets.token }}
       SECRET_APP_ID: ${{ secrets.app-id || vars.CLUERISE_PUBLIC_BOT_APP_ID }}

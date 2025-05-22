@@ -11,7 +11,7 @@ inputs:
     description: 'Number of commits to fetch. 0 indicates all history for all branches and tags. Default: 1'
   manager:
     description: Package manager (pnpm, npm, or yarn)
-    default: npm
+    default: pnpm
   node-version:
     description: 'Version Spec of the version to use. Examples: 12.x, 10.15.1, >=10.15.0'
   node-version-file:

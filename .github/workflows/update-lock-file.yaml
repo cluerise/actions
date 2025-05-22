@@ -9,7 +9,7 @@ on:
       manager:
         type: string
         description: Package manager (pnpm, npm, or yarn)
-        default: npm
+        default: pnpm
       node-version:
         type: string
         description: 'Version Spec of the version to use. Examples: 12.x, 10.15.1, >=10.15.0'
@@ -37,7 +37,7 @@ jobs:
     name: Update lock file
     runs-on: ubuntu-latest
     env:
-      INPUT_MANAGER: ${{ inputs.manager || 'npm' }}
+      INPUT_MANAGER: ${{ inputs.manager || 'pnpm' }}
       INPUT_NODE_VERSION: ${{ inputs.node-version }}
       INPUT_NODE_VERSION_FILE: ${{ inputs.node-version-file || '.nvmrc' }}
       INPUT_EXTERNAL_CALL: ${{ inputs.__external-call || false }}
