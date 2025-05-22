@@ -70,27 +70,29 @@ jobs:
       - name: Set bot token
         run: echo "BOT_TOKEN=${{ steps.get-bot-token-main.outputs.token || steps.get-bot-token-version.outputs.token }}" >> $GITHUB_ENV
 
-      - name: Checkout
-        uses: actions/checkout@v4.2.2
+      - name: Install (main)
+        if: env.INPUT_EXTERNAL_CALL == 'false'
+        uses: cluerise/actions/install@main
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4.4.0
+      - name: Install (version)
+        if: env.INPUT_EXTERNAL_CALL == 'true'
+        uses: cluerise/actions/install@v2.2.1
         with:
-          cache: ${{ env.INPUT_MANAGER }}
+          manager: ${{ env.INPUT_MANAGER }}
           node-version: ${{ env.INPUT_NODE_VERSION }}
           node-version-file: ${{ env.INPUT_NODE_VERSION_FILE }}
 
       - name: Update the PNPM lock file
         if: env.INPUT_MANAGER == 'pnpm'
-        run: rm pnpm-lock.yaml && pnpm install
+        run: rm -rf node_modules && rm pnpm-lock.yaml && pnpm install
 
       - name: Update the NPM lock file
         if: env.INPUT_MANAGER == 'npm'
-        run: rm package-lock.json && npm install
+        run: rm -rf node_modules && rm package-lock.json && npm install
 
       - name: Update the Yarn lock file
         if: env.INPUT_MANAGER == 'yarn'
-        run: rm yarn.lock && yarn
+        run: rm -rf node_modules && rm yarn.lock && yarn
 
       - name: Create a pull request with the updated file
         uses: branoholy/update-files-action@main
