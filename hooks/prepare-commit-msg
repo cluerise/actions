@@ -1,1 +1,1 @@
-npm run __git-hook:prepare-commit-msg --if-present "$@"
+npm run --if-present __git-hook:prepare-commit-msg "$@"

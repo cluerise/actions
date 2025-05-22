@@ -8,7 +8,7 @@ on:
     inputs:
       manager:
         type: string
-        description: Package manager (npm or yarn)
+        description: Package manager (pnpm, npm, or yarn)
         default: npm
       node-version:
         type: string
@@ -80,9 +80,13 @@ jobs:
           node-version: ${{ env.INPUT_NODE_VERSION }}
           node-version-file: ${{ env.INPUT_NODE_VERSION_FILE }}
 
+      - name: Update the PNPM lock file
+        if: env.INPUT_MANAGER == 'pnpm'
+        run: rm pnpm-lock.yaml && pnpm install
+
       - name: Update the NPM lock file
         if: env.INPUT_MANAGER == 'npm'
-        run: rm package-lock.json && npm i
+        run: rm package-lock.json && npm install
 
       - name: Update the Yarn lock file
         if: env.INPUT_MANAGER == 'yarn'
@@ -94,10 +98,13 @@ jobs:
           token: ${{ env.SECRET_TOKEN || env.BOT_TOKEN }}
           branch.name: deps-update-lock-file
           branch.recreate: true
-          commit.paths: package-lock.json
+          commit.paths: |
+            pnpm-lock.yaml
+            package-lock.json
+            yarn.lock
           commit.message: 'deps(lock): Update lock file'
           commit.token: ${{ env.BOT_TOKEN || secrets.GITHUB_TOKEN }}
-          pull-request.body: Automatic update of dependencies in `package-lock.json`.
+          pull-request.body: Automatic update of dependencies in the lock file.
           pull-request.labels: |
             type: deps
             scope: lock
