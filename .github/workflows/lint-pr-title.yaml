@@ -31,8 +31,6 @@ jobs:
       - name: Install (main)
         if: env.INPUT_EXTERNAL_CALL == 'false'
         uses: cluerise/actions/install@main
-        with:
-          manager: pnpm
 
       - name: Install (version)
         if: env.INPUT_EXTERNAL_CALL == 'true'
