@@ -18,7 +18,7 @@ runs:
   using: composite
   steps:
     - name: Install Octokit
-      run: pnpm install octokit && pnpm pkg set type=module
+      run: npm install octokit && npm pkg set type=module
       shell: bash
 
     - name: Get token
