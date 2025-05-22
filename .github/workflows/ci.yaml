@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Install
         uses: cluerise/actions/install@main
+        with:
+          manager: pnpm
 
   lint:
     name: Lint files
@@ -19,7 +21,10 @@ jobs:
     steps:
       - name: Install
         uses: cluerise/actions/install@main
+        with:
+          manager: pnpm
+
       - name: Lint files
-        run: npm run lint all
+        run: pnpm run lint all
         env:
           CI: true

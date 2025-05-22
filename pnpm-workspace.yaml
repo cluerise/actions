@@ -1,0 +1,4 @@
+engineStrict: true
+
+publicHoistPattern:
+  - prettier
