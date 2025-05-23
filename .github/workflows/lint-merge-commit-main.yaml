@@ -1,4 +1,4 @@
-name: Lint merge commit
+name: Lint merge commit (main)
 
 on:
   pull_request:

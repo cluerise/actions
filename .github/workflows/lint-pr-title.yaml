@@ -16,15 +16,12 @@ jobs:
     name: Lint PR title
     runs-on: ubuntu-latest
     if: github.event.action != 'opened' || github.event.pull_request.user.login != 'dependabot[bot]'
-    env:
-      INPUT_MANAGER: ${{ inputs.manager }}
-      INPUT_COMMAND: ${{ inputs.command || 'pnpm run lint commit' }}
 
     steps:
       - name: Install
         uses: cluerise/actions/install@v3.0.0
         with:
-          manager: ${{ env.INPUT_MANAGER }}
+          manager: ${{ inputs.manager }}
 
       - name: Lint title
-        run: echo -n "${{ github.event.pull_request.title }}" | ${{ env.INPUT_COMMAND }}
+        run: echo -n "${{ github.event.pull_request.title }}" | ${{ inputs.command }}
