@@ -1,5 +1,32 @@
 # Changelog
 
+## [3.0.0](https://github.com/cluerise/actions/compare/v2.2.1...v3.0.0) (2025-05-23)
+
+### ⚠ BREAKING CHANGES !!
+
+- Use PNPM as the default (#316)
+
+### Features
+
+- PNPM support ([#310](https://github.com/cluerise/actions/issues/310)) ([4192a0c](https://github.com/cluerise/actions/commit/4192a0c8402d63570b3e1aa6d57a319adc8d3a25))
+- Use PNPM as the default ([#311](https://github.com/cluerise/actions/issues/311)) ([33f25c8](https://github.com/cluerise/actions/commit/33f25c87616e6021502a7925bf13549c4fccc3bd))
+- Use PNPM as the default ([#316](https://github.com/cluerise/actions/issues/316)) ([e91f313](https://github.com/cluerise/actions/commit/e91f313ce1003cb1d27219ea90e645ad18c54328))
+
+### Fixes
+
+- Get GitHub app token install ([#313](https://github.com/cluerise/actions/issues/313)) ([4615eb7](https://github.com/cluerise/actions/commit/4615eb747b3c5a1572509755316872b723960ff3))
+- Update lock file with PNPM ([#314](https://github.com/cluerise/actions/issues/314)) ([6421e9a](https://github.com/cluerise/actions/commit/6421e9aa00123cc954a7a2cda80f49a191c7fd0d))
+
+### Dependency updates
+
+<details>
+<summary>Show all dependency updates</summary>
+
+- **actions:** Bump actions/setup-node from 4.3.0 to 4.4.0 ([#302](https://github.com/cluerise/actions/issues/302)) ([1341871](https://github.com/cluerise/actions/commit/1341871381d753b657cb01167bad0611bd40c5ee))
+- **actions:** Bump actions/setup-node from 4.3.0 to 4.4.0 in /install ([#301](https://github.com/cluerise/actions/issues/301)) ([facc030](https://github.com/cluerise/actions/commit/facc030b5895bc4ce623735a9cc8d66ae7349db8))
+
+</details>
+
 ## [2.2.1](https://github.com/cluerise/actions/compare/v2.2.0...v2.2.1) (2025-03-26)
 
 ### Fixes

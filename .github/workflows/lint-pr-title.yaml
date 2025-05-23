@@ -34,7 +34,7 @@ jobs:
 
       - name: Install (version)
         if: env.INPUT_EXTERNAL_CALL == 'true'
-        uses: cluerise/actions/install@v2.2.1
+        uses: cluerise/actions/install@v3.0.0
         with:
           manager: ${{ env.INPUT_MANAGER }}
 
