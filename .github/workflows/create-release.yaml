@@ -26,26 +26,20 @@ jobs:
     name: Create release
     runs-on: ubuntu-latest
     if: startsWith(github.head_ref, 'release-') && github.event.pull_request.merged == true
-    env:
-      INPUT_MANAGER: ${{ inputs.manager }}
-      INPUT_EXTRACT_CHANGELOG_COMMAND: ${{ inputs.extract-changelog-command }}
-      SECRET_TOKEN: ${{ secrets.token }}
-      SECRET_APP_ID: ${{ secrets.app-id }}
-      SECRET_PRIVATE_KEY: ${{ secrets.private-key }}
 
     steps:
       - name: Check required secrets
-        if: env.SECRET_TOKEN == null && (env.SECRET_APP_ID == null || env.SECRET_PRIVATE_KEY == null)
+        if: secrets.token == null && (secrets.app-id == null || secrets.private-key == null)
         run: exit 1
         shell: bash
 
       - name: Get bot token
         id: get-bot-token
-        if: env.SECRET_TOKEN == null
+        if: secrets.token == null
         uses: cluerise/actions/get-github-app-token@v3.0.0
         with:
-          app-id: ${{ env.SECRET_APP_ID }}
-          private-key: ${{ env.SECRET_PRIVATE_KEY }}
+          app-id: ${{ secrets.app-id }}
+          private-key: ${{ secrets.private-key }}
 
       - name: Set the release version env
         run: echo "RELEASE_VERSION=$(echo '${{ github.head_ref }}' | cut -d'-' -f 2)" >> $GITHUB_ENV
@@ -72,7 +66,7 @@ jobs:
         if: fromJson(steps.get-latest-ref.outputs.data).repository.ref == null
         uses: octokit/graphql-action@v2.3.2
         with:
-          token: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
+          token: ${{ secrets.token || steps.get-bot-token.outputs.token }}
           query: |
             mutation createRef($id: ID!, $name: String!, $oid: GitObjectID!) {
               createRef(input: {repositoryId: $id, name: $name, oid: $oid}) {
@@ -87,7 +81,7 @@ jobs:
         if: fromJson(steps.get-latest-ref.outputs.data).repository.ref != null
         uses: octokit/graphql-action@v2.3.2
         with:
-          token: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
+          token: ${{ secrets.token || steps.get-bot-token.outputs.token }}
           query: |
             mutation updateRef($id: ID!, $oid: GitObjectID!) {
               updateRef(input: {refId: $id, oid: $oid}) {
@@ -100,11 +94,11 @@ jobs:
       - name: Install
         uses: cluerise/actions/install@v3.0.0
         with:
-          manager: ${{ env.INPUT_MANAGER }}
+          manager: ${{ inputs.manager }}
 
       - name: Extract the changelog
         id: extract-changelog
-        run: ${{ env.INPUT_EXTRACT_CHANGELOG_COMMAND }}
+        run: ${{ inputs.extract-changelog-command }}
 
       - name: Create a new GitHub release
         uses: octokit/request-action@dad4362715b7fb2ddedf9772c8670824af564f0d
@@ -116,4 +110,4 @@ jobs:
           target_commitish: ${{ github.event.pull_request.merge_commit_sha }}
           name: Version ${{ env.RELEASE_VERSION }}
           body: ${{ toJSON(steps.extract-changelog.outputs.changelog) }}
-          GITHUB_TOKEN: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
+          GITHUB_TOKEN: ${{ secrets.token || steps.get-bot-token.outputs.token }}
