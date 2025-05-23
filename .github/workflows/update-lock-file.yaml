@@ -7,20 +7,18 @@ on:
   workflow_call:
     inputs:
       app-id:
-        description: GitHub app ID
         type: string
+        description: GitHub app ID
         required: false
       manager:
         type: string
         description: Package manager (pnpm, npm, or yarn)
-        default: pnpm
       node-version:
         type: string
-        description: 'Version Spec of the version to use. Examples: 12.x, 10.15.1, >=10.15.0'
+        description: 'Node.js version to use. Examples: 12.x, 10.15.1, >=10.15.0'
       node-version-file:
         type: string
-        description: 'File containing the version Spec of the version to use. Default: .nvmrc'
-        default: .nvmrc
+        description: File containing the Node.js version to use
       __external-call:
         type: boolean
         description: Do not use this input, it is an internal value to identify the workflow_call event
@@ -41,7 +39,7 @@ jobs:
       INPUT_APP_ID: ${{ inputs.app-id || vars.CLUERISE_PUBLIC_BOT_APP_ID }}
       INPUT_MANAGER: ${{ inputs.manager || 'pnpm' }}
       INPUT_NODE_VERSION: ${{ inputs.node-version }}
-      INPUT_NODE_VERSION_FILE: ${{ inputs.node-version-file || '.nvmrc' }}
+      INPUT_NODE_VERSION_FILE: ${{ inputs.node-version-file }}
       INPUT_EXTERNAL_CALL: ${{ inputs.__external-call || false }}
       SECRET_TOKEN: ${{ secrets.token }}
       SECRET_APP_PRIVATE_KEY: ${{ secrets.app-private-key || secrets.CLUERISE_PUBLIC_BOT_APP_PRIVATE_KEY }}
@@ -50,7 +48,6 @@ jobs:
       - name: Check required secrets
         if: env.SECRET_TOKEN == null && (env.INPUT_APP_ID == null || env.SECRET_APP_PRIVATE_KEY == null)
         run: exit 1
-        shell: bash
 
       - name: Get bot token (main)
         id: get-bot-token-main

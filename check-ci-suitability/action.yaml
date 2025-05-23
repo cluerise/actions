@@ -9,11 +9,18 @@ inputs:
 runs:
   using: composite
   steps:
+    - name: Set inputs
+      env:
+        token: ${{ inputs.token }}
+      run: |
+        echo "INPUT_TOKEN=${{ env.token }}" >> $GITHUB_ENV;
+      shell: bash
+
     - name: Get pull request info
       id: get-pr-info
       uses: octokit/graphql-action@v2.3.2
       with:
-        token: ${{ inputs.token }}
+        token: ${{ env.INPUT_TOKEN }}
         query: |
           query getPullRequestInfo($owner: String!, $repo: String!, $oid: GitObjectID!, $search: String!) {
             repository(owner: $owner, name: $repo) {
@@ -53,14 +60,14 @@ runs:
         merge-commit: ${{ fromJSON(steps.get-pr-info.outputs.data).repository.object.associatedPullRequests.nodes[0].mergeCommit != null }}
         dependabot-pr-number: ${{ fromJSON(steps.get-pr-info.outputs.data).search.nodes[0].number }}
       run: |
-        echo 'number: ${{ env.number }}';
-        echo 'author: ${{ env.author }}';
-        echo 'merge-commit: ${{ env.merge-commit }}';
-        echo 'dependabot-pr-number: ${{ env.dependabot-pr-number }}';
-        echo 'number=${{ env.number }}' >> $GITHUB_ENV;
-        echo 'author=${{ env.author }}' >> $GITHUB_ENV;
-        echo 'merge-commit=${{ env.merge-commit }}' >> $GITHUB_ENV;
-        echo 'dependabot-pr-number=${{ env.dependabot-pr-number }}' >> $GITHUB_ENV;
+        echo "number: ${{ env.number }}";
+        echo "author: ${{ env.author }}";
+        echo "merge-commit: ${{ env.merge-commit }}";
+        echo "dependabot-pr-number: ${{ env.dependabot-pr-number }}";
+        echo "number=${{ env.number }}" >> $GITHUB_ENV;
+        echo "author=${{ env.author }}" >> $GITHUB_ENV;
+        echo "merge-commit=${{ env.merge-commit }}" >> $GITHUB_ENV;
+        echo "dependabot-pr-number=${{ env.dependabot-pr-number }}" >> $GITHUB_ENV;
       shell: bash
 
     - name: Cancel workflow

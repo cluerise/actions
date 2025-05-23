@@ -11,26 +11,41 @@ inputs:
     description: 'Number of commits to fetch. 0 indicates all history for all branches and tags. Default: 1'
   manager:
     description: Package manager (pnpm, npm, or yarn)
-    default: pnpm
   node-version:
     description: 'Node.js version to use. Examples: 12.x, 10.15.1, >=10.15.0'
   node-version-file:
     description: File containing the Node.js version to use
-    default: .nvmrc
   registry-url:
     description: NPM package registry URL
 
 runs:
   using: composite
   steps:
+    - name: Set inputs
+      env:
+        ref: ${{ inputs.ref }}
+        fetch-depth: ${{ inputs.fetch-depth }}
+        manager: ${{ inputs.manager || 'pnpm' }}
+        node-version: ${{ inputs.node-version }}
+        node-version-file: ${{ inputs.node-version-file || '.nvmrc' }}
+        registry-url: ${{ inputs.registry-url }}
+      run: |
+        echo "INPUT_REF=${{ env.ref }}" >> $GITHUB_ENV;
+        echo "INPUT_FETCH_DEPTH=${{ env.fetch-depth }}" >> $GITHUB_ENV;
+        echo "INPUT_MANAGER=${{ env.manager }}" >> $GITHUB_ENV;
+        echo "INPUT_NODE_VERSION=${{ env.node-version }}" >> $GITHUB_ENV;
+        echo "INPUT_NODE_VERSION_FILE=${{ env.node-version-file }}" >> $GITHUB_ENV;
+        echo "INPUT_REGISTRY_URL=${{ env.registry-url }}" >> $GITHUB_ENV;
+      shell: bash
+
     - name: Checkout
       uses: actions/checkout@v4.2.2
       with:
-        ref: ${{ inputs.ref }}
-        fetch-depth: ${{ inputs.fetch-depth }}
+        ref: ${{ env.INPUT_REF }}
+        fetch-depth: ${{ env.INPUT_FETCH_DEPTH }}
 
     - name: Setup PNPM
-      if: inputs.manager == 'pnpm'
+      if: env.INPUT_MANAGER == 'pnpm'
       uses: pnpm/action-setup@v4.1.0
       with:
         run_install: false
@@ -38,22 +53,22 @@ runs:
     - name: Setup Node.js
       uses: actions/setup-node@v4.4.0
       with:
-        cache: ${{ inputs.manager }}
-        node-version: ${{ inputs.node-version }}
-        node-version-file: ${{ inputs.node-version-file }}
-        registry-url: ${{ inputs.registry-url }}
+        cache: ${{ env.INPUT_MANAGER }}
+        node-version: ${{ env.INPUT_NODE_VERSION }}
+        node-version-file: ${{ env.INPUT_NODE_VERSION_FILE }}
+        registry-url: ${{ env.INPUT_REGISTRY_URL }}
 
     - name: Install PNPM dependencies
-      if: inputs.manager == 'pnpm'
+      if: env.INPUT_MANAGER == 'pnpm'
       run: pnpm install
       shell: bash
 
     - name: Install NPM dependencies
-      if: inputs.manager == 'npm'
+      if: env.INPUT_MANAGER == 'npm'
       run: npm ci
       shell: bash
 
     - name: Install Yarn dependencies
-      if: inputs.manager == 'yarn'
+      if: env.INPUT_MANAGER == 'yarn'
       run: yarn
       shell: bash

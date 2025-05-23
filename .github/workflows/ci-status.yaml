@@ -4,8 +4,8 @@ on:
   workflow_call:
     inputs:
       app-id:
-        description: GitHub app ID
         type: string
+        description: GitHub app ID
         required: false
     secrets:
       token:
@@ -25,20 +25,22 @@ jobs:
     env:
       CI_STATE: pending
       CI_DESCRIPTION: Waiting
+      INPUT_APP_ID: ${{ inputs.app-id }}
+      SECRET_TOKEN: ${{ secrets.token }}
+      SECRET_APP_PRIVATE_KEY: ${{ secrets.app-private-key }}
 
     steps:
       - name: Check required secrets
-        if: secrets.token == null && (inputs.app-id == null || secrets.app-private-key == null)
+        if: env.SECRET_TOKEN == null && (env.INPUT_APP_ID == null || env.SECRET_APP_PRIVATE_KEY == null)
         run: exit 1
-        shell: bash
 
       - name: Get bot token
         id: get-bot-token
-        if: secrets.token == null
+        if: env.SECRET_TOKEN == null
         uses: cluerise/actions/get-github-app-token@v4.0.0
         with:
-          app-id: ${{ inputs.app-id }}
-          app-private-key: ${{ secrets.app-private-key }}
+          app-id: ${{ env.INPUT_APP_ID }}
+          app-private-key: ${{ env.SECRET_APP_PRIVATE_KEY }}
 
       - name: Set initial state
         if: github.event.action == 'requested'
@@ -69,4 +71,4 @@ jobs:
           state: ${{ env.CI_STATE }}
           description: ${{ env.CI_DESCRIPTION }}
           target_url: ${{ github.event.workflow_run.html_url }}
-          GITHUB_TOKEN: ${{ secrets.token || steps.get-bot-token.outputs.token }}
+          GITHUB_TOKEN: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
