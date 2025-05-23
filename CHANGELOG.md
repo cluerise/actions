@@ -1,5 +1,15 @@
 # Changelog
 
+## [4.0.0](https://github.com/cluerise/actions/compare/v3.0.1...v4.0.0) (2025-05-23)
+
+### ⚠ BREAKING CHANGES !!
+
+- GitHub app params as inputs.app-id & secrets.app-private-key (#323)
+
+### Features
+
+- GitHub app params as inputs.app-id & secrets.app-private-key ([#323](https://github.com/cluerise/actions/issues/323)) ([7234009](https://github.com/cluerise/actions/commit/7234009ec8298166d0d1ac95c90b4b6bcd7c5f75))
+
 ## [3.0.1](https://github.com/cluerise/actions/compare/v3.0.0...v3.0.1) (2025-05-23)
 
 ### Fixes

@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: Install
-        uses: cluerise/actions/install@v3.0.1
+        uses: cluerise/actions/install@v4.0.0
         with:
           manager: ${{ inputs.manager }}
 

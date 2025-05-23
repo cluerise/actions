@@ -35,7 +35,7 @@ jobs:
       - name: Get bot token
         id: get-bot-token
         if: secrets.token == null
-        uses: cluerise/actions/get-github-app-token@v3.0.1
+        uses: cluerise/actions/get-github-app-token@v4.0.0
         with:
           app-id: ${{ inputs.app-id }}
           app-private-key: ${{ secrets.app-private-key }}
