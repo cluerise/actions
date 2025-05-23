@@ -41,7 +41,7 @@ jobs:
       - name: Get bot token
         id: get-bot-token
         if: env.SECRET_TOKEN == null
-        uses: cluerise/actions/get-github-app-token@v4.0.0
+        uses: cluerise/actions/get-github-app-token@v4.0.1
         with:
           app-id: ${{ env.INPUT_APP_ID }}
           app-private-key: ${{ env.SECRET_APP_PRIVATE_KEY }}
@@ -97,7 +97,7 @@ jobs:
           oid: ${{ github.event.pull_request.merge_commit_sha }}
 
       - name: Install
-        uses: cluerise/actions/install@v4.0.0
+        uses: cluerise/actions/install@v4.0.1
         with:
           manager: ${{ env.INPUT_MANAGER }}
 
