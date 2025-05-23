@@ -1,0 +1,18 @@
+name: Lint PR title
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+
+jobs:
+  lint-pr-title:
+    name: Lint PR title
+    runs-on: ubuntu-latest
+    if: github.event.action != 'opened' || github.event.pull_request.user.login != 'dependabot[bot]'
+
+    steps:
+      - name: Install
+        uses: cluerise/actions/install@main
+
+      - name: Lint title
+        run: echo -n "${{ github.event.pull_request.title }}" | pnpm run lint commit
