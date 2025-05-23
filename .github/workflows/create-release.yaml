@@ -3,6 +3,10 @@ name: Create release
 on:
   workflow_call:
     inputs:
+      app-id:
+        description: GitHub app ID
+        type: string
+        required: false
       manager:
         type: string
         description: Package manager (pnpm, npm, or yarn)
@@ -14,10 +18,7 @@ on:
       token:
         description: GitHub access token
         required: false
-      app-id:
-        description: GitHub app ID
-        required: false
-      private-key:
+      app-private-key:
         description: GitHub app private key
         required: false
 
@@ -29,7 +30,7 @@ jobs:
 
     steps:
       - name: Check required secrets
-        if: secrets.token == null && (secrets.app-id == null || secrets.private-key == null)
+        if: secrets.token == null && (inputs.app-id == null || secrets.app-private-key == null)
         run: exit 1
         shell: bash
 
@@ -38,8 +39,8 @@ jobs:
         if: secrets.token == null
         uses: cluerise/actions/get-github-app-token@v3.0.1
         with:
-          app-id: ${{ secrets.app-id }}
-          private-key: ${{ secrets.private-key }}
+          app-id: ${{ inputs.app-id }}
+          app-private-key: ${{ secrets.app-private-key }}
 
       - name: Set the release version env
         run: echo "RELEASE_VERSION=$(echo '${{ github.head_ref }}' | cut -d'-' -f 2)" >> $GITHUB_ENV

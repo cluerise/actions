@@ -4,6 +4,10 @@ on:
   workflow_dispatch:
   workflow_call:
     inputs:
+      app-id:
+        description: GitHub app ID
+        type: string
+        required: false
       manager:
         type: string
         description: Package manager (pnpm, npm, or yarn)
@@ -19,10 +23,7 @@ on:
       token:
         description: GitHub access token
         required: false
-      app-id:
-        description: GitHub app ID
-        required: false
-      private-key:
+      app-private-key:
         description: GitHub app private key
         required: false
 
@@ -31,16 +32,16 @@ jobs:
     name: Create release PR
     runs-on: ubuntu-latest
     env:
+      INPUT_APP_ID: ${{ inputs.app-id || vars.CLUERISE_PUBLIC_BOT_APP_ID }}
       INPUT_MANAGER: ${{ inputs.manager }}
       INPUT_RELEASE_COMMAND: ${{ inputs.release-command || 'pnpm run release create' }}
       INPUT_EXTERNAL_CALL: ${{ inputs.__external-call || false }}
       SECRET_TOKEN: ${{ secrets.token }}
-      SECRET_APP_ID: ${{ secrets.app-id || vars.CLUERISE_PUBLIC_BOT_APP_ID }}
-      SECRET_PRIVATE_KEY: ${{ secrets.private-key || secrets.CLUERISE_PUBLIC_BOT_PRIVATE_KEY }}
+      SECRET_APP_PRIVATE_KEY: ${{ secrets.app-private-key || secrets.CLUERISE_PUBLIC_BOT_APP_PRIVATE_KEY }}
 
     steps:
       - name: Check required secrets
-        if: env.SECRET_TOKEN == null && (env.SECRET_APP_ID == null || env.SECRET_PRIVATE_KEY == null)
+        if: env.SECRET_TOKEN == null && (env.INPUT_APP_ID == null || env.SECRET_APP_PRIVATE_KEY == null)
         run: exit 1
         shell: bash
 
@@ -49,16 +50,16 @@ jobs:
         if: env.INPUT_EXTERNAL_CALL == 'false' && env.SECRET_TOKEN == null
         uses: cluerise/actions/get-github-app-token@main
         with:
-          app-id: ${{ env.SECRET_APP_ID }}
-          private-key: ${{ env.SECRET_PRIVATE_KEY }}
+          app-id: ${{ env.INPUT_APP_ID }}
+          app-private-key: ${{ env.SECRET_APP_PRIVATE_KEY }}
 
       - name: Get bot token (version)
         id: get-bot-token-version
         if: env.INPUT_EXTERNAL_CALL == 'true' && env.SECRET_TOKEN == null
         uses: cluerise/actions/get-github-app-token@v3.0.1
         with:
-          app-id: ${{ env.SECRET_APP_ID }}
-          private-key: ${{ env.SECRET_PRIVATE_KEY }}
+          app-id: ${{ env.INPUT_APP_ID }}
+          app-private-key: ${{ env.SECRET_APP_PRIVATE_KEY }}
 
       - name: Set bot token
         run: echo "BOT_TOKEN=${{ steps.get-bot-token-main.outputs.token || steps.get-bot-token-version.outputs.token }}" >> $GITHUB_ENV
