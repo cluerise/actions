@@ -1,5 +1,11 @@
 # Changelog
 
+## [3.0.1](https://github.com/cluerise/actions/compare/v3.0.0...v3.0.1) (2025-05-23)
+
+### Fixes
+
+- Separate workflows which run on main ([#320](https://github.com/cluerise/actions/issues/320)) ([0f11d44](https://github.com/cluerise/actions/commit/0f11d44b6e6f079b7cad38ae58c7eb8043b955d1))
+
 ## [3.0.0](https://github.com/cluerise/actions/compare/v2.2.1...v3.0.0) (2025-05-23)
 
 ### ⚠ BREAKING CHANGES !!
