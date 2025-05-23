@@ -23,7 +23,9 @@ runs:
         app-private-key: ${{ inputs.app-private-key }}
       run: |
         echo "INPUT_APP_ID=${{ env.app-id }}" >> $GITHUB_ENV;
-        echo "INPUT_APP_PRIVATE_KEY=${{ env.app-private-key }}" >> $GITHUB_ENV;
+        echo "INPUT_APP_PRIVATE_KEY<<EOF_APP_PRIVATE_KEY" >> $GITHUB_ENV &&
+        echo "${{ env.app-private-key }}" >> $GITHUB_ENV &&
+        echo "EOF_APP_PRIVATE_KEY" >> $GITHUB_ENV;
       shell: bash
 
     - name: Install Octokit
