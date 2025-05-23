@@ -1,5 +1,13 @@
 # Changelog
 
+## [4.0.1](https://github.com/cluerise/actions/compare/v4.0.0...v4.0.1) (2025-05-23)
+
+### Fixes
+
+- Input defaults ([#325](https://github.com/cluerise/actions/issues/325)) ([dd1e4e3](https://github.com/cluerise/actions/commit/dd1e4e385c723fdc854ef6222b58562681cb52bf))
+- Multiline input ([#326](https://github.com/cluerise/actions/issues/326)) ([92b3f17](https://github.com/cluerise/actions/commit/92b3f17686f4cfe7b00a436eabcbd435f3b8661f))
+- PR labels ([#328](https://github.com/cluerise/actions/issues/328)) ([ec87e31](https://github.com/cluerise/actions/commit/ec87e317dfeda60f8deb52efb5df9da5b5d368c5))
+
 ## [4.0.0](https://github.com/cluerise/actions/compare/v3.0.1...v4.0.0) (2025-05-23)
 
 ### ⚠ BREAKING CHANGES !!
