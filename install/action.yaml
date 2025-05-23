@@ -13,9 +13,9 @@ inputs:
     description: Package manager (pnpm, npm, or yarn)
     default: pnpm
   node-version:
-    description: 'Version Spec of the version to use. Examples: 12.x, 10.15.1, >=10.15.0'
+    description: 'Node.js version to use. Examples: 12.x, 10.15.1, >=10.15.0'
   node-version-file:
-    description: File containing the version Spec of the version to use
+    description: File containing the Node.js version to use
     default: .nvmrc
   registry-url:
     description: NPM package registry URL
