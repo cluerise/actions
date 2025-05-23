@@ -9,7 +9,6 @@ on:
       command:
         type: string
         description: Lint command to run
-        default: pnpm run lint commit
 
 jobs:
   lint-merge-commit:
@@ -18,6 +17,9 @@ jobs:
     concurrency:
       group: lint-merge-commit-${{ github.event.pull_request.number }}
       cancel-in-progress: true
+    env:
+      INPUT_MANAGER: ${{ inputs.manager }}
+      INPUT_COMMAND: ${{ inputs.command || 'pnpm run lint commit' }}
 
     steps:
       - name: Check auto merge
@@ -28,10 +30,10 @@ jobs:
       - name: Install
         uses: cluerise/actions/install@v4.0.0
         with:
-          manager: ${{ inputs.manager }}
+          manager: ${{ env.INPUT_MANAGER }}
 
       - name: Lint commit message
-        run: echo -en "${{ github.event.pull_request.auto_merge.commit_title }}\n\n${{ github.event.pull_request.auto_merge.commit_message }}" | ${{ inputs.command }}
+        run: echo -en "${{ github.event.pull_request.auto_merge.commit_title }}\n\n${{ github.event.pull_request.auto_merge.commit_message }}" | ${{ env.INPUT_COMMAND }}
 
       - name: Lint commit title
         if: github.event.pull_request.auto_merge.commit_title != format('{0} (#{1})', github.event.pull_request.title, github.event.number)

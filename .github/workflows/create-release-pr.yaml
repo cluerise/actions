@@ -5,8 +5,8 @@ on:
   workflow_call:
     inputs:
       app-id:
-        description: GitHub app ID
         type: string
+        description: GitHub app ID
         required: false
       manager:
         type: string
@@ -14,7 +14,6 @@ on:
       release-command:
         type: string
         description: Release command to run
-        default: pnpm run release create
       __external-call:
         type: boolean
         description: Do not use this input, it is an internal value to identify the workflow_call event
@@ -43,7 +42,6 @@ jobs:
       - name: Check required secrets
         if: env.SECRET_TOKEN == null && (env.INPUT_APP_ID == null || env.SECRET_APP_PRIVATE_KEY == null)
         run: exit 1
-        shell: bash
 
       - name: Get bot token (main)
         id: get-bot-token-main

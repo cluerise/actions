@@ -17,6 +17,15 @@ outputs:
 runs:
   using: composite
   steps:
+    - name: Set inputs
+      env:
+        app-id: ${{ inputs.app-id }}
+        app-private-key: ${{ inputs.app-private-key }}
+      run: |
+        echo "INPUT_APP_ID=${{ env.app-id }}" >> $GITHUB_ENV;
+        echo "INPUT_APP_PRIVATE_KEY=${{ env.app-private-key }}" >> $GITHUB_ENV;
+      shell: bash
+
     - name: Install Octokit
       run: npm install octokit && npm pkg set type=module
       shell: bash
@@ -51,5 +60,5 @@ runs:
 
           core.setSecret(accessToken);
           core.setOutput('token', accessToken);
-        app-id: ${{ inputs.app-id }}
-        app-private-key: ${{ inputs.app-private-key }}
+        app-id: ${{ env.INPUT_APP_ID }}
+        app-private-key: ${{ env.INPUT_APP_PRIVATE_KEY }}
