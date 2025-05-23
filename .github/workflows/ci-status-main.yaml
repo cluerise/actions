@@ -1,17 +1,10 @@
-name: CI status
+name: CI status (main)
 
 on:
-  workflow_call:
-    secrets:
-      token:
-        description: GitHub access token
-        required: false
-      app-id:
-        description: GitHub app ID
-        required: false
-      private-key:
-        description: GitHub app private key
-        required: false
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches: main
 
 jobs:
   send-status:
@@ -23,23 +16,14 @@ jobs:
     env:
       CI_STATE: pending
       CI_DESCRIPTION: Waiting
-      SECRET_TOKEN: ${{ secrets.token }}
-      SECRET_APP_ID: ${{ secrets.app-id }}
-      SECRET_PRIVATE_KEY: ${{ secrets.private-key }}
 
     steps:
-      - name: Check required secrets
-        if: env.SECRET_TOKEN == null && (env.SECRET_APP_ID == null || env.SECRET_PRIVATE_KEY == null)
-        run: exit 1
-        shell: bash
-
       - name: Get bot token
         id: get-bot-token
-        if: env.SECRET_TOKEN == null
-        uses: cluerise/actions/get-github-app-token@v3.0.0
+        uses: cluerise/actions/get-github-app-token@main
         with:
-          app-id: ${{ env.SECRET_APP_ID }}
-          private-key: ${{ env.SECRET_PRIVATE_KEY }}
+          app-id: ${{ vars.CLUERISE_PUBLIC_BOT_APP_ID }}
+          private-key: ${{ secrets.CLUERISE_PUBLIC_BOT_PRIVATE_KEY }}
 
       - name: Set initial state
         if: github.event.action == 'requested'
@@ -70,4 +54,4 @@ jobs:
           state: ${{ env.CI_STATE }}
           description: ${{ env.CI_DESCRIPTION }}
           target_url: ${{ github.event.workflow_run.html_url }}
-          GITHUB_TOKEN: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
+          GITHUB_TOKEN: ${{ steps.get-bot-token.outputs.token }}
