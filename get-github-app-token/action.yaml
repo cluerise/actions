@@ -5,7 +5,7 @@ inputs:
   app-id:
     description: GitHub app ID
     required: true
-  private-key:
+  app-private-key:
     description: GitHub app private key
     required: true
 
@@ -30,7 +30,7 @@ runs:
 
           const app = new App({
             appId: core.getInput('app-id', { required: true }),
-            privateKey: core.getInput('private-key', { required: true }),
+            privateKey: core.getInput('app-private-key', { required: true }),
             Octokit: Octokit.defaults({
               request: {
                 fetch
@@ -52,4 +52,4 @@ runs:
           core.setSecret(accessToken);
           core.setOutput('token', accessToken);
         app-id: ${{ inputs.app-id }}
-        private-key: ${{ inputs.private-key }}
+        app-private-key: ${{ inputs.app-private-key }}

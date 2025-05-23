@@ -15,7 +15,7 @@ jobs:
         uses: cluerise/actions/get-github-app-token@main
         with:
           app-id: ${{ vars.CLUERISE_PUBLIC_BOT_APP_ID }}
-          private-key: ${{ secrets.CLUERISE_PUBLIC_BOT_PRIVATE_KEY }}
+          app-private-key: ${{ secrets.CLUERISE_PUBLIC_BOT_APP_PRIVATE_KEY }}
 
       - name: Assign author
         uses: cluerise/actions/assign-pr-author@main
