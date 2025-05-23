@@ -1,15 +1,8 @@
 name: Lint merge commit
 
 on:
-  workflow_call:
-    inputs:
-      manager:
-        type: string
-        description: Package manager (pnpm, npm, or yarn)
-      command:
-        type: string
-        description: Lint command to run
-        default: pnpm run lint commit
+  pull_request:
+    types: [auto_merge_enabled, auto_merge_disabled, edited, synchronize]
 
 jobs:
   lint-merge-commit:
@@ -18,9 +11,6 @@ jobs:
     concurrency:
       group: lint-merge-commit-${{ github.event.pull_request.number }}
       cancel-in-progress: true
-    env:
-      INPUT_MANAGER: ${{ inputs.manager }}
-      INPUT_COMMAND: ${{ inputs.command || 'pnpm run lint commit' }}
 
     steps:
       - name: Check auto merge
@@ -29,12 +19,10 @@ jobs:
           echo "Error: Auto merge is not enabled" && exit 1
 
       - name: Install
-        uses: cluerise/actions/install@v2.2.1
-        with:
-          manager: ${{ env.INPUT_MANAGER }}
+        uses: cluerise/actions/install@main
 
       - name: Lint commit message
-        run: echo -en "${{ github.event.pull_request.auto_merge.commit_title }}\n\n${{ github.event.pull_request.auto_merge.commit_message }}" | ${{ env.INPUT_COMMAND }}
+        run: echo -en "${{ github.event.pull_request.auto_merge.commit_title }}\n\n${{ github.event.pull_request.auto_merge.commit_message }}" | pnpm run lint commit
 
       - name: Lint commit title
         if: github.event.pull_request.auto_merge.commit_title != format('{0} (#{1})', github.event.pull_request.title, github.event.number)

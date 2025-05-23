@@ -1,8 +1,6 @@
 name: Lint PR title
 
 on:
-  pull_request:
-    types: [opened, edited, synchronize]
   workflow_call:
     inputs:
       manager:
@@ -12,10 +10,6 @@ on:
         type: string
         description: Lint command to run
         default: pnpm run lint commit
-      __external-call:
-        type: boolean
-        description: Do not use this input, it is an internal value to identify the workflow_call event
-        default: true
 
 jobs:
   lint-pr-title:
@@ -25,15 +19,9 @@ jobs:
     env:
       INPUT_MANAGER: ${{ inputs.manager }}
       INPUT_COMMAND: ${{ inputs.command || 'pnpm run lint commit' }}
-      INPUT_EXTERNAL_CALL: ${{ inputs.__external-call || false }}
 
     steps:
-      - name: Install (main)
-        if: env.INPUT_EXTERNAL_CALL == 'false'
-        uses: cluerise/actions/install@main
-
-      - name: Install (version)
-        if: env.INPUT_EXTERNAL_CALL == 'true'
+      - name: Install
         uses: cluerise/actions/install@v2.2.1
         with:
           manager: ${{ env.INPUT_MANAGER }}
