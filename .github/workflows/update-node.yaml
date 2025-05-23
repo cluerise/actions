@@ -62,7 +62,7 @@ jobs:
       - name: Get bot token (version)
         id: get-bot-token-version
         if: env.INPUT_EXTERNAL_CALL == 'true' && env.SECRET_TOKEN == null
-        uses: cluerise/actions/get-github-app-token@v2.2.1
+        uses: cluerise/actions/get-github-app-token@v3.0.0
         with:
           app-id: ${{ env.SECRET_APP_ID }}
           private-key: ${{ env.SECRET_PRIVATE_KEY }}
@@ -76,7 +76,7 @@ jobs:
 
       - name: Install (version)
         if: env.INPUT_EXTERNAL_CALL == 'true'
-        uses: cluerise/actions/install@v2.2.1
+        uses: cluerise/actions/install@v3.0.0
         with:
           manager: ${{ env.INPUT_MANAGER }}
           node-version: ${{ env.INPUT_NODE_VERSION }}
