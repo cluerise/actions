@@ -1,0 +1,39 @@
+name: Rebase PR
+description: Rebase a pull request
+
+inputs:
+  token:
+    description: GitHub token to use for the API call
+    required: true
+  pr-id:
+    description: ID of the pull request to rebase
+    required: false
+
+runs:
+  using: composite
+  steps:
+    - name: Set inputs
+      env:
+        token: ${{ inputs.token }}
+        pr-id: ${{ inputs.pr-id || github.event.issue.node_id }}
+      run: |
+        {
+          echo "INPUT_TOKEN=${{ env.token }}"
+          echo "INPUT_PR_ID=${{ env.pr-id }}"
+        } >> $GITHUB_ENV
+      shell: bash
+
+    - name: Rebase PR
+      uses: octokit/graphql-action@v2.3.2
+      with:
+        token: ${{ env.INPUT_TOKEN }}
+        query: |
+          mutation RebasePullRequest($id: ID!) {
+            updatePullRequestBranch(input: {
+              pullRequestId: $id,
+              updateMethod: REBASE
+            }) {
+              clientMutationId
+            }
+          }
+        id: ${{ env.INPUT_PR_ID }}
