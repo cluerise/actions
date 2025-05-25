@@ -24,3 +24,4 @@ jobs:
         uses: cluerise/actions/rebase-pr@main
         with:
           token: ${{ steps.get-bot-token.outputs.token }}
+          squash: true
