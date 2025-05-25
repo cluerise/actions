@@ -24,7 +24,7 @@ runs:
       with:
         token: ${{ env.INPUT_TOKEN }}
         query: |
-          mutation addAssigneesToAssignable($id: ID!, $assignee: ID!) {
+          mutation AddAssigneesToAssignable($id: ID!, $assignee: ID!) {
             addAssigneesToAssignable(input: {assignableId: $id, assigneeIds: [$assignee]}) {
               clientMutationId
             }

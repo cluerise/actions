@@ -37,12 +37,15 @@ jobs:
           dependency-approved: >-
             ${{
               (
-                startsWith(github.head_ref, 'dependabot-npm_and_yarn-cluerise-tools-') ||
-                startsWith(github.head_ref, 'dependabot-npm_and_yarn-typescript-') ||
+                github.head_ref == 'deps-dev-@cluerise/tools' ||
+                github.head_ref == 'deps-dev-@types/node' ||
+                github.head_ref == 'deps-dev-typescript' ||
+
                 startsWith(github.head_ref, 'dependabot-github_actions-octokit-graphql-action-') ||
                 startsWith(github.head_ref, 'dependabot-github_actions-assign-pr-author-octokit-graphql-action-') ||
                 startsWith(github.head_ref, 'dependabot-github_actions-auto-merge-pr-octokit-graphql-action-') ||
                 startsWith(github.head_ref, 'dependabot-github_actions-check-ci-suitability-octokit-graphql-action-') ||
+                startsWith(github.head_ref, 'dependabot-github_actions-rebase-pr-octokit-graphql-action-') ||
                 startsWith(github.head_ref, 'dependabot-github_actions-review-pr-octokit-graphql-action-') ||
                 startsWith(github.head_ref, 'dependabot-github_actions-actions-checkout-') ||
                 startsWith(github.head_ref, 'dependabot-github_actions-install-actions-checkout-') ||

@@ -35,7 +35,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           query: |
-            query closingIssuesReferences($owner: String!, $repo: String!, $number: Int!) {
+            query ClosingIssuesReferences($owner: String!, $repo: String!, $number: Int!) {
               repository(owner: $owner, name: $repo) {
                 pullRequest(number: $number) {
                   closingIssuesReferences(first: 100) {

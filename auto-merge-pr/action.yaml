@@ -42,7 +42,7 @@ runs:
       with:
         token: ${{ env.INPUT_TOKEN }}
         query: |
-          mutation enablePullRequestAutoMerge($id: ID!, $message: String!) {
+          mutation EnablePullRequestAutoMerge($id: ID!, $message: String!) {
             enablePullRequestAutoMerge(input: {pullRequestId: $id, commitHeadline: $message, commitBody: "", mergeMethod: SQUASH}) {
               clientMutationId
             }
