@@ -45,20 +45,26 @@ jobs:
       - name: Set initial state
         if: github.event.action == 'requested'
         run: |
-          echo "CI_STATE=pending" >> $GITHUB_ENV &&
-          echo "CI_DESCRIPTION=In progress" >> $GITHUB_ENV
+          {
+            echo "CI_STATE=pending"
+            echo "CI_DESCRIPTION=In progress"
+          } >> $GITHUB_ENV
 
       - name: Set success state
         if: github.event.action == 'completed' && github.event.workflow_run.conclusion == 'success'
         run: |
-          echo "CI_STATE=success" >> $GITHUB_ENV &&
-          echo "CI_DESCRIPTION=Passed" >> $GITHUB_ENV
+          {
+            echo "CI_STATE=success"
+            echo "CI_DESCRIPTION=Passed"
+          } >> $GITHUB_ENV
 
       - name: Set failure state
         if: github.event.action == 'completed' && github.event.workflow_run.conclusion == 'failure'
         run: |
-          echo "CI_STATE=failure" >> $GITHUB_ENV &&
-          echo "CI_DESCRIPTION=Failed" >> $GITHUB_ENV
+          {
+            echo "CI_STATE=failure"
+            echo "CI_DESCRIPTION=Failed"
+          } >> $GITHUB_ENV
 
       - name: Send status
         uses: octokit/request-action@dad4362715b7fb2ddedf9772c8670824af564f0d

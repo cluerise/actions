@@ -13,7 +13,9 @@ runs:
       env:
         token: ${{ inputs.token }}
       run: |
-        echo "INPUT_TOKEN=${{ env.token }}" >> $GITHUB_ENV;
+        {
+          echo "INPUT_TOKEN=${{ env.token }}"
+        } >> $GITHUB_ENV
       shell: bash
 
     - name: Assign author

@@ -13,7 +13,9 @@ runs:
       env:
         token: ${{ inputs.token }}
       run: |
-        echo "INPUT_TOKEN=${{ env.token }}" >> $GITHUB_ENV;
+        {
+          echo "INPUT_TOKEN=${{ env.token }}"
+        } >> $GITHUB_ENV
       shell: bash
 
     - name: Get pull request info
@@ -64,10 +66,12 @@ runs:
         echo "author: ${{ env.author }}";
         echo "merge-commit: ${{ env.merge-commit }}";
         echo "dependabot-pr-number: ${{ env.dependabot-pr-number }}";
-        echo "number=${{ env.number }}" >> $GITHUB_ENV;
-        echo "author=${{ env.author }}" >> $GITHUB_ENV;
-        echo "merge-commit=${{ env.merge-commit }}" >> $GITHUB_ENV;
-        echo "dependabot-pr-number=${{ env.dependabot-pr-number }}" >> $GITHUB_ENV;
+        {
+          echo "number=${{ env.number }}"
+          echo "author=${{ env.author }}"
+          echo "merge-commit=${{ env.merge-commit }}"
+          echo "dependabot-pr-number=${{ env.dependabot-pr-number }}"
+        } >> $GITHUB_ENV
       shell: bash
 
     - name: Cancel workflow

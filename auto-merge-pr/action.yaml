@@ -19,9 +19,11 @@ runs:
         title: ${{ inputs.title || github.event.pull_request.title }}
         trusted-bot: ${{ inputs.trusted-bot }}
       run: |
-        echo "INPUT_TOKEN=${{ env.token }}" >> $GITHUB_ENV;
-        echo "INPUT_TITLE=${{ env.title }}" >> $GITHUB_ENV;
-        echo "INPUT_TRUSTED_BOT=${{ env.trusted-bot }}" >> $GITHUB_ENV;
+        {
+          echo "INPUT_TOKEN=${{ env.token }}"
+          echo "INPUT_TITLE=${{ env.title }}"
+          echo "INPUT_TRUSTED_BOT=${{ env.trusted-bot }}"
+        } >> $GITHUB_ENV
       shell: bash
 
     - name: Auto-merge
