@@ -55,7 +55,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           query: |
-            query getRef($owner: String!, $repo: String!, $name: String!) {
+            query GetRef($owner: String!, $repo: String!, $name: String!) {
               repository(owner: $owner, name: $repo) {
                 id
                 ref(qualifiedName: $name) {
@@ -73,7 +73,7 @@ jobs:
         with:
           token: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
           query: |
-            mutation createRef($id: ID!, $name: String!, $oid: GitObjectID!) {
+            mutation CreateRef($id: ID!, $name: String!, $oid: GitObjectID!) {
               createRef(input: {repositoryId: $id, name: $name, oid: $oid}) {
                 clientMutationId
               }
@@ -88,7 +88,7 @@ jobs:
         with:
           token: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
           query: |
-            mutation updateRef($id: ID!, $oid: GitObjectID!) {
+            mutation UpdateRef($id: ID!, $oid: GitObjectID!) {
               updateRef(input: {refId: $id, oid: $oid}) {
                 clientMutationId
               }

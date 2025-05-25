@@ -24,7 +24,7 @@ runs:
       with:
         token: ${{ env.INPUT_TOKEN }}
         query: |
-          query getPullRequestInfo($owner: String!, $repo: String!, $oid: GitObjectID!, $search: String!) {
+          query GetPullRequestInfo($owner: String!, $repo: String!, $oid: GitObjectID!, $search: String!) {
             repository(owner: $owner, name: $repo) {
               object(oid: $oid) {
                 ... on Commit {

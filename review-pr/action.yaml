@@ -49,6 +49,7 @@ runs:
           github.event.pull_request.user.login == env.INPUT_TRUSTED_USER ||
           (
             github.event.pull_request.user.login == env.INPUT_TRUSTED_BOT &&
+            (!startsWith(github.head_ref, 'deps-') || env.INPUT_DEPENDENCY_APPROVED == 'true') &&
             !startsWith(github.head_ref, 'release-')
           ) ||
           (
@@ -60,7 +61,7 @@ runs:
       with:
         token: ${{ env.INPUT_TOKEN }}
         query: |
-          mutation addPullRequestReview($id: ID!) {
+          mutation AddPullRequestReview($id: ID!) {
             addPullRequestReview(input: {pullRequestId: $id, event: APPROVE}) {
               clientMutationId
             }
@@ -73,7 +74,7 @@ runs:
       with:
         token: ${{ env.INPUT_TOKEN }}
         query: |
-          query getUserId($login: String!) {
+          query GetUserId($login: String!) {
             user(login: $login) {
               id
             }
@@ -90,7 +91,10 @@ runs:
         (
           (
             github.event.pull_request.user.login == env.INPUT_TRUSTED_BOT &&
-            startsWith(github.head_ref, 'release-')
+            (
+              (startsWith(github.head_ref, 'deps-') && env.INPUT_DEPENDENCY_APPROVED == 'false') ||
+              startsWith(github.head_ref, 'release-')
+            )
           ) ||
           (
             github.event.pull_request.user.login == 'dependabot[bot]' &&
@@ -101,7 +105,7 @@ runs:
       with:
         token: ${{ env.INPUT_TOKEN }}
         query: |
-          mutation requestReviews($id: ID!, $user: ID!) {
+          mutation RequestReviews($id: ID!, $user: ID!) {
             requestReviews(input: {pullRequestId: $id, userIds: [$user]}) {
               clientMutationId
             }
