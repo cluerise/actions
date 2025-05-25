@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.2.0](https://github.com/cluerise/actions/compare/v4.1.1...v4.2.0) (2025-05-25)
+
+### Features
+
+- Squash during rebase ([#338](https://github.com/cluerise/actions/issues/338)) ([617b318](https://github.com/cluerise/actions/commit/617b318fe5153550de83c1e92b29c7b03da0c182))
+
 ## [4.1.1](https://github.com/cluerise/actions/compare/v4.1.0...v4.1.1) (2025-05-25)
 
 ### Fixes
