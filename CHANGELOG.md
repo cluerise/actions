@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.2.1](https://github.com/cluerise/actions/compare/v4.2.0...v4.2.1) (2025-05-25)
+
+### Fixes
+
+- Rebase reset origin ([#340](https://github.com/cluerise/actions/issues/340)) ([1e4735d](https://github.com/cluerise/actions/commit/1e4735dae6f69b6b2bf93bbef50aea88ecc13eb9))
+
 ## [4.2.0](https://github.com/cluerise/actions/compare/v4.1.1...v4.2.0) (2025-05-25)
 
 ### Features
