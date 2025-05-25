@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.1.1](https://github.com/cluerise/actions/compare/v4.1.0...v4.1.1) (2025-05-25)
+
+### Fixes
+
+- Approved deps by a trusted bot ([#336](https://github.com/cluerise/actions/issues/336)) ([8440607](https://github.com/cluerise/actions/commit/84406076a313575707ce23782bf7a0c59393455d))
+
 ## [4.1.0](https://github.com/cluerise/actions/compare/v4.0.1...v4.1.0) (2025-05-25)
 
 ### Features
