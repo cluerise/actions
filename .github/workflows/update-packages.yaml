@@ -56,7 +56,7 @@ jobs:
 
       - name: Install (version)
         if: env.INPUT_EXTERNAL_CALL == 'true'
-        uses: cluerise/actions/install@v4.2.0
+        uses: cluerise/actions/install@v4.2.1
 
       - name: Get outdated packages
         id: get-outdated-packages
@@ -180,7 +180,7 @@ jobs:
       - name: Get bot token (version)
         id: get-bot-token-version
         if: env.INPUT_EXTERNAL_CALL == 'true' && env.SECRET_TOKEN == null
-        uses: cluerise/actions/get-github-app-token@v4.2.0
+        uses: cluerise/actions/get-github-app-token@v4.2.1
         with:
           app-id: ${{ env.INPUT_APP_ID }}
           app-private-key: ${{ env.SECRET_APP_PRIVATE_KEY }}
@@ -194,7 +194,7 @@ jobs:
 
       - name: Install (version)
         if: env.INPUT_EXTERNAL_CALL == 'true'
-        uses: cluerise/actions/install@v4.2.0
+        uses: cluerise/actions/install@v4.2.1
 
       - name: Update packages
         run: pnpm update ${{ join(matrix.update.versionedPackageNames, ' ') }}
