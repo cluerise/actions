@@ -77,7 +77,7 @@ jobs:
               const groupedPackageNames = new Set();
 
               for (const groupName in groups) {
-                groupedPackages[groupName] = groups[groupName].reduce(
+                const group = groups[groupName].reduce(
                   (acc, packageName) => {
                     if (packages[packageName]) {
                       acc[packageName] = packages[packageName];
@@ -88,6 +88,10 @@ jobs:
                   },
                   {}
                 );
+
+                if (Object.keys(group).length > 0) {
+                  groupedPackages[groupName] = group;
+                }
               }
 
               const ungroupedPackages = {};
