@@ -19,9 +19,11 @@ runs:
         types: ${{ inputs.types || '["chore", "deps", "docs", "feat", "fix", "perf", "refactor", "release", "revert", "style", "test"]' }}
         scopes: ${{ inputs.scopes || '["actions", "dev", "lock", "prod", "security"]' }}
       run: |
-        echo "INPUT_TOKEN=${{ env.token }}" >> $GITHUB_ENV;
-        echo 'INPUT_TYPES=${{ env.types }}' >> $GITHUB_ENV;
-        echo 'INPUT_SCOPES=${{ env.scopes }}' >> $GITHUB_ENV;
+        {
+          echo "INPUT_TOKEN=${{ env.token }}"
+          echo 'INPUT_TYPES=${{ env.types }}'
+          echo 'INPUT_SCOPES=${{ env.scopes }}'
+        } >> $GITHUB_ENV
       shell: bash
 
     - name: Add labels

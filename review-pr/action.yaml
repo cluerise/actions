@@ -29,11 +29,13 @@ runs:
         reviewer: ${{ inputs.reviewer }}
         dependency-approved: ${{ inputs.dependency-approved }}
       run: |
-        echo "INPUT_TOKEN=${{ env.token }}" >> $GITHUB_ENV;
-        echo "INPUT_TRUSTED_USER=${{ env.trusted-user }}" >> $GITHUB_ENV;
-        echo "INPUT_TRUSTED_BOT=${{ env.trusted-bot }}" >> $GITHUB_ENV;
-        echo "INPUT_REVIEWER=${{ env.reviewer }}" >> $GITHUB_ENV;
-        echo "INPUT_DEPENDENCY_APPROVED=${{ env.dependency-approved }}" >> $GITHUB_ENV;
+        {
+          echo "INPUT_TOKEN=${{ env.token }}"
+          echo "INPUT_TRUSTED_USER=${{ env.trusted-user }}"
+          echo "INPUT_TRUSTED_BOT=${{ env.trusted-bot }}"
+          echo "INPUT_REVIEWER=${{ env.reviewer }}"
+          echo "INPUT_DEPENDENCY_APPROVED=${{ env.dependency-approved }}"
+        } >> $GITHUB_ENV
       shell: bash
 
     - name: Approve

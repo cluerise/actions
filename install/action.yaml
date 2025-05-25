@@ -30,12 +30,14 @@ runs:
         node-version-file: ${{ inputs.node-version-file || '.nvmrc' }}
         registry-url: ${{ inputs.registry-url }}
       run: |
-        echo "INPUT_REF=${{ env.ref }}" >> $GITHUB_ENV;
-        echo "INPUT_FETCH_DEPTH=${{ env.fetch-depth }}" >> $GITHUB_ENV;
-        echo "INPUT_MANAGER=${{ env.manager }}" >> $GITHUB_ENV;
-        echo "INPUT_NODE_VERSION=${{ env.node-version }}" >> $GITHUB_ENV;
-        echo "INPUT_NODE_VERSION_FILE=${{ env.node-version-file }}" >> $GITHUB_ENV;
-        echo "INPUT_REGISTRY_URL=${{ env.registry-url }}" >> $GITHUB_ENV;
+        {
+          echo "INPUT_REF=${{ env.ref }}"
+          echo "INPUT_FETCH_DEPTH=${{ env.fetch-depth }}"
+          echo "INPUT_MANAGER=${{ env.manager }}"
+          echo "INPUT_NODE_VERSION=${{ env.node-version }}"
+          echo "INPUT_NODE_VERSION_FILE=${{ env.node-version-file }}"
+          echo "INPUT_REGISTRY_URL=${{ env.registry-url }}"
+        } >> $GITHUB_ENV
       shell: bash
 
     - name: Checkout
