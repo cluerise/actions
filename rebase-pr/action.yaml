@@ -69,7 +69,7 @@ runs:
 
     - name: Reset PR branch
       if: ${{ env.INPUT_SQUASH == 'true' }}
-      run: git reset ${{ fromJson(steps.get-pr-branches.outputs.data).node.baseRefName }}
+      run: git reset origin/${{ fromJson(steps.get-pr-branches.outputs.data).node.baseRefName }}
       shell: bash
 
     - name: Squash PR commits
