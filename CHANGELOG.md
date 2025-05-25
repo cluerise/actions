@@ -1,5 +1,18 @@
 # Changelog
 
+## [4.1.0](https://github.com/cluerise/actions/compare/v4.0.1...v4.1.0) (2025-05-25)
+
+### Features
+
+- Rebase PR ([#332](https://github.com/cluerise/actions/issues/332)) ([a5a57f4](https://github.com/cluerise/actions/commit/a5a57f453c2ecd6084da5cb590a1a67d9e738331))
+- Update packages ([#330](https://github.com/cluerise/actions/issues/330)) ([098de15](https://github.com/cluerise/actions/commit/098de150b6d04619e58c75fbddc8b26cd20a5f12))
+
+### Fixes
+
+- Create only non-empty update package PRs ([#334](https://github.com/cluerise/actions/issues/334)) ([baa955c](https://github.com/cluerise/actions/commit/baa955cb37776a6930fc71777a726dbd735e466f))
+- Include only non-empty groups ([#333](https://github.com/cluerise/actions/issues/333)) ([7a036fb](https://github.com/cluerise/actions/commit/7a036fb242349baca5fb36049a0a88baf1f9618a))
+- Update packages labels ([#331](https://github.com/cluerise/actions/issues/331)) ([e19ae1c](https://github.com/cluerise/actions/commit/e19ae1c3a97076454dddfb502980e0b896d01a9f))
+
 ## [4.0.1](https://github.com/cluerise/actions/compare/v4.0.0...v4.0.1) (2025-05-23)
 
 ### Fixes
