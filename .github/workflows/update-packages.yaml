@@ -127,9 +127,8 @@ jobs:
                 title: `deps${scopeName}: Update ${groupName} packages`,
                 body,
                 branchName: `deps${scopeBranchName}-${groupName}`,
-                packageNames: Object.keys(packages),
                 versionedPackageNames: Object.keys(packages).map(packageName => `${packageName}@${packages[packageName].latest}`),
-                labels: ['type: deps', `scope: ${scope}`]
+                labels: ['type: deps', `scope: ${scope}`].join('\n')
               };
             });
 
@@ -144,9 +143,8 @@ jobs:
                 title: `deps${scopeName}: Update ${packageName} ${package.current} to ${package.latest}`,
                 body,
                 branchName: `deps${scopeBranchName}-${packageName}`,
-                packageNames: [packageName],
                 versionedPackageNames: [`${packageName}@${package.latest}`],
-                labels: ['type: deps', `scope: ${scope}`]
+                labels: ['type: deps', `scope: ${scope}`].join('\n')
               };
             });
 
@@ -208,4 +206,4 @@ jobs:
           commit.message: ${{ matrix.update.title }}
           commit.token: ${{ env.BOT_TOKEN }}
           pull-request.body: ${{ matrix.update.body }}
-          pull-request.labels: ${{ join(matrix.update.labels, '\n') }}
+          pull-request.labels: ${{ matrix.update.labels }}
