@@ -163,6 +163,7 @@ jobs:
     name: Create pull requests
     runs-on: ubuntu-latest
     needs: prepare-updates
+    if: needs.prepare-updates.outputs.updates != '[]'
     strategy:
       matrix:
         update: ${{ fromJson(needs.prepare-updates.outputs.updates) }}
