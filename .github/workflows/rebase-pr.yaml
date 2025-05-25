@@ -11,6 +11,10 @@ on:
         type: string
         description: ID of the pull request to rebase
         required: false
+      squash:
+        type: boolean
+        description: Whether to squash the commits in the pull request
+        required: false
     secrets:
       token:
         description: GitHub access token
@@ -26,6 +30,7 @@ jobs:
     env:
       INPUT_APP_ID: ${{ inputs.app-id }}
       INPUT_PR_ID: ${{ inputs.pr-id }}
+      INPUT_SQUASH: ${{ inputs.squash }}
       SECRET_TOKEN: ${{ secrets.token }}
       SECRET_APP_PRIVATE_KEY: ${{ secrets.app-private-key }}
 
@@ -47,3 +52,4 @@ jobs:
         with:
           token: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
           pr-id: ${{ env.INPUT_PR_ID }}
+          squash: ${{ env.INPUT_SQUASH }}

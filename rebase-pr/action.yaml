@@ -8,6 +8,9 @@ inputs:
   pr-id:
     description: ID of the pull request to rebase
     required: false
+  squash:
+    description: Whether to squash the commits in the pull request
+    required: false
 
 runs:
   using: composite
@@ -16,14 +19,16 @@ runs:
       env:
         token: ${{ inputs.token }}
         pr-id: ${{ inputs.pr-id || github.event.issue.node_id }}
+        squash: ${{ inputs.squash || false }}
       run: |
         {
           echo "INPUT_TOKEN=${{ env.token }}"
           echo "INPUT_PR_ID=${{ env.pr-id }}"
+          echo "INPUT_SQUASH=${{ env.squash }}"
         } >> $GITHUB_ENV
       shell: bash
 
-    - name: Rebase PR
+    - name: Rebase PR branch
       uses: octokit/graphql-action@v2.3.2
       with:
         token: ${{ env.INPUT_TOKEN }}
@@ -37,3 +42,41 @@ runs:
             }
           }
         id: ${{ env.INPUT_PR_ID }}
+
+    - name: Get PR base and head branches
+      id: get-pr-branches
+      if: ${{ env.INPUT_SQUASH == 'true' }}
+      uses: octokit/graphql-action@v2.3.2
+      with:
+        token: ${{ env.INPUT_TOKEN }}
+        query: |
+          query GetPullRequestBranches($id: ID!) {
+            node(id: $id) {
+              ... on PullRequest {
+                baseRefName
+                headRefName
+              }
+            }
+          }
+        id: ${{ env.INPUT_PR_ID }}
+
+    - name: Checkout
+      if: ${{ env.INPUT_SQUASH == 'true' }}
+      uses: actions/checkout@v4.2.2
+      with:
+        ref: ${{ fromJson(steps.get-pr-branches.outputs.data).node.headRefName }}
+        fetch-depth: 0
+
+    - name: Reset PR branch
+      if: ${{ env.INPUT_SQUASH == 'true' }}
+      run: git reset ${{ fromJson(steps.get-pr-branches.outputs.data).node.baseRefName }}
+      shell: bash
+
+    - name: Squash PR commits
+      if: ${{ env.INPUT_SQUASH == 'true' }}
+      uses: branoholy/update-files-action@main
+      with:
+        token: ${{ env.INPUT_TOKEN }}
+        branch.name: ${{ fromJson(steps.get-pr-branches.outputs.data).node.headRefName }}
+        commit.paths: '**/*'
+        commit.amend: true
