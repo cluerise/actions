@@ -48,7 +48,7 @@ jobs:
           app-private-key: ${{ env.SECRET_APP_PRIVATE_KEY }}
 
       - name: Rebase PR
-        uses: cluerise/actions/rebase-pr@main
+        uses: cluerise/actions/rebase-pr@v4.2.0
         with:
           token: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
           pr-id: ${{ env.INPUT_PR_ID }}
