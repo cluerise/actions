@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.2.2](https://github.com/cluerise/actions/compare/v4.2.1...v4.2.2) (2025-05-27)
+
+### Fixes
+
+- Rebase PR using a single push ([#342](https://github.com/cluerise/actions/issues/342)) ([c5d7123](https://github.com/cluerise/actions/commit/c5d712392464972acb867e0cb8b490374c9c16db))
+
 ## [4.2.1](https://github.com/cluerise/actions/compare/v4.2.0...v4.2.1) (2025-05-25)
 
 ### Fixes
