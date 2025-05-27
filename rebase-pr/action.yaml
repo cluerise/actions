@@ -1,5 +1,5 @@
 name: Rebase PR
-description: Rebase a pull request
+description: Rebase a pull request branch
 
 inputs:
   token:
@@ -28,7 +28,41 @@ runs:
         } >> $GITHUB_ENV
       shell: bash
 
-    - name: Rebase PR branch
+    - name: Get PR info
+      id: get-pr-info
+      uses: octokit/graphql-action@v2.3.2
+      with:
+        token: ${{ env.INPUT_TOKEN }}
+        query: |
+          query GetPullRequestInfo($id: ID!) {
+            node(id: $id) {
+              ... on PullRequest {
+                title
+                baseRefName
+                headRef {
+                  id
+                  name
+                }
+                commits {
+                  totalCount
+                }
+              }
+            }
+          }
+        id: ${{ env.INPUT_PR_ID }}
+
+    - name: Set rebase strategy
+      if: ${{ env.INPUT_SQUASH == 'false' && fromJson(steps.get-pr-info.outputs.data).node.commits.totalCount > 1 }}
+      run: echo "STRATEGY=rebase" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Set squash strategy
+      if: ${{ env.INPUT_SQUASH == 'true' || fromJson(steps.get-pr-info.outputs.data).node.commits.totalCount == 1 }}
+      run: echo "STRATEGY=squash" >> $GITHUB_ENV
+      shell: bash
+
+    - name: Rebase remote branch with multiple commits
+      if: ${{ env.STRATEGY == 'rebase' }}
       uses: octokit/graphql-action@v2.3.2
       with:
         token: ${{ env.INPUT_TOKEN }}
@@ -43,40 +77,70 @@ runs:
           }
         id: ${{ env.INPUT_PR_ID }}
 
-    - name: Get PR base and head branches
-      id: get-pr-branches
-      if: ${{ env.INPUT_SQUASH == 'true' }}
+    - name: Checkout
+      if: ${{ env.STRATEGY == 'squash' }}
+      uses: actions/checkout@v4.2.2
+      with:
+        ref: ${{ fromJson(steps.get-pr-info.outputs.data).node.headRef.name }}
+        fetch-depth: 0
+
+    - name: Reset local branch
+      if: ${{ env.STRATEGY == 'squash' }}
+      run: git rebase $(git merge-base origin/${{ fromJson(steps.get-pr-info.outputs.data).node.baseRefName }} HEAD)
+      shell: bash
+
+    - name: Commit changes
+      id: commit-changes
+      if: ${{ env.STRATEGY == 'squash' }}
+      uses: branoholy/update-files-action@main
+      with:
+        token: ${{ env.INPUT_TOKEN }}
+        branch.name: __rebase-${{ fromJson(steps.get-pr-info.outputs.data).node.headRef.name }}
+        branch.recreate: true
+        commit.paths: '**/*'
+        commit.message: ${{ fromJson(steps.get-pr-info.outputs.data).node.title }}
+
+    - name: Reset remote branch
+      if: ${{ env.STRATEGY == 'squash' }}
       uses: octokit/graphql-action@v2.3.2
       with:
         token: ${{ env.INPUT_TOKEN }}
         query: |
-          query GetPullRequestBranches($id: ID!) {
-            node(id: $id) {
-              ... on PullRequest {
-                baseRefName
-                headRefName
+          mutation ResetPullRequestBranch($id: ID!, $oid: GitObjectID!) {
+            updateRef(input: { refId: $id, oid: $oid }) {
+              clientMutationId
+            }
+          }
+        id: ${{ fromJson(steps.get-pr-info.outputs.data).node.headRef.id }}
+        oid: ${{ steps.commit-changes.outputs.commit.sha }}
+
+    - name: Get id of the temporary rebase branch
+      id: get-rebase-branch-info
+      if: ${{ env.STRATEGY == 'squash' }}
+      uses: octokit/graphql-action@v2.3.2
+      with:
+        token: ${{ env.INPUT_TOKEN }}
+        query: |
+          query GetRebaseBranchInfo($owner: String!, $repo: String!, $name: String!) {
+            repository(owner: $owner, name: $repo) {
+              ref(qualifiedName: $name) {
+                id
               }
             }
           }
-        id: ${{ env.INPUT_PR_ID }}
+        owner: ${{ github.event.repository.owner.login }}
+        repo: ${{ github.event.repository.name }}
+        name: refs/heads/__rebase-${{ fromJson(steps.get-pr-info.outputs.data).node.headRef.name }}
 
-    - name: Checkout
-      if: ${{ env.INPUT_SQUASH == 'true' }}
-      uses: actions/checkout@v4.2.2
-      with:
-        ref: ${{ fromJson(steps.get-pr-branches.outputs.data).node.headRefName }}
-        fetch-depth: 0
-
-    - name: Reset PR branch
-      if: ${{ env.INPUT_SQUASH == 'true' }}
-      run: git reset origin/${{ fromJson(steps.get-pr-branches.outputs.data).node.baseRefName }}
-      shell: bash
-
-    - name: Squash PR commits
-      if: ${{ env.INPUT_SQUASH == 'true' }}
-      uses: branoholy/update-files-action@main
+    - name: Delete temporary rebase branch
+      if: ${{ env.STRATEGY == 'squash' }}
+      uses: octokit/graphql-action@v2.3.2
       with:
         token: ${{ env.INPUT_TOKEN }}
-        branch.name: ${{ fromJson(steps.get-pr-branches.outputs.data).node.headRefName }}
-        commit.paths: '**/*'
-        commit.amend: true
+        query: |
+          mutation DeleteRebaseBranch($id: ID!) {
+            deleteRef(input: { refId: $id }) {
+              clientMutationId
+            }
+          }
+        id: ${{ fromJson(steps.get-rebase-branch-info.outputs.data).repository.ref.id }}
