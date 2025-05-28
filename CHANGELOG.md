@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.2.5](https://github.com/cluerise/actions/compare/v4.2.4...v4.2.5) (2025-05-28)
+
+### Fixes
+
+- Use rebase and reset to rebase local branch ([#348](https://github.com/cluerise/actions/issues/348)) ([6c90fce](https://github.com/cluerise/actions/commit/6c90fcee1dad81fbefcbc975677457da432e4617))
+
 ## [4.2.4](https://github.com/cluerise/actions/compare/v4.2.3...v4.2.4) (2025-05-28)
 
 ### Fixes
