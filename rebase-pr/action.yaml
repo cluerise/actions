@@ -51,13 +51,8 @@ runs:
           }
         id: ${{ env.INPUT_PR_ID }}
 
-    - name: Set amend strategy
-      if: ${{ fromJson(steps.get-pr-info.outputs.data).node.commits.totalCount == 1 }}
-      run: echo "STRATEGY=amend" >> $GITHUB_ENV
-      shell: bash
-
     - name: Set squash strategy
-      if: ${{ env.INPUT_SQUASH == 'true' && fromJson(steps.get-pr-info.outputs.data).node.commits.totalCount > 1 }}
+      if: ${{ env.INPUT_SQUASH == 'true' || fromJson(steps.get-pr-info.outputs.data).node.commits.totalCount == 1 }}
       run: echo "STRATEGY=squash" >> $GITHUB_ENV
       shell: bash
 
@@ -83,29 +78,20 @@ runs:
         id: ${{ env.INPUT_PR_ID }}
 
     - name: Checkout
-      if: ${{ env.STRATEGY == 'amend' || env.STRATEGY == 'squash' }}
+      if: ${{ env.STRATEGY == 'squash' }}
       uses: actions/checkout@v4.2.2
       with:
         ref: ${{ fromJson(steps.get-pr-info.outputs.data).node.headRef.name }}
         fetch-depth: 0
 
     - name: Rebase local branch
-      if: ${{ env.STRATEGY == 'amend' || env.STRATEGY == 'squash' }}
+      if: ${{ env.STRATEGY == 'squash' }}
       run: |
         git config user.name "GitHub Action" &&
         git config user.email "action@github.com" &&
         git rebase origin/${{ fromJson(steps.get-pr-info.outputs.data).node.baseRefName }} &&
         git reset origin/${{ fromJson(steps.get-pr-info.outputs.data).node.baseRefName }}
       shell: bash
-
-    - name: Commit amended changes
-      if: ${{ env.STRATEGY == 'amend' }}
-      uses: branoholy/update-files-action@main
-      with:
-        token: ${{ env.INPUT_TOKEN }}
-        branch.name: ${{ fromJson(steps.get-pr-info.outputs.data).node.headRef.name }}
-        commit.paths: '**/*'
-        commit.amend: true
 
     - name: Commit squashed changes
       id: commit-changes
