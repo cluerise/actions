@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.2.3](https://github.com/cluerise/actions/compare/v4.2.2...v4.2.3) (2025-05-28)
+
+### Fixes
+
+- Git rebase command ([#344](https://github.com/cluerise/actions/issues/344)) ([1e3b1a7](https://github.com/cluerise/actions/commit/1e3b1a792b3bf8c98ce2dab4fab573c518a7efee))
+
 ## [4.2.2](https://github.com/cluerise/actions/compare/v4.2.1...v4.2.2) (2025-05-27)
 
 ### Fixes
