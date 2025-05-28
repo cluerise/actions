@@ -89,9 +89,13 @@ runs:
         ref: ${{ fromJson(steps.get-pr-info.outputs.data).node.headRef.name }}
         fetch-depth: 0
 
-    - name: Reset local branch
+    - name: Rebase local branch
       if: ${{ env.STRATEGY == 'amend' || env.STRATEGY == 'squash' }}
-      run: git reset origin/${{ fromJson(steps.get-pr-info.outputs.data).node.baseRefName }}
+      run: |
+        git config user.name "GitHub Action" &&
+        git config user.email "action@github.com" &&
+        git rebase origin/${{ fromJson(steps.get-pr-info.outputs.data).node.baseRefName }} &&
+        git reset origin/${{ fromJson(steps.get-pr-info.outputs.data).node.baseRefName }}
       shell: bash
 
     - name: Commit amended changes
