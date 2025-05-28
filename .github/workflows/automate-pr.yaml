@@ -37,6 +37,9 @@ jobs:
           dependency-approved: >-
             ${{
               (
+                github.head_ref == 'deps-update-lock-file' ||
+                github.head_ref == 'deps-update-node' ||
+
                 github.head_ref == 'deps-dev-@cluerise/tools' ||
                 github.head_ref == 'deps-dev-@types/node' ||
                 github.head_ref == 'deps-dev-typescript' ||
