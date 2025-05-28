@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.2.4](https://github.com/cluerise/actions/compare/v4.2.3...v4.2.4) (2025-05-28)
+
+### Fixes
+
+- Use git reset instead of git rebase ([#346](https://github.com/cluerise/actions/issues/346)) ([254ecf2](https://github.com/cluerise/actions/commit/254ecf23b345770284a2e92fea45d44177ce6dca))
+
 ## [4.2.3](https://github.com/cluerise/actions/compare/v4.2.2...v4.2.3) (2025-05-28)
 
 ### Fixes
