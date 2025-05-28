@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.2.8](https://github.com/cluerise/actions/compare/v4.2.7...v4.2.8) (2025-05-28)
+
+### Fixes
+
+- Use correct quotes for rebased commit SHA ([#354](https://github.com/cluerise/actions/issues/354)) ([90b5628](https://github.com/cluerise/actions/commit/90b5628faacbec21b9283406d7d79eceda4c5be4))
+
 ## [4.2.7](https://github.com/cluerise/actions/compare/v4.2.6...v4.2.7) (2025-05-28)
 
 ### Fixes
