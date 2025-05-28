@@ -116,7 +116,7 @@ runs:
             }
           }
         id: ${{ fromJson(steps.get-pr-info.outputs.data).node.headRef.id }}
-        oid: ${{ steps.commit-changes.outputs["commit.sha"] }}
+        oid: ${{ steps.commit-changes.outputs['commit.sha'] }}
 
     - name: Get id of the temporary rebase branch
       id: get-rebase-branch-info
