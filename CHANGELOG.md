@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.2.7](https://github.com/cluerise/actions/compare/v4.2.6...v4.2.7) (2025-05-28)
+
+### Fixes
+
+- Use correct output variable of commit SHA ([#352](https://github.com/cluerise/actions/issues/352)) ([da1d5f4](https://github.com/cluerise/actions/commit/da1d5f4ef18798a51b55ca9520e421146c148439))
+
 ## [4.2.6](https://github.com/cluerise/actions/compare/v4.2.5...v4.2.6) (2025-05-28)
 
 ### Fixes
