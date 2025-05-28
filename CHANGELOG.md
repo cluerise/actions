@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.2.6](https://github.com/cluerise/actions/compare/v4.2.5...v4.2.6) (2025-05-28)
+
+### Fixes
+
+- Use squash strategy for a single-commit PR rebase ([#350](https://github.com/cluerise/actions/issues/350)) ([c49f828](https://github.com/cluerise/actions/commit/c49f828f3e8ecff100aead24e09d2ae99f51b888))
+
 ## [4.2.5](https://github.com/cluerise/actions/compare/v4.2.4...v4.2.5) (2025-05-28)
 
 ### Fixes
