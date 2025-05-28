@@ -28,7 +28,7 @@ jobs:
           echo "Error: Auto merge is not enabled" && exit 1
 
       - name: Install
-        uses: cluerise/actions/install@v4.2.8
+        uses: cluerise/actions/install@v4.2.9
         with:
           manager: ${{ env.INPUT_MANAGER }}
 
