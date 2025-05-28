@@ -91,7 +91,7 @@ runs:
 
     - name: Reset local branch
       if: ${{ env.STRATEGY == 'amend' || env.STRATEGY == 'squash' }}
-      run: git rebase $(git merge-base origin/${{ fromJson(steps.get-pr-info.outputs.data).node.baseRefName }} HEAD)
+      run: git rebase origin/${{ fromJson(steps.get-pr-info.outputs.data).node.baseRefName }}
       shell: bash
 
     - name: Commit amended changes
