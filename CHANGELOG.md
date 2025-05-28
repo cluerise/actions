@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.2.9](https://github.com/cluerise/actions/compare/v4.2.8...v4.2.9) (2025-05-28)
+
+### Fixes
+
+- Use force reset after rebase ([#356](https://github.com/cluerise/actions/issues/356)) ([a11047e](https://github.com/cluerise/actions/commit/a11047e943bb3244e972bb2ba5427d3ded7041f8))
+
 ## [4.2.8](https://github.com/cluerise/actions/compare/v4.2.7...v4.2.8) (2025-05-28)
 
 ### Fixes
