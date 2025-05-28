@@ -111,7 +111,7 @@ runs:
         token: ${{ env.INPUT_TOKEN }}
         query: |
           mutation ResetPullRequestBranch($id: ID!, $oid: GitObjectID!) {
-            updateRef(input: { refId: $id, oid: $oid }) {
+            updateRef(input: { refId: $id, oid: $oid, force: true }) {
               clientMutationId
             }
           }
