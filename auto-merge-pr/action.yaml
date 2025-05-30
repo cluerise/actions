@@ -15,14 +15,14 @@ runs:
   steps:
     - name: Set inputs
       env:
-        token: ${{ inputs.token }}
-        title: ${{ inputs.title || github.event.pull_request.title }}
-        trusted-bot: ${{ inputs.trusted-bot }}
+        INPUT_TOKEN: ${{ inputs.token }}
+        INPUT_TITLE: ${{ inputs.title || github.event.pull_request.title }}
+        INPUT_TRUSTED_BOT: ${{ inputs.trusted-bot }}
       run: |
         {
-          echo "INPUT_TOKEN=${{ env.token }}"
-          echo "INPUT_TITLE=${{ env.title }}"
-          echo "INPUT_TRUSTED_BOT=${{ env.trusted-bot }}"
+          echo "INPUT_TOKEN=$INPUT_TOKEN"
+          echo "INPUT_TITLE=$INPUT_TITLE"
+          echo "INPUT_TRUSTED_BOT=$INPUT_TRUSTED_BOT"
         } >> $GITHUB_ENV
       shell: bash
 
@@ -43,7 +43,12 @@ runs:
         token: ${{ env.INPUT_TOKEN }}
         query: |
           mutation EnablePullRequestAutoMerge($id: ID!, $message: String!) {
-            enablePullRequestAutoMerge(input: {pullRequestId: $id, commitHeadline: $message, commitBody: "", mergeMethod: SQUASH}) {
+            enablePullRequestAutoMerge(input: {
+              pullRequestId: $id,
+              commitHeadline: $message,
+              commitBody: "",
+              mergeMethod: SQUASH
+            }) {
               clientMutationId
             }
           }

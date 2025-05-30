@@ -19,13 +19,13 @@ runs:
   steps:
     - name: Set inputs
       env:
-        app-id: ${{ inputs.app-id }}
-        app-private-key: ${{ inputs.app-private-key }}
+        INPUT_APP_ID: ${{ inputs.app-id }}
+        INPUT_APP_PRIVATE_KEY: ${{ inputs.app-private-key }}
       run: |
         {
-          echo "INPUT_APP_ID=${{ env.app-id }}"
+          echo "INPUT_APP_ID=$INPUT_APP_ID"
           echo "INPUT_APP_PRIVATE_KEY<<EOF_APP_PRIVATE_KEY"
-          echo "${{ env.app-private-key }}"
+          echo "$INPUT_APP_PRIVATE_KEY"
           echo "EOF_APP_PRIVATE_KEY"
         } >> $GITHUB_ENV
       shell: bash

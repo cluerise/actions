@@ -17,14 +17,14 @@ runs:
   steps:
     - name: Set inputs
       env:
-        token: ${{ inputs.token }}
-        pr-id: ${{ inputs.pr-id || github.event.issue.node_id }}
-        squash: ${{ inputs.squash || false }}
+        INPUT_TOKEN: ${{ inputs.token }}
+        INPUT_PR_ID: ${{ inputs.pr-id || github.event.issue.node_id }}
+        INPUT_SQUASH: ${{ inputs.squash || false }}
       run: |
         {
-          echo "INPUT_TOKEN=${{ env.token }}"
-          echo "INPUT_PR_ID=${{ env.pr-id }}"
-          echo "INPUT_SQUASH=${{ env.squash }}"
+          echo "INPUT_TOKEN=$INPUT_TOKEN"
+          echo "INPUT_PR_ID=$INPUT_PR_ID"
+          echo "INPUT_SQUASH=$INPUT_SQUASH"
         } >> $GITHUB_ENV
       shell: bash
 
@@ -67,7 +67,7 @@ runs:
       with:
         token: ${{ env.INPUT_TOKEN }}
         query: |
-          mutation RebasePullRequest($id: ID!) {
+          mutation RebasePullRequestBranch($id: ID!) {
             updatePullRequestBranch(input: {
               pullRequestId: $id,
               updateMethod: REBASE
@@ -110,7 +110,7 @@ runs:
       with:
         token: ${{ env.INPUT_TOKEN }}
         query: |
-          mutation ResetPullRequestBranch($id: ID!, $oid: GitObjectID!) {
+          mutation ForceUpdateRef($id: ID!, $oid: GitObjectID!) {
             updateRef(input: { refId: $id, oid: $oid, force: true }) {
               clientMutationId
             }
@@ -125,7 +125,7 @@ runs:
       with:
         token: ${{ env.INPUT_TOKEN }}
         query: |
-          query GetRebaseBranchInfo($owner: String!, $repo: String!, $name: String!) {
+          query GetBranchId($owner: String!, $repo: String!, $name: String!) {
             repository(owner: $owner, name: $repo) {
               ref(qualifiedName: $name) {
                 id
@@ -142,7 +142,7 @@ runs:
       with:
         token: ${{ env.INPUT_TOKEN }}
         query: |
-          mutation DeleteRebaseBranch($id: ID!) {
+          mutation DeleteRef($id: ID!) {
             deleteRef(input: { refId: $id }) {
               clientMutationId
             }

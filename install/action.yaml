@@ -23,20 +23,20 @@ runs:
   steps:
     - name: Set inputs
       env:
-        ref: ${{ inputs.ref }}
-        fetch-depth: ${{ inputs.fetch-depth }}
-        manager: ${{ inputs.manager || 'pnpm' }}
-        node-version: ${{ inputs.node-version }}
-        node-version-file: ${{ inputs.node-version-file || '.nvmrc' }}
-        registry-url: ${{ inputs.registry-url }}
+        INPUT_REF: ${{ inputs.ref }}
+        INPUT_FETCH_DEPTH: ${{ inputs.fetch-depth }}
+        INPUT_MANAGER: ${{ inputs.manager || 'pnpm' }}
+        INPUT_NODE_VERSION: ${{ inputs.node-version }}
+        INPUT_NODE_VERSION_FILE: ${{ inputs.node-version-file || '.nvmrc' }}
+        INPUT_REGISTRY_URL: ${{ inputs.registry-url }}
       run: |
         {
-          echo "INPUT_REF=${{ env.ref }}"
-          echo "INPUT_FETCH_DEPTH=${{ env.fetch-depth }}"
-          echo "INPUT_MANAGER=${{ env.manager }}"
-          echo "INPUT_NODE_VERSION=${{ env.node-version }}"
-          echo "INPUT_NODE_VERSION_FILE=${{ env.node-version-file }}"
-          echo "INPUT_REGISTRY_URL=${{ env.registry-url }}"
+          echo "INPUT_REF=$INPUT_REF"
+          echo "INPUT_FETCH_DEPTH=$INPUT_FETCH_DEPTH"
+          echo "INPUT_MANAGER=$INPUT_MANAGER"
+          echo "INPUT_NODE_VERSION=$INPUT_NODE_VERSION"
+          echo "INPUT_NODE_VERSION_FILE=$INPUT_NODE_VERSION_FILE"
+          echo "INPUT_REGISTRY_URL=$INPUT_REGISTRY_URL"
         } >> $GITHUB_ENV
       shell: bash
 

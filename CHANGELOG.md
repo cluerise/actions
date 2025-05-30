@@ -266,7 +266,7 @@
 
 </details>
 
-## [1.0.7](https://github.com/cluerise/actions/compare/v1.0.6...v1.0.7) (2024-2-17)
+## [1.0.7](https://github.com/cluerise/actions/compare/v1.0.6...v1.0.7) (2024-02-17)
 
 ### Dependency updates
 

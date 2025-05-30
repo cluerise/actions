@@ -4,6 +4,11 @@ on:
   schedule:
     - cron: '0 11 * * 0'
   workflow_dispatch:
+    inputs:
+      max-pull-requests:
+        type: number
+        description: Max number of pull requests
+        required: false
   workflow_call:
     inputs:
       app-id:
@@ -32,7 +37,7 @@ on:
 
 env:
   INPUT_APP_ID: ${{ inputs.app-id || vars.CLUERISE_PUBLIC_BOT_APP_ID }}
-  INPUT_MAX_PULL_REQUESTS: ${{ inputs.max-pull-requests || 3 }}
+  INPUT_MAX_PULL_REQUESTS: ${{ fromJSON(inputs.max-pull-requests || '3') }}
   INPUT_PACKAGE_GROUPS: ${{ inputs.package-groups || '{}' }}
   INPUT_EXTERNAL_CALL: ${{ inputs.__external-call || false }}
   SECRET_TOKEN: ${{ secrets.token }}
@@ -47,7 +52,7 @@ jobs:
 
     steps:
       - name: Check required secrets
-        if: env.SECRET_TOKEN == null && (env.INPUT_APP_ID == null || env.SECRET_APP_PRIVATE_KEY == null)
+        if: env.SECRET_TOKEN == '' && (env.INPUT_APP_ID == '' || env.SECRET_APP_PRIVATE_KEY == '')
         run: exit 1
 
       - name: Install (main)
@@ -171,7 +176,7 @@ jobs:
     steps:
       - name: Get bot token (main)
         id: get-bot-token-main
-        if: env.INPUT_EXTERNAL_CALL == 'false' && env.SECRET_TOKEN == null
+        if: env.INPUT_EXTERNAL_CALL == 'false' && env.SECRET_TOKEN == ''
         uses: cluerise/actions/get-github-app-token@main
         with:
           app-id: ${{ env.INPUT_APP_ID }}
@@ -179,7 +184,7 @@ jobs:
 
       - name: Get bot token (version)
         id: get-bot-token-version
-        if: env.INPUT_EXTERNAL_CALL == 'true' && env.SECRET_TOKEN == null
+        if: env.INPUT_EXTERNAL_CALL == 'true' && env.SECRET_TOKEN == ''
         uses: cluerise/actions/get-github-app-token@v4.2.9
         with:
           app-id: ${{ env.INPUT_APP_ID }}

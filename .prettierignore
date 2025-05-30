@@ -28,11 +28,17 @@ package-lock.json
 yarn.lock
 
 # Misc
+.DS_Store
 etc/
 
 # Sample of .env file
 .env.example
 .env.sample
+.envrc.example
+.envrc.sample
+
+# Stryker
+.stryker-tmp/
 
 # Tests coverage
 coverage/

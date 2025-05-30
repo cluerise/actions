@@ -35,12 +35,12 @@ jobs:
 
     steps:
       - name: Check required secrets
-        if: env.SECRET_TOKEN == null && (env.INPUT_APP_ID == null || env.SECRET_APP_PRIVATE_KEY == null)
+        if: env.SECRET_TOKEN == '' && (env.INPUT_APP_ID == '' || env.SECRET_APP_PRIVATE_KEY == '')
         run: exit 1
 
       - name: Get bot token
         id: get-bot-token
-        if: env.SECRET_TOKEN == null
+        if: env.SECRET_TOKEN == ''
         uses: cluerise/actions/get-github-app-token@v4.2.9
         with:
           app-id: ${{ env.INPUT_APP_ID }}
@@ -74,7 +74,7 @@ jobs:
           token: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
           query: |
             mutation CreateRef($id: ID!, $name: String!, $oid: GitObjectID!) {
-              createRef(input: {repositoryId: $id, name: $name, oid: $oid}) {
+              createRef(input: { repositoryId: $id, name: $name, oid: $oid }) {
                 clientMutationId
               }
             }
@@ -89,7 +89,7 @@ jobs:
           token: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
           query: |
             mutation UpdateRef($id: ID!, $oid: GitObjectID!) {
-              updateRef(input: {refId: $id, oid: $oid}) {
+              updateRef(input: { refId: $id, oid: $oid }) {
                 clientMutationId
               }
             }
