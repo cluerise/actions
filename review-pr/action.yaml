@@ -23,18 +23,18 @@ runs:
   steps:
     - name: Set inputs
       env:
-        token: ${{ inputs.token }}
-        trusted-user: ${{ inputs.trusted-user }}
-        trusted-bot: ${{ inputs.trusted-bot }}
-        reviewer: ${{ inputs.reviewer }}
-        dependency-approved: ${{ inputs.dependency-approved }}
+        INPUT_TOKEN: ${{ inputs.token }}
+        INPUT_TRUSTED_USER: ${{ inputs.trusted-user }}
+        INPUT_TRUSTED_BOT: ${{ inputs.trusted-bot }}
+        INPUT_REVIEWER: ${{ inputs.reviewer }}
+        INPUT_DEPENDENCY_APPROVED: ${{ inputs.dependency-approved }}
       run: |
         {
-          echo "INPUT_TOKEN=${{ env.token }}"
-          echo "INPUT_TRUSTED_USER=${{ env.trusted-user }}"
-          echo "INPUT_TRUSTED_BOT=${{ env.trusted-bot }}"
-          echo "INPUT_REVIEWER=${{ env.reviewer }}"
-          echo "INPUT_DEPENDENCY_APPROVED=${{ env.dependency-approved }}"
+          echo "INPUT_TOKEN=$INPUT_TOKEN"
+          echo "INPUT_TRUSTED_USER=$INPUT_TRUSTED_USER"
+          echo "INPUT_TRUSTED_BOT=$INPUT_TRUSTED_BOT"
+          echo "INPUT_REVIEWER=$INPUT_REVIEWER"
+          echo "INPUT_DEPENDENCY_APPROVED=$INPUT_DEPENDENCY_APPROVED"
         } >> $GITHUB_ENV
       shell: bash
 
@@ -61,8 +61,8 @@ runs:
       with:
         token: ${{ env.INPUT_TOKEN }}
         query: |
-          mutation AddPullRequestReview($id: ID!) {
-            addPullRequestReview(input: {pullRequestId: $id, event: APPROVE}) {
+          mutation ApprovePullRequest($id: ID!) {
+            addPullRequestReview(input: { pullRequestId: $id, event: APPROVE }) {
               clientMutationId
             }
           }
@@ -105,8 +105,8 @@ runs:
       with:
         token: ${{ env.INPUT_TOKEN }}
         query: |
-          mutation RequestReviews($id: ID!, $user: ID!) {
-            requestReviews(input: {pullRequestId: $id, userIds: [$user]}) {
+          mutation RequestReview($id: ID!, $user: ID!) {
+            requestReviews(input: { pullRequestId: $id, userIds: [$user] }) {
               clientMutationId
             }
           }

@@ -31,12 +31,12 @@ jobs:
 
     steps:
       - name: Check required secrets
-        if: env.SECRET_TOKEN == null && (env.INPUT_APP_ID == null || env.SECRET_APP_PRIVATE_KEY == null)
+        if: env.SECRET_TOKEN == '' && (env.INPUT_APP_ID == '' || env.SECRET_APP_PRIVATE_KEY == '')
         run: exit 1
 
       - name: Get bot token
         id: get-bot-token
-        if: env.SECRET_TOKEN == null
+        if: env.SECRET_TOKEN == ''
         uses: cluerise/actions/get-github-app-token@v4.2.9
         with:
           app-id: ${{ env.INPUT_APP_ID }}

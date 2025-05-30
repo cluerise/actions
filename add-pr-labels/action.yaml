@@ -15,14 +15,14 @@ runs:
   steps:
     - name: Set inputs
       env:
-        token: ${{ inputs.token }}
-        types: ${{ inputs.types || '["chore", "deps", "docs", "feat", "fix", "perf", "refactor", "release", "revert", "style", "test"]' }}
-        scopes: ${{ inputs.scopes || '["actions", "dev", "lock", "prod", "security"]' }}
+        INPUT_TOKEN: ${{ inputs.token }}
+        INPUT_TYPES: ${{ inputs.types || '["chore", "deps", "docs", "feat", "fix", "perf", "refactor", "release", "revert", "style", "test"]' }}
+        INPUT_SCOPES: ${{ inputs.scopes || '["actions", "dev", "lock", "prod", "security"]' }}
       run: |
         {
-          echo "INPUT_TOKEN=${{ env.token }}"
-          echo 'INPUT_TYPES=${{ env.types }}'
-          echo 'INPUT_SCOPES=${{ env.scopes }}'
+          echo "INPUT_TOKEN=$INPUT_TOKEN"
+          echo "INPUT_TYPES=$INPUT_TYPES"
+          echo "INPUT_SCOPES=$INPUT_SCOPES"
         } >> $GITHUB_ENV
       shell: bash
 

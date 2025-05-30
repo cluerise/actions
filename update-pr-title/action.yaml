@@ -16,10 +16,10 @@ runs:
   steps:
     - name: Set inputs
       env:
-        token: ${{ inputs.token }}
+        INPUT_TOKEN: ${{ inputs.token }}
       run: |
         {
-          echo "INPUT_TOKEN=${{ env.token }}"
+          echo "INPUT_TOKEN=$INPUT_TOKEN"
         } >> $GITHUB_ENV
       shell: bash
 

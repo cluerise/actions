@@ -11,10 +11,10 @@ runs:
   steps:
     - name: Set inputs
       env:
-        token: ${{ inputs.token }}
+        INPUT_TOKEN: ${{ inputs.token }}
       run: |
         {
-          echo "INPUT_TOKEN=${{ env.token }}"
+          echo "INPUT_TOKEN=$INPUT_TOKEN"
         } >> $GITHUB_ENV
       shell: bash
 
@@ -25,7 +25,7 @@ runs:
         token: ${{ env.INPUT_TOKEN }}
         query: |
           mutation AddAssigneesToAssignable($id: ID!, $assignee: ID!) {
-            addAssigneesToAssignable(input: {assignableId: $id, assigneeIds: [$assignee]}) {
+            addAssigneesToAssignable(input: { assignableId: $id, assigneeIds: [$assignee] }) {
               clientMutationId
             }
           }
