@@ -1,4 +1,7 @@
 engineStrict: true
 
 publicHoistPattern:
+  - '@commitlint/cli'
+  - eslint
+  - lint-staged
   - prettier
