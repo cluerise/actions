@@ -27,7 +27,7 @@
     "postinstall": "[ -d .git ] && git config --local core.hooksPath hooks || echo 'Info: Git hooks not set outside a git repository.'"
   },
   "devDependencies": {
-    "@cluerise/tools": "4.0.1",
+    "@cluerise/tools": "4.0.2",
     "@types/node": "22.15.29",
     "typescript": "5.8.3"
   }
