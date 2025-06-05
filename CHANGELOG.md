@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.2.10](https://github.com/cluerise/actions/compare/v4.2.9...v4.2.10) (2025-06-05)
+
+### Fixes
+
+- Update environment variable handling ([#361](https://github.com/cluerise/actions/issues/361)) ([5b03d6b](https://github.com/cluerise/actions/commit/5b03d6bef6808b37f6c40b1959665d84716c45bb))
+
 ## [4.2.9](https://github.com/cluerise/actions/compare/v4.2.8...v4.2.9) (2025-05-28)
 
 ### Fixes
