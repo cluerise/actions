@@ -16,15 +16,19 @@
   },
   "packageManager": "pnpm@10.11.1+sha512.e519b9f7639869dc8d5c3c5dfef73b3f091094b0a006d7317353c72b124e80e1afd429732e28705ad6bfa1ee879c1fce46c128ccebd3192101f43dd67c667912",
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "postinstall": "pnpm run __git-hooks:setup",
+    "clean-deps": "ls -A1 node_modules | grep -v .keep | xargs -I{} rm -rf node_modules/{}",
     "release": "cluerise-tools release",
     "postrelease": "bash update-workflow-versions.sh",
     "lint": "cluerise-tools lint",
     "node-versions-update": "cluerise-tools update-node-versions",
+    "init-icloud-repo": "xattr -w com.apple.fileprovider.ignore#P 1 .git && mkdir node_modules && touch node_modules/.keep && xattr -w com.apple.fileprovider.ignore#P 1 node_modules",
     "__git-hook:commit-msg": "cluerise-tools format-commit-message",
     "__git-hook:post-commit": "rm -f .lint-staged-temp-tsconfig.json",
     "__git-hook:pre-commit": "pnpm run lint staged",
     "__git-hook:prepare-commit-msg": "cluerise-tools create-commit-message",
-    "postinstall": "[ -d .git ] && git config --local core.hooksPath hooks || echo 'Info: Git hooks not set outside a git repository.'"
+    "__git-hooks:setup": "[ -d .git ] && git config --local core.hooksPath hooks || echo 'Info: Git hooks not set outside a git repository.'"
   },
   "devDependencies": {
     "@cluerise/tools": "4.0.2",
