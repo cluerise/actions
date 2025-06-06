@@ -23,7 +23,7 @@
     "postrelease": "bash update-workflow-versions.sh",
     "lint": "cluerise-tools lint",
     "node-versions-update": "cluerise-tools update-node-versions",
-    "init-icloud-repo": "xattr -w com.apple.fileprovider.ignore#P 1 .git && mkdir node_modules && touch node_modules/.keep && xattr -w com.apple.fileprovider.ignore#P 1 node_modules",
+    "init-icloud-repo": "xattr -w com.apple.fileprovider.ignore#P 1 .git && mkdir -p node_modules && touch node_modules/.keep && xattr -w com.apple.fileprovider.ignore#P 1 node_modules",
     "__git-hook:commit-msg": "cluerise-tools format-commit-message",
     "__git-hook:post-commit": "rm -f .lint-staged-temp-tsconfig.json",
     "__git-hook:pre-commit": "pnpm run lint staged",
