@@ -25,7 +25,7 @@
     "node-versions-update": "cluerise-tools update-node-versions",
     "init-icloud-repo": "xattr -w com.apple.fileprovider.ignore#P 1 .git && mkdir -p node_modules && touch node_modules/.keep && xattr -w com.apple.fileprovider.ignore#P 1 node_modules",
     "__git-hook:commit-msg": "cluerise-tools format-commit-message",
-    "__git-hook:post-commit": "rm -f .lint-staged-temp-tsconfig.json",
+    "__git-hook:post-commit": "find . -not -path './node_modules/*' -name .lint-staged-temp-tsconfig.json -type f -delete",
     "__git-hook:pre-commit": "pnpm run lint staged",
     "__git-hook:prepare-commit-msg": "cluerise-tools create-commit-message",
     "__git-hooks:setup": "[ -d .git ] && git config --local core.hooksPath hooks || echo 'Info: Git hooks not set outside a git repository.'"
