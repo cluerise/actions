@@ -9,8 +9,8 @@ importers:
   .:
     devDependencies:
       '@cluerise/tools':
-        specifier: 4.0.4
-        version: 4.0.4(@types/node@22.15.30)(jiti@2.4.2)(typescript@5.8.3)
+        specifier: 4.1.0
+        version: 4.1.0(@types/node@22.15.30)(jiti@2.4.2)(typescript@5.8.3)
       '@types/node':
         specifier: 22.15.30
         version: 22.15.30
@@ -40,8 +40,8 @@ packages:
     resolution: {integrity: sha512-D2hP9eA+Sqx1kBZgzxZh0y1trbuU+JoDkiEwqhQ36nodYqJwyEIhPSdMNd7lOm/4io72luTPWH20Yda0xOuUow==}
     engines: {node: '>=6.9.0'}
 
-  '@cluerise/tools@4.0.4':
-    resolution: {integrity: sha512-o2KNxAFVjCgGRqfr6fNsmYCjwKIkDNVTIYMW46MV8Y8rd7CgIbapwI5aFbqhsfa7e5xt+pTBmTnciNyGeZQsqA==}
+  '@cluerise/tools@4.1.0':
+    resolution: {integrity: sha512-TObF6A2J7SryR71tpJbmp1B5lsYt7akJPS8wuHew1OHPn5G8DBofT6jFCQXrJ60VD+ZffpU7M4su39X5WV1l/g==}
     hasBin: true
 
   '@colors/colors@1.5.0':
@@ -2904,7 +2904,7 @@ snapshots:
 
   '@babel/helper-validator-identifier@7.27.1': {}
 
-  '@cluerise/tools@4.0.4(@types/node@22.15.30)(jiti@2.4.2)(typescript@5.8.3)':
+  '@cluerise/tools@4.1.0(@types/node@22.15.30)(jiti@2.4.2)(typescript@5.8.3)':
     dependencies:
       '@actions/core': 1.11.1
       '@commitlint/cli': 19.8.1(@types/node@22.15.30)(typescript@5.8.3)
