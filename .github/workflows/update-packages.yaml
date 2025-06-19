@@ -68,7 +68,7 @@ jobs:
         run: |
           {
             echo "outdated-packages<<EOF_OUTDATED_PACKAGES"
-            pnpm outdated --json || true
+            pnpm outdated --recursive --json || true
             echo "EOF_OUTDATED_PACKAGES"
           } >> $GITHUB_OUTPUT;
 
@@ -202,7 +202,7 @@ jobs:
         uses: cluerise/actions/install@v4.2.10
 
       - name: Update packages
-        run: pnpm update ${{ join(matrix.update.versionedPackageNames, ' ') }}
+        run: pnpm update --recursive ${{ join(matrix.update.versionedPackageNames, ' ') }}
 
       - name: Create a pull request with the updated files
         uses: branoholy/update-files-action@main
