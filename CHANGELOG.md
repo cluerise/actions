@@ -1,5 +1,11 @@
 # Changelog
 
+## [4.2.11](https://github.com/cluerise/actions/compare/v4.2.10...v4.2.11) (2025-06-19)
+
+### Fixes
+
+- Update monorepo dependencies ([#385](https://github.com/cluerise/actions/issues/385)) ([8008ad7](https://github.com/cluerise/actions/commit/8008ad764bddafe2f82dbed4a4bc84885736b957))
+
 ## [4.2.10](https://github.com/cluerise/actions/compare/v4.2.9...v4.2.10) (2025-06-05)
 
 ### Fixes
