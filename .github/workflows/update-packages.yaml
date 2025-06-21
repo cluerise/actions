@@ -211,7 +211,7 @@ jobs:
           branch.name: ${{ matrix.update.branchName }}
           branch.recreate: true
           commit.paths: |
-            package.json
+            **/package.json
             pnpm-lock.yaml
           commit.message: ${{ matrix.update.title }}
           commit.token: ${{ env.BOT_TOKEN }}
