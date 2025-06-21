@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 versionRegexp="[a-z0-9\.-]+"
 regexp="(cluerise\/actions\/.+@v)($versionRegexp)([ \n]*)"
 version=$(sed -n -E "s/\"version\": \"($versionRegexp)\",/\1/p" package.json | xargs)

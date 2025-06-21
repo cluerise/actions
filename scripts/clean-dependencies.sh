@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 mkdir -p node_modules
 rm -rf node_modules/*
 rm -rf node_modules/.[^.]*
