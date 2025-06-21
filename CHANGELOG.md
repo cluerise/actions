@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.2.11](https://github.com/cluerise/actions/compare/v4.2.10...v4.2.11) (2025-06-21)
+
+### Fixes
+
+- Add shebangs to shell scripts ([#388](https://github.com/cluerise/actions/issues/388)) ([7971649](https://github.com/cluerise/actions/commit/797164922cb3e75a8ded8bd88c364fa0ad905833))
+- Update monorepo dependencies ([#385](https://github.com/cluerise/actions/issues/385)) ([8008ad7](https://github.com/cluerise/actions/commit/8008ad764bddafe2f82dbed4a4bc84885736b957))
+
 ## [4.2.10](https://github.com/cluerise/actions/compare/v4.2.9...v4.2.10) (2025-06-05)
 
 ### Fixes
