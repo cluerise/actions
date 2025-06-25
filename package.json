@@ -31,7 +31,7 @@
     "__git-hooks:setup": "[ -d .git ] && git config --local core.hooksPath hooks || echo 'Info: Git hooks not set outside a git repository.'"
   },
   "devDependencies": {
-    "@cluerise/tools": "4.2.0",
+    "@cluerise/tools": "4.2.1",
     "@types/node": "24.0.4",
     "typescript": "5.8.3"
   }
