@@ -33,7 +33,7 @@ jobs:
           manager: ${{ env.INPUT_MANAGER }}
 
       - name: Lint commit message
-        run: echo -en "${{ github.event.pull_request.auto_merge.commit_title }}\n\n${{ github.event.pull_request.auto_merge.commit_message }}" | ${{ env.INPUT_COMMAND }}
+        run: echo -en '${{ github.event.pull_request.auto_merge.commit_title }}\n\n${{ github.event.pull_request.auto_merge.commit_message }}' | ${{ env.INPUT_COMMAND }}
 
       - name: Lint commit title
         if: github.event.pull_request.auto_merge.commit_title != format('{0} (#{1})', github.event.pull_request.title, github.event.number)
