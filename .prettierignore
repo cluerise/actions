@@ -1,0 +1,48 @@
+# All hidden files and directories
+.*
+
+# Enable hidden files with extensions
+!.*.*
+
+# Enable all hidden directories
+!.*/
+
+# Build
+build/
+dist/
+
+# Cloudflare
+.wrangler/
+worker-configuration.d.ts
+
+# Dependencies
+node_modules/
+
+# Git
+.git/
+
+# Git hooks
+hooks/*
+!hooks/*.js
+!hooks/*.ts
+
+# Lock files
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+
+# Misc
+etc/
+.DS_Store
+
+# Sample of .env file
+.env.example
+.env.sample
+.envrc.example
+.envrc.sample
+
+# Stryker
+.stryker-tmp/
+
+# Tests coverage
+coverage/
