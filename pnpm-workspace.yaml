@@ -5,3 +5,4 @@ publicHoistPattern:
   - eslint
   - lint-staged
   - prettier
+  - prettier-plugin-sh

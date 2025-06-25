@@ -2,6 +2,9 @@
 build/
 dist/
 
+# Cloudflare
+.wrangler/
+
 # Dependencies
 node_modules/
 
