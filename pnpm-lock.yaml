@@ -9,8 +9,8 @@ importers:
   .:
     devDependencies:
       '@cluerise/tools':
-        specifier: 4.2.1
-        version: 4.2.1(@types/node@24.0.4)(jiti@2.4.2)(typescript@5.8.3)
+        specifier: 4.2.2
+        version: 4.2.2(@types/node@24.0.4)(jiti@2.4.2)(typescript@5.8.3)
       '@types/node':
         specifier: 24.0.4
         version: 24.0.4
@@ -40,8 +40,8 @@ packages:
     resolution: {integrity: sha512-D2hP9eA+Sqx1kBZgzxZh0y1trbuU+JoDkiEwqhQ36nodYqJwyEIhPSdMNd7lOm/4io72luTPWH20Yda0xOuUow==}
     engines: {node: '>=6.9.0'}
 
-  '@cluerise/tools@4.2.1':
-    resolution: {integrity: sha512-SzkWUOH1XDZk4eW0MSfyNvTh8GB3XCC1ZsrSjlqzzUArsy89MRGcL4NqOX2my/8u/U0AB+u1YQGDCyJZQQQdCw==}
+  '@cluerise/tools@4.2.2':
+    resolution: {integrity: sha512-ZRnvqL2IEvqws7mIGIyznhxu7h1L82lHiJ55NY1fzEz8Jhxshm7uDTYzsKUdTy8K4UJKCR4+EFmFroeBie+pSA==}
     hasBin: true
 
   '@colors/colors@1.5.0':
@@ -156,8 +156,8 @@ packages:
     resolution: {integrity: sha512-qIbV0/JZr7iSDjqAc60IqbLdsj9GDt16xQtWD+B78d/HAlvysGdZZ6rpJHGAc2T0FQx1X6thsSPdnoiGKdNtdg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@eslint/core@0.15.0':
-    resolution: {integrity: sha512-b7ePw78tEWWkpgZCDYkbqDOP8dmM6qe+AOC6iuJqlq1R/0ahMAeH3qynpnqKFGkMltrp44ohV4ubGyvLX28tzw==}
+  '@eslint/core@0.15.1':
+    resolution: {integrity: sha512-bkOp+iumZCCbt1K1CmWf0R9pM5yKpDv+ZXtvSyQpudrI9kuFLp+bM2WOPXImuD/ceQuaa8f5pj93Y7zyECIGNA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@eslint/eslintrc@3.3.1':
@@ -184,8 +184,8 @@ packages:
     resolution: {integrity: sha512-ZAoA40rNMPwSm+AeHpCq8STiNAwzWLJuP8Xv4CHIc9wv/PSuExjMrmjfYNj682vW0OOiZ1HKxzvjQr9XZIisQA==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
-  '@eslint/plugin-kit@0.3.2':
-    resolution: {integrity: sha512-4SaFZCNfJqvk/kenHpI8xvN42DMaoycy4PzKc5otHxRswww1kAt82OlBuwRVLofCACCTZEcla2Ydxv8scMXaTg==}
+  '@eslint/plugin-kit@0.3.3':
+    resolution: {integrity: sha512-1+WqvgNMhmlAambTvT3KPtCl/Ibr68VldY2XY40SL1CE0ZXiakFR/cbTspaF5HsnpDMvcYYoJHfl4980NBjGag==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
 
   '@fastify/busboy@2.1.1':
@@ -939,8 +939,8 @@ packages:
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
 
-  electron-to-chromium@1.5.173:
-    resolution: {integrity: sha512-2bFhXP2zqSfQHugjqJIDFVwa+qIxyNApenmXTp9EjaKtdPrES5Qcn9/aSFy/NaP2E+fWG/zxKu/LBvY36p5VNQ==}
+  electron-to-chromium@1.5.174:
+    resolution: {integrity: sha512-HE43yYdUUiJVjewV2A9EP8o89Kb4AqMKplMQP2IxEPUws1Etu/ZkdsgUDabUZ/WmbP4ZbvJDOcunvbBUPPIfmw==}
 
   emoji-regex@10.4.0:
     resolution: {integrity: sha512-EC+0oUMY1Rqm4O6LLrgjtYDvcVYTy7chDnM4Q7030tP4Kwj3u/pR6gP9ygnp2CJMK5Gq+9Q2oqmrFJAz01DXjw==}
@@ -1084,8 +1084,8 @@ packages:
       '@typescript-eslint/parser':
         optional: true
 
-  eslint-plugin-prettier@5.5.0:
-    resolution: {integrity: sha512-8qsOYwkkGrahrgoUv76NZi23koqXOGiiEzXMrT8Q7VcYaUISR+5MorIUxfWqYXN0fN/31WbSrxCxFkVQ43wwrA==}
+  eslint-plugin-prettier@5.5.1:
+    resolution: {integrity: sha512-dobTkHT6XaEVOo8IO90Q4DOSxnm3Y151QxPJlM/vKC0bVy+d6cVWQZLlFiuZPP0wS6vZwSKeJgKkcS+KfMBlRw==}
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       '@types/eslint': '>=8.0.0'
@@ -2943,7 +2943,7 @@ snapshots:
 
   '@babel/helper-validator-identifier@7.27.1': {}
 
-  '@cluerise/tools@4.2.1(@types/node@24.0.4)(jiti@2.4.2)(typescript@5.8.3)':
+  '@cluerise/tools@4.2.2(@types/node@24.0.4)(jiti@2.4.2)(typescript@5.8.3)':
     dependencies:
       '@actions/core': 1.11.1
       '@commitlint/cli': 19.8.1(@types/node@24.0.4)(typescript@5.8.3)
@@ -2961,7 +2961,7 @@ snapshots:
       eslint-config-prettier: 10.1.5(eslint@9.29.0(jiti@2.4.2))
       eslint-import-resolver-typescript: 4.4.3(eslint-plugin-import@2.32.0)(eslint@9.29.0(jiti@2.4.2))
       eslint-plugin-import: 2.32.0(@typescript-eslint/parser@8.35.0(eslint@9.29.0(jiti@2.4.2))(typescript@5.8.3))(eslint-import-resolver-typescript@4.4.3)(eslint@9.29.0(jiti@2.4.2))
-      eslint-plugin-prettier: 5.5.0(eslint-config-prettier@10.1.5(eslint@9.29.0(jiti@2.4.2)))(eslint@9.29.0(jiti@2.4.2))(prettier@3.6.1)
+      eslint-plugin-prettier: 5.5.1(eslint-config-prettier@10.1.5(eslint@9.29.0(jiti@2.4.2)))(eslint@9.29.0(jiti@2.4.2))(prettier@3.6.1)
       eslint-plugin-simple-import-sort: 12.1.1(eslint@9.29.0(jiti@2.4.2))
       eslint-plugin-unicorn: 59.0.1(eslint@9.29.0(jiti@2.4.2))
       eslint-plugin-yml: 1.18.0(eslint@9.29.0(jiti@2.4.2))
@@ -3142,7 +3142,7 @@ snapshots:
     dependencies:
       '@types/json-schema': 7.0.15
 
-  '@eslint/core@0.15.0':
+  '@eslint/core@0.15.1':
     dependencies:
       '@types/json-schema': 7.0.15
 
@@ -3172,7 +3172,7 @@ snapshots:
   '@eslint/markdown@6.6.0':
     dependencies:
       '@eslint/core': 0.14.0
-      '@eslint/plugin-kit': 0.3.2
+      '@eslint/plugin-kit': 0.3.3
       github-slugger: 2.0.0
       mdast-util-from-markdown: 2.0.2
       mdast-util-frontmatter: 2.0.1
@@ -3189,16 +3189,16 @@ snapshots:
       '@eslint/core': 0.13.0
       levn: 0.4.1
 
-  '@eslint/plugin-kit@0.3.2':
+  '@eslint/plugin-kit@0.3.3':
     dependencies:
-      '@eslint/core': 0.15.0
+      '@eslint/core': 0.15.1
       levn: 0.4.1
 
   '@fastify/busboy@2.1.1': {}
 
   '@html-eslint/eslint-plugin@0.42.0(eslint@9.29.0(jiti@2.4.2))':
     dependencies:
-      '@eslint/plugin-kit': 0.3.2
+      '@eslint/plugin-kit': 0.3.3
       '@html-eslint/parser': 0.42.0
       '@html-eslint/template-parser': 0.42.0
       '@html-eslint/template-syntax-parser': 0.42.0
@@ -3740,7 +3740,7 @@ snapshots:
   browserslist@4.25.1:
     dependencies:
       caniuse-lite: 1.0.30001726
-      electron-to-chromium: 1.5.173
+      electron-to-chromium: 1.5.174
       node-releases: 2.0.19
       update-browserslist-db: 1.1.3(browserslist@4.25.1)
 
@@ -4008,7 +4008,7 @@ snapshots:
 
   eastasianwidth@0.2.0: {}
 
-  electron-to-chromium@1.5.173: {}
+  electron-to-chromium@1.5.174: {}
 
   emoji-regex@10.4.0: {}
 
@@ -4202,7 +4202,7 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-plugin-prettier@5.5.0(eslint-config-prettier@10.1.5(eslint@9.29.0(jiti@2.4.2)))(eslint@9.29.0(jiti@2.4.2))(prettier@3.6.1):
+  eslint-plugin-prettier@5.5.1(eslint-config-prettier@10.1.5(eslint@9.29.0(jiti@2.4.2)))(eslint@9.29.0(jiti@2.4.2))(prettier@3.6.1):
     dependencies:
       eslint: 9.29.0(jiti@2.4.2)
       prettier: 3.6.1
@@ -4265,7 +4265,7 @@ snapshots:
       '@eslint/core': 0.14.0
       '@eslint/eslintrc': 3.3.1
       '@eslint/js': 9.29.0
-      '@eslint/plugin-kit': 0.3.2
+      '@eslint/plugin-kit': 0.3.3
       '@humanfs/node': 0.16.6
       '@humanwhocodes/module-importer': 1.0.1
       '@humanwhocodes/retry': 0.4.3
