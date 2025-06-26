@@ -44,6 +44,7 @@ jobs:
         uses: cluerise/actions/install@v4.2.11
         with:
           manager: ${{ env.INPUT_MANAGER }}
+          fetch-depth: 2
 
       - name: Find all released packages
         id: released-packages

@@ -45,6 +45,8 @@ jobs:
 
       - name: Install
         uses: cluerise/actions/install@main
+        with:
+          fetch-depth: 2
 
       - name: Get release info
         id: get-release-info
