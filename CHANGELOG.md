@@ -1,4 +1,4 @@
-# Changelog
+# Changelog: `@cluerise/actions`
 
 ## [4.2.11](https://github.com/cluerise/actions/compare/v4.2.10...v4.2.11) (2025-06-21)
 
