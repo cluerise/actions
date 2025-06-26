@@ -35,13 +35,17 @@ jobs:
     env:
       INPUT_APP_ID: ${{ inputs.app-id || vars.CLUERISE_PUBLIC_BOT_APP_ID }}
       INPUT_MANAGER: ${{ inputs.manager }}
-      INPUT_RELEASE_COMMAND: ${{ inputs.release-command || 'pnpm run --filter "./${{ inputs.release-target }}/**" release create' }}
+      INPUT_RELEASE_COMMAND: ${{ inputs.release-command }}
       INPUT_RELEASE_TARGET: ${{ inputs.release-target || 'all' }}
       INPUT_EXTERNAL_CALL: ${{ inputs.__external-call || false }}
       SECRET_TOKEN: ${{ secrets.token }}
       SECRET_APP_PRIVATE_KEY: ${{ secrets.app-private-key || secrets.CLUERISE_PUBLIC_BOT_APP_PRIVATE_KEY }}
 
     steps:
+      - name: Set release command
+        if: env.INPUT_RELEASE_COMMAND == ''
+        run: echo "INPUT_RELEASE_COMMAND='pnpm run --filter \"./${{ inputs.release-target }}/**\" release create'" >> $GITHUB_ENV
+
       - name: Check required secrets
         if: env.SECRET_TOKEN == '' && (env.INPUT_APP_ID == '' || env.SECRET_APP_PRIVATE_KEY == '')
         run: exit 1
