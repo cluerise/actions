@@ -50,7 +50,7 @@ runs:
           (
             github.event.pull_request.user.login == env.INPUT_TRUSTED_BOT &&
             (!startsWith(github.head_ref, 'deps-') || env.INPUT_DEPENDENCY_APPROVED == 'true') &&
-            !startsWith(github.head_ref, 'release-')
+            github.head_ref != 'release'
           ) ||
           (
             github.event.pull_request.user.login == 'dependabot[bot]' &&
@@ -93,7 +93,7 @@ runs:
             github.event.pull_request.user.login == env.INPUT_TRUSTED_BOT &&
             (
               (startsWith(github.head_ref, 'deps-') && env.INPUT_DEPENDENCY_APPROVED == 'false') ||
-              startsWith(github.head_ref, 'release-')
+              github.head_ref == 'release'
             )
           ) ||
           (
