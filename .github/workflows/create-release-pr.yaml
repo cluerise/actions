@@ -7,10 +7,12 @@ on:
       app-id:
         type: string
         description: GitHub app ID
-        required: false
       manager:
         type: string
         description: Package manager (pnpm, npm, or yarn)
+      release-target:
+        type: string
+        description: Release target
       release-command:
         type: string
         description: Release command to run
@@ -33,7 +35,8 @@ jobs:
     env:
       INPUT_APP_ID: ${{ inputs.app-id || vars.CLUERISE_PUBLIC_BOT_APP_ID }}
       INPUT_MANAGER: ${{ inputs.manager }}
-      INPUT_RELEASE_COMMAND: ${{ inputs.release-command || 'pnpm run release create' }}
+      INPUT_RELEASE_COMMAND: ${{ inputs.release-command || 'pnpm run --filter "./${{ inputs.release-target }}/**" release create' }}
+      INPUT_RELEASE_TARGET: ${{ inputs.release-target || 'all' }}
       INPUT_EXTERNAL_CALL: ${{ inputs.__external-call || false }}
       SECRET_TOKEN: ${{ secrets.token }}
       SECRET_APP_PRIVATE_KEY: ${{ secrets.app-private-key || secrets.CLUERISE_PUBLIC_BOT_APP_PRIVATE_KEY }}
@@ -79,23 +82,53 @@ jobs:
         id: release
         run: ${{ env.INPUT_RELEASE_COMMAND }}
 
+      - name: Release info
+        id: release-info
+        uses: actions/github-script@v7.0.1
+        with:
+          script: |
+            const releases = JSON.parse(core.getInput('releases', { required: true }));
+
+            const releaseCount = Object.keys(releases).length;
+            const title = releaseCount === 1
+              ? `release: Release \`${releases[Object.keys(releases)[0]].tag}\``
+              : `release: Release of ${releaseCount} packages`;
+
+            const tableRows = [
+              ['Name', 'Type', 'Versions', 'Tag'],
+              ['---', '---', '---', '---'],
+              ...Object.values(releases).map(release => [
+                `\`${release.name}\``,
+                release.type,
+                `\`${release.versions.from}\` to \`${release.versions.to}\``,
+                `\`${release.tag}\``
+              ])
+            ];
+
+            const table = tableRows.map(row => `| ${row.join(' | ')} |`).join('\n');
+
+            core.setOutput('title', title);
+            core.setOutput('body', table);
+
+          releases: ${{ steps.release.outputs }}
+
       - name: Create a pull request with the release (main)
         if: env.INPUT_EXTERNAL_CALL == 'false'
         uses: branoholy/update-files-action@main
         with:
           token: ${{ env.BOT_TOKEN }}
-          branch.name: release-${{ steps.release.outputs.version }}
+          branch.name: release
           branch.recreate: true
           commit.paths: |
-            package.json
+            **/package.json
             pnpm-lock.yaml
             package-lock.json
             yarn.lock
-            CHANGELOG.md
+            **/CHANGELOG.md
             .github/workflows/*.yaml
-          commit.message: 'release: Version ${{ steps.release.outputs.version }}'
+          commit.message: ${{ steps.release-info.outputs.title }}
           commit.token: ${{ env.BOT_TOKEN }}
-          pull-request.body: Release ${{ steps.release.outputs.version }}.
+          pull-request.body: ${{ steps.release-info.outputs.body }}
           pull-request.labels: 'type: release'
 
       - name: Create a pull request with the release (version)
@@ -103,16 +136,16 @@ jobs:
         uses: branoholy/update-files-action@main
         with:
           token: ${{ env.SECRET_TOKEN || env.BOT_TOKEN }}
-          branch.name: release-${{ steps.release.outputs.version }}
+          branch.name: release
           branch.recreate: true
           commit.paths: |
-            package.json
+            **/package.json
             pnpm-lock.yaml
             package-lock.json
             yarn.lock
-            CHANGELOG.md
+            **/CHANGELOG.md
             **/*.pbxproj
-          commit.message: 'release: Version ${{ steps.release.outputs.version }}'
+          commit.message: ${{ steps.release-info.outputs.title }}
           commit.token: ${{ env.BOT_TOKEN || secrets.GITHUB_TOKEN }}
-          pull-request.body: Release ${{ steps.release.outputs.version }}.
+          pull-request.body: ${{ steps.release-info.outputs.body }}
           pull-request.labels: 'type: release'
