@@ -46,6 +46,15 @@ jobs:
           manager: ${{ env.INPUT_MANAGER }}
           fetch-depth: 2
 
+      - name: Print all released files 1
+        run: git diff --name-only HEAD~1
+
+      - name: Print all released files 2
+        run: git diff --name-only HEAD^
+
+      - name: Print all released packages
+        run: git diff --name-only HEAD~1 **/package.json
+
       - name: Find all released packages
         id: released-packages
         run: |
