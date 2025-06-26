@@ -118,7 +118,7 @@ jobs:
             core.setOutput('title', title);
             core.setOutput('body', table);
 
-          releases: ${{ steps.release.outputs }}
+          releases: ${{ toJSON(steps.release.outputs) }}
 
       - name: Create a pull request with the release (main)
         if: env.INPUT_EXTERNAL_CALL == 'false'
