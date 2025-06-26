@@ -95,17 +95,22 @@ jobs:
         uses: actions/github-script@v7.0.1
         with:
           script: |
-            const releases = JSON.parse(core.getInput('releases', { required: true }));
+            const {
+              release: defaultReleaseValue,
+              ...releaseValues
+            } = JSON.parse(core.getInput('releases', { required: true }));
 
-            const releaseCount = Object.keys(releases).length;
-            const title = releaseCount === 1
-              ? `release: Release \`${releases[Object.keys(releases)[0]].tag}\``
-              : `release: Release of ${releaseCount} packages`;
+            const defaultRelease = JSON.parse(defaultReleaseValue);
+            const releases = Object.values(releaseValues).map(releaseValue => JSON.parse(releaseValue));
+
+            const title = releases.length === 1
+              ? `release: Release \`${defaultRelease.tag}\``
+              : `release: Release of ${releases.length} packages`;
 
             const tableRows = [
               ['Name', 'Type', 'Versions', 'Tag'],
               ['---', '---', '---', '---'],
-              ...Object.values(releases).map(release => [
+              ...releases.map(release => [
                 `\`${release.name}\``,
                 release.type,
                 `\`${release.versions.from}\` to \`${release.versions.to}\``,
