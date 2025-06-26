@@ -6,7 +6,6 @@ on:
       app-id:
         type: string
         description: GitHub app ID
-        required: false
     secrets:
       token:
         description: GitHub access token

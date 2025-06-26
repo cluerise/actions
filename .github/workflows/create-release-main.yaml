@@ -6,10 +6,34 @@ on:
     branches: [main]
 
 jobs:
-  create-release:
-    name: Create release
+  prepare-release-info:
+    name: Prepare release info
     runs-on: ubuntu-latest
-    if: startsWith(github.head_ref, 'release-') && github.event.pull_request.merged == true
+    if: github.head_ref == 'release' && github.event.pull_request.merged == true
+    outputs:
+      package-paths: ${{ steps.released-packages.outputs.package-paths }}
+
+    steps:
+      - name: Install
+        uses: cluerise/actions/install@main
+
+      - name: Find all released packages
+        id: released-packages
+        run: |
+          {
+            echo "package-paths<<EOF_PACKAGE_PATHS"
+            git diff HEAD^ --name-only **/package.json | xargs -I{} dirname {} | jq -R -s -c 'split("\n")[:-1]'
+            echo "EOF_PACKAGE_PATHS"
+          } >> $GITHUB_OUTPUT;
+
+  create-releases:
+    name: Create releases
+    runs-on: ubuntu-latest
+    needs: prepare-release-info
+    if: needs.prepare-release-info.outputs.package-paths != '[]'
+    strategy:
+      matrix:
+        package-path: ${{ fromJson(needs.prepare-release-info.outputs.package-paths) }}
 
     steps:
       - name: Get bot token
@@ -19,8 +43,13 @@ jobs:
           app-id: ${{ vars.CLUERISE_PUBLIC_BOT_APP_ID }}
           app-private-key: ${{ secrets.CLUERISE_PUBLIC_BOT_APP_PRIVATE_KEY }}
 
-      - name: Set the release version env
-        run: echo "RELEASE_VERSION=$(echo '${{ github.head_ref }}' | cut -d'-' -f 2)" >> $GITHUB_ENV
+      - name: Install
+        uses: cluerise/actions/install@main
+
+      - name: Get release info
+        id: get-release-info
+        run: pnpm run release info
+        working-directory: ${{ matrix.package-path }}
 
       - name: Get id of the repository and latest branch
         id: get-latest-ref
@@ -38,7 +67,7 @@ jobs:
             }
           owner: ${{ github.event.repository.owner.login }}
           repo: ${{ github.event.repository.name }}
-          name: latest
+          name: ${{ fromJson(steps.get-release-info.outputs.info).latestBranch }}
 
       - name: Create the latest branch
         if: fromJson(steps.get-latest-ref.outputs.data).repository.ref == null
@@ -52,7 +81,7 @@ jobs:
               }
             }
           id: ${{ fromJson(steps.get-latest-ref.outputs.data).repository.id }}
-          name: refs/heads/latest
+          name: refs/heads/${{ fromJson(steps.get-release-info.outputs.info).latestBranch }}
           oid: ${{ github.event.pull_request.merge_commit_sha }}
 
       - name: Reset the latest branch
@@ -69,21 +98,14 @@ jobs:
           id: ${{ fromJson(steps.get-latest-ref.outputs.data).repository.ref.id }}
           oid: ${{ github.event.pull_request.merge_commit_sha }}
 
-      - name: Install
-        uses: cluerise/actions/install@main
-
-      - name: Extract the changelog
-        id: extract-changelog
-        run: npm run release extract-changelog
-
       - name: Create a new GitHub release
         uses: octokit/request-action@dad4362715b7fb2ddedf9772c8670824af564f0d
         with:
           route: POST /repos/{owner}/{repo}/releases
           owner: ${{ github.event.repository.owner.login }}
           repo: ${{ github.event.repository.name }}
-          tag_name: v${{ env.RELEASE_VERSION }}
+          tag_name: ${{ fromJson(steps.get-release-info.outputs.info).tag }}
           target_commitish: ${{ github.event.pull_request.merge_commit_sha }}
-          name: Version ${{ env.RELEASE_VERSION }}
-          body: ${{ toJSON(steps.extract-changelog.outputs.changelog) }}
+          name: Release `${{ fromJson(steps.get-release-info.outputs.info).tag }}`
+          body: ${{ fromJson(steps.get-release-info.outputs.info).changelog }}
           GITHUB_TOKEN: ${{ steps.get-bot-token.outputs.token }}

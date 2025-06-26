@@ -7,22 +7,18 @@ on:
     inputs:
       max-pull-requests:
         type: number
-        description: Max number of pull requests
-        required: false
+        description: Max pull requests
   workflow_call:
     inputs:
       app-id:
         type: string
         description: GitHub app ID
-        required: false
       max-pull-requests:
         type: number
-        description: Maximum number of pull requests to create
-        required: false
+        description: Max pull requests
       package-groups:
         type: string
         description: JSON object defining package groups for updates
-        required: false
       __external-call:
         type: boolean
         description: Do not use this input, it is an internal value to identify the workflow_call event
