@@ -83,15 +83,6 @@ jobs:
         run: ${{ env.INPUT_RELEASE_INFO_COMMAND }}
         working-directory: ${{ matrix.package-path }}
 
-      - name: Get release changelog
-        id: get-release-changelog
-        run: |
-          {
-            echo "changelog<<EOF_RELEASE_CHANGELOG"
-            echo "${{ fromJson(steps.get-release-info.outputs.info).changelog }}"
-            echo "EOF_RELEASE_CHANGELOG"
-          } >> $GITHUB_OUTPUT;
-
       - name: Get id of the repository and latest branch
         id: get-latest-ref
         uses: octokit/graphql-action@v2.3.2
@@ -148,5 +139,6 @@ jobs:
           tag_name: ${{ fromJson(steps.get-release-info.outputs.info).tag }}
           target_commitish: ${{ github.event.pull_request.merge_commit_sha }}
           name: Release `${{ fromJson(steps.get-release-info.outputs.info).tag }}`
-          body: ${{ steps.get-release-changelog.outputs.changelog }}
+          body: |
+            ${{ fromJson(steps.get-release-info.outputs.info).changelog }}
           GITHUB_TOKEN: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
