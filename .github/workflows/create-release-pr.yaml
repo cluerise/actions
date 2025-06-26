@@ -43,8 +43,12 @@ jobs:
 
     steps:
       - name: Set release command
-        if: env.INPUT_RELEASE_COMMAND == ''
-        run: echo "INPUT_RELEASE_COMMAND=pnpm run --filter \"./${{ inputs.release-target }}/**\" release create" >> $GITHUB_ENV
+        if: env.INPUT_RELEASE_COMMAND == '' && env.INPUT_RELEASE_TARGET == 'all'
+        run: echo "INPUT_RELEASE_COMMAND=pnpm run release create" >> $GITHUB_ENV
+
+      - name: Set release command for specific target
+        if: env.INPUT_RELEASE_COMMAND == '' && env.INPUT_RELEASE_TARGET != 'all'
+        run: echo "INPUT_RELEASE_COMMAND=pnpm run --filter \"./${{ env.INPUT_RELEASE_TARGET }}/**\" release create" >> $GITHUB_ENV
 
       - name: Check required secrets
         if: env.SECRET_TOKEN == '' && (env.INPUT_APP_ID == '' || env.SECRET_APP_PRIVATE_KEY == '')
