@@ -1,5 +1,32 @@
 # Changelog: `@cluerise/actions`
 
+## [5.0.0](https://github.com/cluerise/actions/compare/v4.2.11...v5.0.0) (2025-06-26)
+
+### ⚠ BREAKING CHANGES!
+
+- Monorepo releases (#399)
+
+### Features
+
+- Monorepo releases ([#399](https://github.com/cluerise/actions/issues/399)) ([f4e50f8](https://github.com/cluerise/actions/commit/f4e50f833e7ee746a1f9a323def8b9d445e4be26))
+
+### Fixes
+
+- Allow `backticks` in commit messages ([#394](https://github.com/cluerise/actions/issues/394)) ([b357bf8](https://github.com/cluerise/actions/commit/b357bf8fcdf5ca7cb9e160367ade9d40da451856))
+- Create release fetch depth ([#406](https://github.com/cluerise/actions/issues/406)) ([8315fef](https://github.com/cluerise/actions/commit/8315fef954ede58a232232ea4b56107c9a9ab180))
+- Default release command ([#402](https://github.com/cluerise/actions/issues/402)) ([f7302b0](https://github.com/cluerise/actions/commit/f7302b0a72557a76cf4e006bb9ca8313af2ca93c))
+- Release approval ([#405](https://github.com/cluerise/actions/issues/405)) ([f4974fe](https://github.com/cluerise/actions/commit/f4974fe5f41c3bf933dfb365525a8c86dbad01c0))
+- Release body ([#410](https://github.com/cluerise/actions/issues/410)) ([6a9ca3d](https://github.com/cluerise/actions/commit/6a9ca3dc535e92cd2eae69bd85ee1895eb8edf17))
+- Release body as JSON ([#412](https://github.com/cluerise/actions/issues/412)) ([6937860](https://github.com/cluerise/actions/commit/6937860627d299f9f315e41d3736978368068073))
+- Release command input ([#400](https://github.com/cluerise/actions/issues/400)) ([b17b994](https://github.com/cluerise/actions/commit/b17b994dcff7a96aa4576ab742cf461aae686e39))
+- Release command input quotes ([#401](https://github.com/cluerise/actions/issues/401)) ([fb4fe44](https://github.com/cluerise/actions/commit/fb4fe4495283dd319cc756648637dc5cb61bbf9a))
+- Release info ([#404](https://github.com/cluerise/actions/issues/404)) ([fa6a616](https://github.com/cluerise/actions/commit/fa6a6162baa6565ca2d12c37a5b1c3894dd67e86))
+- Release multiline body ([#411](https://github.com/cluerise/actions/issues/411)) ([bd48c44](https://github.com/cluerise/actions/commit/bd48c4472e7930a7bc96ff4df7acee04fec9ed8f))
+- Release name ([#413](https://github.com/cluerise/actions/issues/413)) ([6949cb5](https://github.com/cluerise/actions/commit/6949cb5a5b3355e182f79f8f959d6acf023c8eac))
+- Released package git command ([#409](https://github.com/cluerise/actions/issues/409)) ([d37a33b](https://github.com/cluerise/actions/commit/d37a33b127c3e3c03eabec24021d0d78233e9aa7))
+- Released packages ([#407](https://github.com/cluerise/actions/issues/407)) ([6137378](https://github.com/cluerise/actions/commit/613737837173ed961af43094ab4c0e043fd1382a))
+- Stringify release output ([#403](https://github.com/cluerise/actions/issues/403)) ([8cbbbf1](https://github.com/cluerise/actions/commit/8cbbbf14095e1d72908be466c5d9c7d57ab8b9e9))
+
 ## [4.2.11](https://github.com/cluerise/actions/compare/v4.2.10...v4.2.11) (2025-06-21)
 
 ### Fixes
