@@ -161,7 +161,7 @@ jobs:
           outdated-packages: ${{ steps.get-outdated-packages.outputs.outdated-packages }}
 
   create-pull-requests:
-    name: Create pull requests
+    name: Create pull request
     runs-on: ubuntu-latest
     needs: prepare-updates
     if: needs.prepare-updates.outputs.updates != '[]'
