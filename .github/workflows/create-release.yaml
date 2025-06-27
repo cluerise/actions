@@ -45,7 +45,7 @@ jobs:
         run: exit 1
 
       - name: Install
-        uses: cluerise/actions/install@v5.0.1
+        uses: cluerise/actions/install@v5.1.0
         with:
           manager: ${{ env.INPUT_MANAGER }}
           fetch-depth: 2
@@ -73,13 +73,13 @@ jobs:
       - name: Get bot token
         id: get-bot-token
         if: env.SECRET_TOKEN == ''
-        uses: cluerise/actions/get-github-app-token@v5.0.1
+        uses: cluerise/actions/get-github-app-token@v5.1.0
         with:
           app-id: ${{ env.INPUT_APP_ID }}
           app-private-key: ${{ env.SECRET_APP_PRIVATE_KEY }}
 
       - name: Install
-        uses: cluerise/actions/install@v5.0.1
+        uses: cluerise/actions/install@v5.1.0
         with:
           manager: ${{ env.INPUT_MANAGER }}
 
