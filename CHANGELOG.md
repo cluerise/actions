@@ -1,5 +1,11 @@
 # Changelog: `@cluerise/actions`
 
+## [5.1.0](https://github.com/cluerise/actions/compare/v5.0.1...v5.1.0) (2025-06-27)
+
+### Features
+
+- Release title per repository type ([#424](https://github.com/cluerise/actions/issues/424)) ([28ef1e8](https://github.com/cluerise/actions/commit/28ef1e8de84f5ff0c65bfc739597f1e16e8e8d63))
+
 ## [5.0.1](https://github.com/cluerise/actions/compare/v5.0.0...v5.0.1) (2025-06-27)
 
 ### Fixes
