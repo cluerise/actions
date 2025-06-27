@@ -9,8 +9,8 @@ importers:
   .:
     devDependencies:
       '@cluerise/tools':
-        specifier: 5.0.1
-        version: 5.0.1(@types/node@24.0.6)(jiti@2.4.2)(typescript@5.8.3)
+        specifier: 5.0.2
+        version: 5.0.2(@types/node@24.0.6)(jiti@2.4.2)(typescript@5.8.3)
       '@types/node':
         specifier: 24.0.6
         version: 24.0.6
@@ -40,8 +40,8 @@ packages:
     resolution: {integrity: sha512-D2hP9eA+Sqx1kBZgzxZh0y1trbuU+JoDkiEwqhQ36nodYqJwyEIhPSdMNd7lOm/4io72luTPWH20Yda0xOuUow==}
     engines: {node: '>=6.9.0'}
 
-  '@cluerise/tools@5.0.1':
-    resolution: {integrity: sha512-tGePMMVsQG9/338HhEVKhNn+NuyQ7oLvklrkvhB2QES6H6Y4uj0axBE25mHZSC/gbn7J3nvGOXxSRcVrjiGeFg==}
+  '@cluerise/tools@5.0.2':
+    resolution: {integrity: sha512-B5DE7jeJNH60XMFrqRXZaMC1sE2z3Jn/Ebfc/XeBEWVbntNeTmUNHucUhDjb1Vht0K0jniSJxORR8OspFWNLCg==}
     hasBin: true
 
   '@colors/colors@1.5.0':
@@ -939,8 +939,8 @@ packages:
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
 
-  electron-to-chromium@1.5.176:
-    resolution: {integrity: sha512-2nDK9orkm7M9ZZkjO3PjbEd3VUulQLyg5T9O3enJdFvUg46Hzd4DUvTvAuEgbdHYXyFsiG4A5sO9IzToMH1cDg==}
+  electron-to-chromium@1.5.177:
+    resolution: {integrity: sha512-7EH2G59nLsEMj97fpDuvVcYi6lwTcM1xuWw3PssD8xzboAW7zj7iB3COEEEATUfjLHrs5uKBLQT03V/8URx06g==}
 
   emoji-regex@10.4.0:
     resolution: {integrity: sha512-EC+0oUMY1Rqm4O6LLrgjtYDvcVYTy7chDnM4Q7030tP4Kwj3u/pR6gP9ygnp2CJMK5Gq+9Q2oqmrFJAz01DXjw==}
@@ -2943,7 +2943,7 @@ snapshots:
 
   '@babel/helper-validator-identifier@7.27.1': {}
 
-  '@cluerise/tools@5.0.1(@types/node@24.0.6)(jiti@2.4.2)(typescript@5.8.3)':
+  '@cluerise/tools@5.0.2(@types/node@24.0.6)(jiti@2.4.2)(typescript@5.8.3)':
     dependencies:
       '@actions/core': 1.11.1
       '@commitlint/cli': 19.8.1(@types/node@24.0.6)(typescript@5.8.3)
@@ -3740,7 +3740,7 @@ snapshots:
   browserslist@4.25.1:
     dependencies:
       caniuse-lite: 1.0.30001726
-      electron-to-chromium: 1.5.176
+      electron-to-chromium: 1.5.177
       node-releases: 2.0.19
       update-browserslist-db: 1.1.3(browserslist@4.25.1)
 
@@ -4008,7 +4008,7 @@ snapshots:
 
   eastasianwidth@0.2.0: {}
 
-  electron-to-chromium@1.5.176: {}
+  electron-to-chromium@1.5.177: {}
 
   emoji-regex@10.4.0: {}
 
