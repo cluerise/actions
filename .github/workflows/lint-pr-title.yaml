@@ -21,7 +21,7 @@ jobs:
 
     steps:
       - name: Install
-        uses: cluerise/actions/install@v5.0.0
+        uses: cluerise/actions/install@v5.0.1
         with:
           manager: ${{ env.INPUT_MANAGER }}
 
