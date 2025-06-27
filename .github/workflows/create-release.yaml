@@ -12,6 +12,9 @@ on:
       release-info-command:
         type: string
         description: Release info command to run
+      repository-type:
+        type: string
+        description: Type of the repository (single or monorepo)
     secrets:
       token:
         description: GitHub access token
@@ -24,6 +27,7 @@ env:
   INPUT_APP_ID: ${{ inputs.app-id }}
   INPUT_MANAGER: ${{ inputs.manager }}
   INPUT_RELEASE_INFO_COMMAND: ${{ inputs.release-info-command || 'pnpm run release info' }}
+  INPUT_REPOSITORY_TYPE: ${{ inputs.repository-type || 'single' }}
   SECRET_TOKEN: ${{ secrets.token }}
   SECRET_APP_PRIVATE_KEY: ${{ secrets.app-private-key }}
 
@@ -61,6 +65,7 @@ jobs:
     needs: prepare-release-info
     if: needs.prepare-release-info.outputs.package-paths != '[]'
     strategy:
+      max-parallel: 1
       matrix:
         package-path: ${{ fromJson(needs.prepare-release-info.outputs.package-paths) }}
 
@@ -82,6 +87,14 @@ jobs:
         id: get-release-info
         run: ${{ env.INPUT_RELEASE_INFO_COMMAND }}
         working-directory: ${{ matrix.package-path }}
+
+      - name: Get single repo release title
+        if: env.INPUT_REPOSITORY_TYPE == 'single'
+        run: echo "RELEASE_TITLE=Release ${{ fromJson(steps.get-release-info.outputs.info).tag }}" >> $GITHUB_ENV
+
+      - name: Get monorepo release title
+        if: env.INPUT_REPOSITORY_TYPE == 'monorepo'
+        run: echo "RELEASE_TITLE=${{ fromJson(steps.get-release-info.outputs.info).tag }}" >> $GITHUB_ENV
 
       - name: Get id of the repository and latest branch
         id: get-latest-ref
@@ -138,6 +151,6 @@ jobs:
           repo: ${{ github.event.repository.name }}
           tag_name: '${{ fromJson(steps.get-release-info.outputs.info).tag }}'
           target_commitish: ${{ github.event.pull_request.merge_commit_sha }}
-          name: Release ${{ fromJson(steps.get-release-info.outputs.info).tag }}
+          name: '${{ env.RELEASE_TITLE }}'
           body: ${{ toJson(fromJson(steps.get-release-info.outputs.info).changelog) }}
           GITHUB_TOKEN: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
