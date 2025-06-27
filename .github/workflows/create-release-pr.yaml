@@ -101,7 +101,9 @@ jobs:
             } = JSON.parse(core.getInput('releases', { required: true }));
 
             const defaultRelease = JSON.parse(defaultReleaseValue);
-            const releases = Object.values(releaseValues).map(releaseValue => JSON.parse(releaseValue));
+            const releases = Object.values(releaseValues)
+              .map(releaseValue => JSON.parse(releaseValue))
+              .toSorted((releaseA, releaseB) => releaseA.name.localeCompare(releaseB.name));
 
             const title = releases.length === 1
               ? `release: Release \`${defaultRelease.tag}\``
