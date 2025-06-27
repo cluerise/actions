@@ -1,5 +1,12 @@
 # Changelog: `@cluerise/actions`
 
+## [5.0.1](https://github.com/cluerise/actions/compare/v5.0.0...v5.0.1) (2025-06-27)
+
+### Fixes
+
+- Release with a scoped tag ([#420](https://github.com/cluerise/actions/issues/420)) ([9397046](https://github.com/cluerise/actions/commit/93970461c1a2906c6b242f6263bfa3341f65c9f3))
+- Sort release names ([#422](https://github.com/cluerise/actions/issues/422)) ([56169d2](https://github.com/cluerise/actions/commit/56169d2eaef42c4c346bd9f5baa5e6f63df53d48))
+
 ## [5.0.0](https://github.com/cluerise/actions/compare/v4.2.11...v5.0.0) (2025-06-26)
 
 ### ⚠ BREAKING CHANGES!
