@@ -34,6 +34,7 @@ jobs:
     needs: prepare-release-info
     if: needs.prepare-release-info.outputs.package-paths != '[]'
     strategy:
+      max-parallel: 1
       matrix:
         package-path: ${{ fromJson(needs.prepare-release-info.outputs.package-paths) }}
 
@@ -52,6 +53,9 @@ jobs:
         id: get-release-info
         run: pnpm run release info
         working-directory: ${{ matrix.package-path }}
+
+      - name: Get single repo release title
+        run: echo "RELEASE_TITLE=Release ${{ fromJson(steps.get-release-info.outputs.info).tag }}" >> $GITHUB_ENV
 
       - name: Get id of the repository and latest branch
         id: get-latest-ref
@@ -108,6 +112,6 @@ jobs:
           repo: ${{ github.event.repository.name }}
           tag_name: '${{ fromJson(steps.get-release-info.outputs.info).tag }}'
           target_commitish: ${{ github.event.pull_request.merge_commit_sha }}
-          name: Release ${{ fromJson(steps.get-release-info.outputs.info).tag }}
+          name: '${{ env.RELEASE_TITLE }}'
           body: ${{ toJson(fromJson(steps.get-release-info.outputs.info).changelog) }}
           GITHUB_TOKEN: ${{ steps.get-bot-token.outputs.token }}
