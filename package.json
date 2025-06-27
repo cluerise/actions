@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "@cluerise/tools": "5.0.1",
-    "@types/node": "24.0.4",
+    "@types/node": "24.0.6",
     "typescript": "5.8.3"
   }
 }
