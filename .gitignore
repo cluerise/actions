@@ -9,7 +9,8 @@ dist/
 node_modules/
 
 # .env, .envrc
-.env
+.env.local
+.env.*.local
 .envrc
 
 # Lint Staged

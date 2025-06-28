@@ -18,6 +18,12 @@ worker-configuration.d.ts
 # Dependencies
 node_modules/
 
+# .env, .envrc
+.env
+.env.*
+.envrc
+.envrc.*
+
 # Git
 .git/
 
@@ -34,12 +40,6 @@ yarn.lock
 # Misc
 etc/
 .DS_Store
-
-# Sample of .env file
-.env.example
-.env.sample
-.envrc.example
-.envrc.sample
 
 # Stryker
 .stryker-tmp/
