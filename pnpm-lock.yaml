@@ -9,8 +9,8 @@ importers:
   .:
     devDependencies:
       '@cluerise/tools':
-        specifier: 5.0.2
-        version: 5.0.2(@types/node@24.0.6)(jiti@2.4.2)(typescript@5.8.3)
+        specifier: 5.1.0
+        version: 5.1.0(@types/node@24.0.6)(jiti@2.4.2)(typescript@5.8.3)
       '@types/node':
         specifier: 24.0.6
         version: 24.0.6
@@ -40,8 +40,8 @@ packages:
     resolution: {integrity: sha512-D2hP9eA+Sqx1kBZgzxZh0y1trbuU+JoDkiEwqhQ36nodYqJwyEIhPSdMNd7lOm/4io72luTPWH20Yda0xOuUow==}
     engines: {node: '>=6.9.0'}
 
-  '@cluerise/tools@5.0.2':
-    resolution: {integrity: sha512-B5DE7jeJNH60XMFrqRXZaMC1sE2z3Jn/Ebfc/XeBEWVbntNeTmUNHucUhDjb1Vht0K0jniSJxORR8OspFWNLCg==}
+  '@cluerise/tools@5.1.0':
+    resolution: {integrity: sha512-z+M4PIqF2r1BKMhtijaa5TGpULqWflnvVDpO6DjpWrG0fKfbpPYyM7PudTedP6wuASLfAdwehsWOYQj0bMJ+7A==}
     hasBin: true
 
   '@colors/colors@1.5.0':
@@ -277,8 +277,8 @@ packages:
   '@octokit/openapi-types@25.1.0':
     resolution: {integrity: sha512-idsIggNXUKkk0+BExUn1dQ92sfysJrje03Q0bv0e+KPLrvyqZF8MnBpFz8UNfYDwB3Ie7Z0TByjWfzxt7vseaA==}
 
-  '@octokit/plugin-paginate-rest@13.1.0':
-    resolution: {integrity: sha512-16iNOa4rTTjaWtfsPGJcYYL79FJakseX8TQFIPfVuSPC3s5nkS/DSNQPFPc5lJHgEDBWNMxSApHrEymNblhA9w==}
+  '@octokit/plugin-paginate-rest@13.1.1':
+    resolution: {integrity: sha512-q9iQGlZlxAVNRN2jDNskJW/Cafy7/XE52wjZ5TTvyhyOD904Cvx//DNyoO3J/MXJ0ve3rPoNWKEg5iZrisQSuw==}
     engines: {node: '>= 20'}
     peerDependencies:
       '@octokit/core': '>=6'
@@ -2009,8 +2009,8 @@ packages:
     resolution: {integrity: sha512-21t+ozMQDAL/UGgQVBbZ/xXvNO10++ZPuTmKRO8k9V3AClVRht49ahtDjfY8l1q6nSHOrE5ASfthzH3ol6R/hg==}
     engines: {node: '>=20.17'}
 
-  napi-postinstall@0.2.4:
-    resolution: {integrity: sha512-ZEzHJwBhZ8qQSbknHqYcdtQVr8zUgGyM/q6h6qAyhtyVMNrSgDhrC4disf03dYW0e+czXyLnZINnCTEkWy0eJg==}
+  napi-postinstall@0.2.5:
+    resolution: {integrity: sha512-kmsgUvCRIJohHjbZ3V8avP0I1Pekw329MVAMDzVxsrkjgdnqiwvMX5XwR+hWV66vsAtZ+iM+fVnq8RTQawUmCQ==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
     hasBin: true
 
@@ -2943,7 +2943,7 @@ snapshots:
 
   '@babel/helper-validator-identifier@7.27.1': {}
 
-  '@cluerise/tools@5.0.2(@types/node@24.0.6)(jiti@2.4.2)(typescript@5.8.3)':
+  '@cluerise/tools@5.1.0(@types/node@24.0.6)(jiti@2.4.2)(typescript@5.8.3)':
     dependencies:
       '@actions/core': 1.11.1
       '@commitlint/cli': 19.8.1(@types/node@24.0.6)(typescript@5.8.3)
@@ -3289,7 +3289,7 @@ snapshots:
 
   '@octokit/openapi-types@25.1.0': {}
 
-  '@octokit/plugin-paginate-rest@13.1.0(@octokit/core@7.0.2)':
+  '@octokit/plugin-paginate-rest@13.1.1(@octokit/core@7.0.2)':
     dependencies:
       '@octokit/core': 7.0.2
       '@octokit/types': 14.1.0
@@ -3362,7 +3362,7 @@ snapshots:
   '@semantic-release/github@11.0.3(semantic-release@24.2.5(typescript@5.8.3))':
     dependencies:
       '@octokit/core': 7.0.2
-      '@octokit/plugin-paginate-rest': 13.1.0(@octokit/core@7.0.2)
+      '@octokit/plugin-paginate-rest': 13.1.1(@octokit/core@7.0.2)
       '@octokit/plugin-retry': 8.0.1(@octokit/core@7.0.2)
       '@octokit/plugin-throttling': 11.0.1(@octokit/core@7.0.2)
       '@semantic-release/error': 4.0.0
@@ -5339,7 +5339,7 @@ snapshots:
 
   nano-spawn@1.0.2: {}
 
-  napi-postinstall@0.2.4: {}
+  napi-postinstall@0.2.5: {}
 
   natural-compare@1.4.0: {}
 
@@ -6106,7 +6106,7 @@ snapshots:
 
   unrs-resolver@1.9.2:
     dependencies:
-      napi-postinstall: 0.2.4
+      napi-postinstall: 0.2.5
     optionalDependencies:
       '@unrs/resolver-binding-android-arm-eabi': 1.9.2
       '@unrs/resolver-binding-android-arm64': 1.9.2
