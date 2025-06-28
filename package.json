@@ -22,6 +22,8 @@
     "release": "cluerise-tools release",
     "postrelease": "./scripts/update-workflow-versions.sh",
     "lint": "cluerise-tools lint",
+    "type-check": "tsc --noEmit",
+    "tc": "pnpm run type-check",
     "node-versions-update": "cluerise-tools update-node-versions",
     "setup-icloud-repository": "./scripts/setup-icloud-repository.sh",
     "__git-hook:commit-msg": "cluerise-tools format-commit-message",
