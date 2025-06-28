@@ -1,4 +1,5 @@
 engineStrict: true
+gitChecks: false
 
 publicHoistPattern:
   - '@commitlint/cli'
