@@ -1,5 +1,11 @@
 # Changelog: `@cluerise/actions`
 
+## [5.2.0](https://github.com/cluerise/actions/compare/v5.1.0...v5.2.0) (2025-06-29)
+
+### Features
+
+- NPM user config ([#434](https://github.com/cluerise/actions/issues/434)) ([8b5c059](https://github.com/cluerise/actions/commit/8b5c0590ac6c3db95621009e735ee726cb9dfadc))
+
 ## [5.1.0](https://github.com/cluerise/actions/compare/v5.0.1...v5.1.0) (2025-06-27)
 
 ### Features
