@@ -9,6 +9,18 @@ on:
       command:
         type: string
         description: Lint command to run
+      npm-config-userconfig:
+        type: string
+        description: NPM configuration file path
+    secrets:
+      npm-auth-token:
+        description: NPM authentication token for private packages
+        required: false
+env:
+  INPUT_MANAGER: ${{ inputs.manager }}
+  INPUT_COMMAND: ${{ inputs.command || 'pnpm run lint commit' }}
+  NPM_AUTH_TOKEN: ${{ secrets.npm-auth-token }}
+  NPM_CONFIG_USERCONFIG: ${{ inputs.npm-config-userconfig }}
 
 jobs:
   lint-merge-commit:
@@ -17,9 +29,6 @@ jobs:
     concurrency:
       group: lint-merge-commit-${{ github.event.pull_request.number }}
       cancel-in-progress: true
-    env:
-      INPUT_MANAGER: ${{ inputs.manager }}
-      INPUT_COMMAND: ${{ inputs.command || 'pnpm run lint commit' }}
 
     steps:
       - name: Check auto merge

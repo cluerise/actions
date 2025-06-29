@@ -18,6 +18,9 @@ on:
       node-version-file:
         type: string
         description: File containing the Node.js version to use
+      npm-config-userconfig:
+        type: string
+        description: NPM configuration file path
       __external-call:
         type: boolean
         description: Do not use this input, it is an internal value to identify the workflow_call event
@@ -29,19 +32,25 @@ on:
       app-private-key:
         description: GitHub app private key
         required: false
+      npm-auth-token:
+        description: NPM authentication token for private packages
+        required: false
+
+env:
+  INPUT_APP_ID: ${{ inputs.app-id || vars.CLUERISE_PUBLIC_BOT_APP_ID }}
+  INPUT_MANAGER: ${{ inputs.manager || 'pnpm' }}
+  INPUT_NODE_VERSION: ${{ inputs.node-version }}
+  INPUT_NODE_VERSION_FILE: ${{ inputs.node-version-file }}
+  INPUT_EXTERNAL_CALL: ${{ inputs.__external-call || false }}
+  SECRET_TOKEN: ${{ secrets.token }}
+  SECRET_APP_PRIVATE_KEY: ${{ secrets.app-private-key || secrets.CLUERISE_PUBLIC_BOT_APP_PRIVATE_KEY }}
+  NPM_AUTH_TOKEN: ${{ secrets.npm-auth-token }}
+  NPM_CONFIG_USERCONFIG: ${{ inputs.npm-config-userconfig }}
 
 jobs:
   update-lock-file:
     name: Update lock file
     runs-on: ubuntu-latest
-    env:
-      INPUT_APP_ID: ${{ inputs.app-id || vars.CLUERISE_PUBLIC_BOT_APP_ID }}
-      INPUT_MANAGER: ${{ inputs.manager || 'pnpm' }}
-      INPUT_NODE_VERSION: ${{ inputs.node-version }}
-      INPUT_NODE_VERSION_FILE: ${{ inputs.node-version-file }}
-      INPUT_EXTERNAL_CALL: ${{ inputs.__external-call || false }}
-      SECRET_TOKEN: ${{ secrets.token }}
-      SECRET_APP_PRIVATE_KEY: ${{ secrets.app-private-key || secrets.CLUERISE_PUBLIC_BOT_APP_PRIVATE_KEY }}
 
     steps:
       - name: Check required secrets
