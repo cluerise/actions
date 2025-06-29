@@ -15,12 +15,18 @@ on:
       repository-type:
         type: string
         description: Type of the repository (single or monorepo)
+      npm-config-userconfig:
+        type: string
+        description: NPM configuration file path
     secrets:
       token:
         description: GitHub access token
         required: false
       app-private-key:
         description: GitHub app private key
+        required: false
+      npm-auth-token:
+        description: NPM authentication token for private packages
         required: false
 
 env:
@@ -30,6 +36,8 @@ env:
   INPUT_REPOSITORY_TYPE: ${{ inputs.repository-type || 'single' }}
   SECRET_TOKEN: ${{ secrets.token }}
   SECRET_APP_PRIVATE_KEY: ${{ secrets.app-private-key }}
+  NPM_AUTH_TOKEN: ${{ secrets.npm-auth-token }}
+  NPM_CONFIG_USERCONFIG: ${{ inputs.npm-config-userconfig }}
 
 jobs:
   prepare-release-info:
