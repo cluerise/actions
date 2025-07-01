@@ -73,7 +73,7 @@ jobs:
             }
           owner: ${{ github.event.repository.owner.login }}
           repo: ${{ github.event.repository.name }}
-          name: '${{ fromJson(steps.get-release-info.outputs.info).latestBranch }}'
+          name: ${{ toJson(fromJson(steps.get-release-info.outputs.info).latestBranch) }}
 
       - name: Create the latest branch
         if: fromJson(steps.get-latest-ref.outputs.data).repository.ref == null
@@ -110,8 +110,8 @@ jobs:
           route: POST /repos/{owner}/{repo}/releases
           owner: ${{ github.event.repository.owner.login }}
           repo: ${{ github.event.repository.name }}
-          tag_name: '${{ fromJson(steps.get-release-info.outputs.info).tag }}'
+          tag_name: ${{ toJson(fromJson(steps.get-release-info.outputs.info).tag) }}
           target_commitish: ${{ github.event.pull_request.merge_commit_sha }}
-          name: '${{ env.RELEASE_TITLE }}'
+          name: ${{ toJson(env.RELEASE_TITLE) }}
           body: ${{ toJson(fromJson(steps.get-release-info.outputs.info).changelog) }}
           GITHUB_TOKEN: ${{ steps.get-bot-token.outputs.token }}
