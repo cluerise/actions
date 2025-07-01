@@ -1,5 +1,11 @@
 # Changelog: `@cluerise/actions`
 
+## [5.2.1](https://github.com/cluerise/actions/compare/v5.2.0...v5.2.1) (2025-07-01)
+
+### Fixes
+
+- Release tag and branch with at sign ([#436](https://github.com/cluerise/actions/issues/436)) ([9c66489](https://github.com/cluerise/actions/commit/9c664895b3542b32f5e5946c54d7237df349d86b))
+
 ## [5.2.0](https://github.com/cluerise/actions/compare/v5.1.0...v5.2.0) (2025-06-29)
 
 ### Features
