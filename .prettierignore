@@ -18,7 +18,9 @@ worker-configuration.d.ts
 # Dependencies
 node_modules/
 
-# .env, .envrc
+# .dev.vars, .env, .envrc
+.dev.vars
+.dev.vars.*
 .env
 .env.*
 .envrc
@@ -40,6 +42,9 @@ yarn.lock
 # Misc
 etc/
 .DS_Store
+
+# NPM, PNPM
+.npmrc.*
 
 # Stryker
 .stryker-tmp/

@@ -8,7 +8,9 @@ dist/
 # Dependencies
 node_modules/
 
-# .env, .envrc
+# .dev.vars, .env, .envrc
+.dev.vars
+.dev.vars.*
 .env.local
 .env.*.local
 .envrc
