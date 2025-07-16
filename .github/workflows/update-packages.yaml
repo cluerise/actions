@@ -2,7 +2,7 @@ name: Update packages
 
 on:
   schedule:
-    - cron: '0 11 * * 0'
+    - cron: '0 11 * * 0' # Every Sunday at 11:00 UTC
   workflow_dispatch:
     inputs:
       max-pull-requests:
