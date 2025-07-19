@@ -1,0 +1,121 @@
+name: Update package manager
+
+on:
+  schedule:
+    - cron: '30 10 * * 0' # Every Sunday at 10:30 UTC
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      app-id:
+        type: string
+        description: GitHub app ID
+      manager:
+        type: string
+        description: Package manager (pnpm, npm, or yarn)
+      node-version:
+        type: string
+        description: 'Node.js version to use. Examples: 12.x, 10.15.1, >=10.15.0'
+      node-version-file:
+        type: string
+        description: File containing the Node.js version to use
+      npm-config-userconfig:
+        type: string
+        description: NPM configuration file path
+      __external-call:
+        type: boolean
+        description: Do not use this input, it is an internal value to identify the workflow_call event
+        default: true
+    secrets:
+      token:
+        description: GitHub access token
+        required: false
+      app-private-key:
+        description: GitHub app private key
+        required: false
+      npm-auth-token:
+        description: NPM authentication token for private packages
+        required: false
+
+env:
+  INPUT_APP_ID: ${{ inputs.app-id || vars.CLUERISE_PUBLIC_BOT_APP_ID }}
+  INPUT_MANAGER: ${{ inputs.manager || 'pnpm' }}
+  INPUT_NODE_VERSION: ${{ inputs.node-version }}
+  INPUT_NODE_VERSION_FILE: ${{ inputs.node-version-file }}
+  INPUT_EXTERNAL_CALL: ${{ inputs.__external-call || false }}
+  SECRET_TOKEN: ${{ secrets.token }}
+  SECRET_APP_PRIVATE_KEY: ${{ secrets.app-private-key || secrets.CLUERISE_PUBLIC_BOT_APP_PRIVATE_KEY }}
+  NPM_AUTH_TOKEN: ${{ secrets.npm-auth-token }}
+  NPM_CONFIG_USERCONFIG: ${{ inputs.npm-config-userconfig }}
+
+jobs:
+  update-lock-file:
+    name: Update lock file
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check required secrets
+        if: env.SECRET_TOKEN == '' && (env.INPUT_APP_ID == '' || env.SECRET_APP_PRIVATE_KEY == '')
+        run: exit 1
+
+      - name: Get bot token (main)
+        id: get-bot-token-main
+        if: env.INPUT_EXTERNAL_CALL == 'false' && env.SECRET_TOKEN == ''
+        uses: cluerise/actions/get-github-app-token@main
+        with:
+          app-id: ${{ env.INPUT_APP_ID }}
+          app-private-key: ${{ env.SECRET_APP_PRIVATE_KEY }}
+
+      - name: Get bot token (version)
+        id: get-bot-token-version
+        if: env.INPUT_EXTERNAL_CALL == 'true' && env.SECRET_TOKEN == ''
+        uses: cluerise/actions/get-github-app-token@v5.2.1
+        with:
+          app-id: ${{ env.INPUT_APP_ID }}
+          app-private-key: ${{ env.SECRET_APP_PRIVATE_KEY }}
+
+      - name: Set bot token
+        run: echo "BOT_TOKEN=${{ steps.get-bot-token-main.outputs.token || steps.get-bot-token-version.outputs.token }}" >> $GITHUB_ENV
+
+      - name: Install (main)
+        if: env.INPUT_EXTERNAL_CALL == 'false'
+        uses: cluerise/actions/install@main
+
+      - name: Install (version)
+        if: env.INPUT_EXTERNAL_CALL == 'true'
+        uses: cluerise/actions/install@v5.2.1
+        with:
+          manager: ${{ env.INPUT_MANAGER }}
+          node-version: ${{ env.INPUT_NODE_VERSION }}
+          node-version-file: ${{ env.INPUT_NODE_VERSION_FILE }}
+
+      - name: Set PM name
+        if: env.INPUT_MANAGER == 'pnpm'
+        run: echo "PM_NAME=PNPM" >> $GITHUB_ENV
+
+      - name: Update PNPM
+        if: env.INPUT_MANAGER == 'pnpm'
+        run: corepack enable pnpm && corepack up; pnpm pkg set 'engines.pnpm'=$(pnpm -v)
+
+      - name: Update PNPM lock file
+        if: env.INPUT_MANAGER == 'pnpm'
+        run: pnpm install
+
+      - name: Set updated PNPM version
+        if: env.INPUT_MANAGER == 'pnpm'
+        run: echo "UPDATED_PM_VERSION=$(pnpm -v)" >> $GITHUB_ENV
+
+      - name: Create a pull request with the updated file
+        uses: branoholy/update-files-action@main
+        with:
+          token: ${{ env.SECRET_TOKEN || env.BOT_TOKEN }}
+          branch.name: deps-update-lock-file
+          branch.recreate: true
+          commit.paths: |
+            package.json
+            pnpm-lock.yaml
+          commit.message: 'deps(dev): Update ${{ env.PM_NAME }} to ${{ env.UPDATED_PM_VERSION }}'
+          commit.token: ${{ env.BOT_TOKEN || secrets.GITHUB_TOKEN }}
+          pull-request.body: Automatic update of ${{ env.PM_NAME }} to version ${{ env.UPDATED_PM_VERSION }}.
+          pull-request.labels: |
+            type: deps
+            scope: dev
