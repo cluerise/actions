@@ -1,5 +1,15 @@
 # Changelog: `@cluerise/actions`
 
+## [5.3.0](https://github.com/cluerise/actions/compare/v5.2.1...v5.3.0) (2025-07-20)
+
+### Features
+
+- Update PNPM workflow ([#451](https://github.com/cluerise/actions/issues/451)) ([0a387bd](https://github.com/cluerise/actions/commit/0a387bd79e7b41dcff8780d4adfb385e71c75a2f))
+
+### Fixes
+
+- Package manager update ([#452](https://github.com/cluerise/actions/issues/452)) ([61f91f6](https://github.com/cluerise/actions/commit/61f91f67bbeb55551209874ff77c82de26397f33))
+
 ## [5.2.1](https://github.com/cluerise/actions/compare/v5.2.0...v5.2.1) (2025-07-01)
 
 ### Fixes
