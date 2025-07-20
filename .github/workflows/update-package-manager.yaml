@@ -48,8 +48,8 @@ env:
   NPM_CONFIG_USERCONFIG: ${{ inputs.npm-config-userconfig }}
 
 jobs:
-  update-lock-file:
-    name: Update lock file
+  update-package-manager:
+    name: Update package manager
     runs-on: ubuntu-latest
 
     steps:
@@ -94,7 +94,12 @@ jobs:
 
       - name: Update PNPM
         if: env.INPUT_MANAGER == 'pnpm'
-        run: corepack enable pnpm && corepack up; pnpm pkg set 'engines.pnpm'=$(pnpm -v)
+        run: corepack enable pnpm && corepack up
+        continue-on-error: true
+
+      - name: Set PNPM engine version
+        if: env.INPUT_MANAGER == 'pnpm'
+        run: pnpm pkg set 'engines.pnpm'=$(pnpm -v)
 
       - name: Update PNPM lock file
         if: env.INPUT_MANAGER == 'pnpm'
@@ -108,7 +113,7 @@ jobs:
         uses: branoholy/update-files-action@main
         with:
           token: ${{ env.SECRET_TOKEN || env.BOT_TOKEN }}
-          branch.name: deps-update-lock-file
+          branch.name: deps-update-package-manager
           branch.recreate: true
           commit.paths: |
             package.json
