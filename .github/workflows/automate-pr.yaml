@@ -39,6 +39,7 @@ jobs:
               (
                 github.head_ref == 'deps-update-lock-file' ||
                 github.head_ref == 'deps-update-node' ||
+                github.head_ref == 'deps-update-package-manager' ||
 
                 github.head_ref == 'deps-dev-@cluerise/tools' ||
                 github.head_ref == 'deps-dev-@types/node' ||
