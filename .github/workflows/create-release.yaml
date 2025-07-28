@@ -39,6 +39,9 @@ env:
   NPM_AUTH_TOKEN: ${{ secrets.npm-auth-token }}
   NPM_CONFIG_USERCONFIG: ${{ inputs.npm-config-userconfig }}
 
+permissions:
+  contents: write
+
 jobs:
   prepare-release-info:
     name: Prepare release info

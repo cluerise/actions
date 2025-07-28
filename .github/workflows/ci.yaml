@@ -7,6 +7,12 @@ on:
 
 concurrency: ci-${{ github.sha }}
 
+env:
+  CI: true
+
+permissions:
+  contents: read
+
 jobs:
   install:
     name: Install dependencies
@@ -22,10 +28,9 @@ jobs:
     steps:
       - name: Install
         uses: cluerise/actions/install@main
+
       - name: Check types
         run: pnpm run tc
-        env:
-          CI: true
 
   lint:
     name: Lint files
@@ -37,5 +42,3 @@ jobs:
 
       - name: Lint files
         run: pnpm run lint all
-        env:
-          CI: true

@@ -6,6 +6,10 @@ on:
     types: [completed]
     branches: main
 
+permissions:
+  contents: read
+  statuses: write
+
 jobs:
   send-status:
     name: Send CI status
