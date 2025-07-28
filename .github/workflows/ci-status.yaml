@@ -14,6 +14,10 @@ on:
         description: GitHub app private key
         required: false
 
+permissions:
+  contents: read
+  statuses: write
+
 jobs:
   send-status:
     name: Send CI status

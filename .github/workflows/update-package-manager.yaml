@@ -47,6 +47,10 @@ env:
   NPM_AUTH_TOKEN: ${{ secrets.npm-auth-token }}
   NPM_CONFIG_USERCONFIG: ${{ inputs.npm-config-userconfig }}
 
+permissions:
+  contents: read
+  pull-requests: write
+
 jobs:
   update-package-manager:
     name: Update package manager
