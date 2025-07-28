@@ -81,6 +81,31 @@ jobs:
         uses: actions/github-script@v7.0.1
         with:
           script: |
+            const getPackageScope = (package) => {
+              switch (package.dependencyType) {
+                case 'dependencies':
+                  return 'prod';
+                case 'devDependencies':
+                  return 'dev';
+                default:
+                  return null;
+              }
+            };
+
+            const getPackageGroupScope = (packages) => {
+              const scopes = packages.map(getPackageScope).filter(Boolean);
+
+              if (scopes.includes('prod')) {
+                return 'prod';
+              }
+
+              if (scopes.includes('dev')) {
+                return 'dev';
+              }
+
+              return null;
+            };
+
             const groupPackages = (packages, groups) => {
               const groupedPackages = {};
               const groupedPackageNames = new Set();
@@ -116,6 +141,22 @@ jobs:
               };
             };
 
+            const createPackageTable = (packages) => {
+              const tableRows = [
+                ['Name', 'Scope', 'Versions'],
+                ['---', '---', '---'],
+                ...Object.entries(packages).map(([packageName, package]) => [
+                  `\`${packageName}\``,
+                  getPackageScope(package) ?? 'unknown',
+                  `\`${package.current}\` to \`${package.latest}\``
+                ])
+              ];
+
+              return tableRows.map(row => `| ${row.join(' | ')} |`).join('\n');
+            };
+
+            // -----------------------------------------------------------------
+
             const maxPullRequests = parseInt(core.getInput('max-pull-requests', { required: true }), 10);
             const outdatedPackages = JSON.parse(core.getInput('outdated-packages', { required: true }));
             const packageGroups = JSON.parse(core.getInput('package-groups', { required: true }));
@@ -123,41 +164,30 @@ jobs:
             const { groupedPackages, ungroupedPackages } = groupPackages(outdatedPackages, packageGroups);
 
             const groupedUpdates = Object.entries(groupedPackages).map(([groupName, packages]) => {
-              const prodScope = Object.values(packages).some(package => package.dependencyType === 'dependencies');
-              const devScope = Object.values(packages).some(package => package.dependencyType === 'devDependencies');
-
-              const scope = prodScope ? 'prod' : devScope ? 'dev' : '';
+              const scope = getPackageGroupScope(Object.values(packages));
               const scopeName = scope ? `(${scope})` : '';
               const scopeBranchName = scope ? `-${scope}` : '';
 
-              const packagesBody = Object.entries(packages)
-                .map(([packageName, package]) => `- \`${packageName}\`: ${package.current} to ${package.latest}`)
-                .join('\n');
-
-              const body = `Automatic update of ${groupName} packages:\n\n${packagesBody}`
-
               return {
                 title: `deps${scopeName}: Update ${groupName} packages`,
-                body,
+                body: createPackageTable(packages),
                 branchName: `deps${scopeBranchName}-${groupName}`,
                 versionedPackageNames: Object.keys(packages).map(packageName => `${packageName}@${packages[packageName].latest}`),
-                labels: ['type: deps', `scope: ${scope}`].join('\n')
+                labels: ['type: deps', scope ? `scope: ${scope}` : null].filter(Boolean).join('\n')
               };
             });
 
             const ungroupedUpdates = Object.entries(ungroupedPackages).map(([packageName, package]) => {
-              const scope = package.dependencyType === 'dependencies' ? 'prod' : package.dependencyType === 'devDependencies' ? 'dev' : '';
+              const scope = getPackageScope(package);
               const scopeName = scope ? `(${scope})` : '';
               const scopeBranchName = scope ? `-${scope}` : '';
 
-              const body = `Automatic update of ${packageName} from ${package.current} to ${package.latest}.`;
-
               return {
                 title: `deps${scopeName}: Update ${packageName} ${package.current} to ${package.latest}`,
-                body,
+                body: createPackageTable({ [packageName]: package }),
                 branchName: `deps${scopeBranchName}-${packageName}`,
                 versionedPackageNames: [`${packageName}@${package.latest}`],
-                labels: ['type: deps', `scope: ${scope}`].join('\n')
+                labels: ['type: deps', scope ? `scope: ${scope}` : null].filter(Boolean).join('\n')
               };
             });
 
