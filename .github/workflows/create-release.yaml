@@ -63,7 +63,7 @@ jobs:
         run: |
           {
             echo "package-paths<<EOF_PACKAGE_PATHS"
-            git diff --name-only HEAD^ | grep package.json | xargs -I{} dirname {} | jq -R -s -c 'split("\n")[:-1]'
+            git diff --name-only HEAD^ | grep package.json | xargs -I{} dirname {} | jq -R -s -c 'split("\n")[:-1] | sort | reverse'
             echo "EOF_PACKAGE_PATHS"
           } >> $GITHUB_OUTPUT;
 
