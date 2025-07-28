@@ -1,5 +1,11 @@
 # Changelog: `@cluerise/actions`
 
+## [5.4.1](https://github.com/cluerise/actions/compare/v5.4.0...v5.4.1) (2025-07-28)
+
+### Fixes
+
+- Lint merge commit permissions ([#471](https://github.com/cluerise/actions/issues/471)) ([3b2d7c9](https://github.com/cluerise/actions/commit/3b2d7c9a43bcef2d8f49e457bb36a342aad39c3f))
+
 ## [5.4.0](https://github.com/cluerise/actions/compare/v5.3.0...v5.4.0) (2025-07-28)
 
 ### Features

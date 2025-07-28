@@ -40,7 +40,7 @@ jobs:
       - name: Get bot token
         id: get-bot-token
         if: env.SECRET_TOKEN == ''
-        uses: cluerise/actions/get-github-app-token@v5.4.0
+        uses: cluerise/actions/get-github-app-token@v5.4.1
         with:
           app-id: ${{ env.INPUT_APP_ID }}
           app-private-key: ${{ env.SECRET_APP_PRIVATE_KEY }}
