@@ -98,7 +98,7 @@ jobs:
 
       - name: Update PNPM
         if: env.INPUT_MANAGER == 'pnpm'
-        run: corepack enable pnpm && corepack up
+        run: corepack enable pnpm && corepack use pnpm@latest
         continue-on-error: true
 
       - name: Set PNPM engine version
