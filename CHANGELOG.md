@@ -1,5 +1,17 @@
 # Changelog: `@cluerise/actions`
 
+## [5.4.0](https://github.com/cluerise/actions/compare/v5.3.0...v5.4.0) (2025-07-28)
+
+### Features
+
+- Update packages table ([#465](https://github.com/cluerise/actions/issues/465)) ([0bb5c7e](https://github.com/cluerise/actions/commit/0bb5c7e26e11a01eaeec687c566b6f546e0d7baf))
+
+### Fixes
+
+- Release in reverse order ([#464](https://github.com/cluerise/actions/issues/464)) ([e7e4af2](https://github.com/cluerise/actions/commit/e7e4af2986e2d2f39752186aee39ed88eb414ed0))
+- Update package manager to latest (stable) version ([#468](https://github.com/cluerise/actions/issues/468)) ([edf4295](https://github.com/cluerise/actions/commit/edf42953af436e1c91f20d4814fccfb47b01af8f))
+- Workflow permissions ([#467](https://github.com/cluerise/actions/issues/467)) ([2bdc68c](https://github.com/cluerise/actions/commit/2bdc68c0f306a55dc7056c4b25a61d66483b9089))
+
 ## [5.3.0](https://github.com/cluerise/actions/compare/v5.2.1...v5.3.0) (2025-07-20)
 
 ### Features
