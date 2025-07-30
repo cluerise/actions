@@ -42,13 +42,13 @@ jobs:
       - name: Get bot token
         id: get-bot-token
         if: env.SECRET_TOKEN == ''
-        uses: cluerise/actions/get-github-app-token@v6.0.0
+        uses: cluerise/actions/get-github-app-token@v6.0.1
         with:
           app-id: ${{ env.INPUT_APP_ID }}
           app-private-key: ${{ env.SECRET_APP_PRIVATE_KEY }}
 
       - name: Rebase PR
-        uses: cluerise/actions/rebase-pr@v6.0.0
+        uses: cluerise/actions/rebase-pr@v6.0.1
         with:
           token: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
           pr-id: ${{ env.INPUT_PR_ID }}
