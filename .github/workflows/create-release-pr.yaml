@@ -10,12 +10,15 @@ on:
       manager:
         type: string
         description: Package manager (pnpm, npm, or yarn)
-      release-target:
-        type: string
-        description: Release target
       release-command:
         type: string
-        description: Release command to run
+        description: Release command to run instead of releasing using targets
+      release-target:
+        type: string
+        description: Release target name
+      release-targets:
+        type: string
+        description: JSON array defining release targets and their packages
       npm-config-userconfig:
         type: string
         description: NPM configuration file path
@@ -38,7 +41,8 @@ env:
   INPUT_APP_ID: ${{ inputs.app-id || vars.CLUERISE_PUBLIC_BOT_APP_ID }}
   INPUT_MANAGER: ${{ inputs.manager }}
   INPUT_RELEASE_COMMAND: ${{ inputs.release-command }}
-  INPUT_RELEASE_TARGET: ${{ inputs.release-target || 'all' }}
+  INPUT_RELEASE_TARGET: ${{ inputs.release-target }}
+  INPUT_RELEASE_TARGETS: ${{ inputs.release-targets || '[]' }}
   INPUT_EXTERNAL_CALL: ${{ inputs.__external-call || false }}
   SECRET_TOKEN: ${{ secrets.token }}
   SECRET_APP_PRIVATE_KEY: ${{ secrets.app-private-key || secrets.CLUERISE_PUBLIC_BOT_APP_PRIVATE_KEY }}
@@ -56,12 +60,8 @@ jobs:
 
     steps:
       - name: Set release command
-        if: env.INPUT_RELEASE_COMMAND == '' && env.INPUT_RELEASE_TARGET == 'all'
+        if: env.INPUT_RELEASE_COMMAND == '' && env.INPUT_RELEASE_TARGET == '' && env.INPUT_RELEASE_TARGETS == '[]'
         run: echo "INPUT_RELEASE_COMMAND=pnpm run release create" >> $GITHUB_ENV
-
-      - name: Set release command for specific target
-        if: env.INPUT_RELEASE_COMMAND == '' && env.INPUT_RELEASE_TARGET != 'all'
-        run: echo "INPUT_RELEASE_COMMAND=pnpm run --filter \"./${{ env.INPUT_RELEASE_TARGET }}/**\" release create" >> $GITHUB_ENV
 
       - name: Check required secrets
         if: env.SECRET_TOKEN == '' && (env.INPUT_APP_ID == '' || env.SECRET_APP_PRIVATE_KEY == '')
@@ -99,19 +99,100 @@ jobs:
           manager: ${{ env.INPUT_MANAGER }}
           fetch-depth: 0
 
-      - name: Run the release script
-        id: release
+      - name: Run the release command
+        id: release-command
+        if: env.INPUT_RELEASE_COMMAND != ''
         run: ${{ env.INPUT_RELEASE_COMMAND }}
+
+      - name: Run the release command for targets
+        id: release-targets
+        if: env.INPUT_RELEASE_COMMAND == ''
+        uses: actions/github-script@v7.0.1
+        with:
+          script: |
+            const getPackageScope = async (packageName) => {
+              const prodCommand = `pnpm ls -r ${packageName} --json | grep dependencies | wc -l`;
+              const devCommand = `pnpm ls -r ${packageName} --json | grep devDependencies | wc -l`;
+
+              let prodCommandOutput = '';
+              let devCommandOutput = '';
+
+              await exec.exec('/bin/bash', ['-c', prodCommand], {
+                listeners: {
+                  stdout: (data) => {
+                    prodCommandOutput += data.toString();
+                  }
+                }
+              });
+
+              await exec.exec('/bin/bash', ['-c', devCommand], {
+                listeners: {
+                  stdout: (data) => {
+                    devCommandOutput += data.toString();
+                  }
+                }
+              });
+
+              const prodDependencyType = parseInt(prodCommandOutput.trim(), 10) > 0;
+              const devDependencyType = parseInt(devCommandOutput.trim(), 10) > 0;
+
+              return prodDependencyType ? 'prod' : devDependencyType ? 'dev' : null;
+            };
+
+            const getReleaseInfo = async (packageName) => {
+              let releaseInfoData = '';
+              await exec.exec('pnpm', ['run', '--filter', packageName, '--silent', 'release', 'info'], {
+                listeners: {
+                  stdout: (data) => {
+                    releaseInfoData += data.toString();
+                  }
+                }
+              });
+
+              return JSON.parse(releaseInfoData);
+            };
+
+            // -----------------------------------------------------------------
+
+            const targetName = core.getInput('target-name', { required: true });
+            const targets = JSON.parse(core.getInput('targets', { required: true }));
+
+            for (const target of targets) {
+              if (target.name !== targetName) {
+                continue;
+              }
+
+              for (const packageName of target.packages) {
+                const oldReleaseInfo = await getReleaseInfo(packageName);
+                await exec.exec('pnpm', ['run', '--filter', packageName, 'release', 'create']);
+                const newReleaseInfo = await getReleaseInfo(packageName);
+
+                if (oldReleaseInfo.version !== newReleaseInfo.version) {
+                  const scope = await getPackageScope(packageName);
+                  const scopeName = scope ? `(${scope})` : '';
+
+                  await exec.exec('find', ['.', '-type', 'f', '-name', 'package.json', '!', '-path', '*/node_modules/*', '-exec', 'sed', '-i', `s|"${packageName}": "workspace:\\*"|"${packageName}": "${newReleaseInfo.version}"|g`, '{}', '+']);
+                  await exec.exec('git', ['commit', '-a', '-m', `deps${scopeName}: Update ${packageName} ${oldReleaseInfo.version} to ${newReleaseInfo.version}`]);
+                }
+              }
+            }
+
+          target-name: ${{ env.INPUT_RELEASE_TARGET }}
+          targets: ${{ env.INPUT_RELEASE_TARGETS }}
 
       - name: Release info
         id: release-info
         uses: actions/github-script@v7.0.1
         with:
           script: |
+            const commandReleasesInput = core.getInput('command-releases');
+            const targetReleasesInput = core.getInput('target-releases');
+            const releasesInput = commandReleasesInput || targetReleasesInput;
+
             const {
               release: defaultReleaseValue,
               ...releaseValues
-            } = JSON.parse(core.getInput('releases', { required: true }));
+            } = JSON.parse(releasesInput);
 
             const defaultRelease = JSON.parse(defaultReleaseValue);
             const releases = Object.values(releaseValues)
@@ -138,7 +219,8 @@ jobs:
             core.setOutput('title', title);
             core.setOutput('body', table);
 
-          releases: ${{ toJSON(steps.release.outputs) }}
+          command-releases: ${{ toJSON(steps.release-command.outputs) }}
+          target-releases: ${{ toJSON(steps.release-targets.outputs || {}) }}
 
       - name: Create a pull request with the release (main)
         if: env.INPUT_EXTERNAL_CALL == 'false'
