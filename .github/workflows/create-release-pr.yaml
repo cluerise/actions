@@ -104,6 +104,12 @@ jobs:
         if: env.INPUT_RELEASE_COMMAND != ''
         run: ${{ env.INPUT_RELEASE_COMMAND }}
 
+      - name: Set Git user for temporary commits
+        if: env.INPUT_RELEASE_COMMAND == ''
+        run: |
+          git config user.name "Cluerise Bot"
+          git config user.email "bot@cluerise.com"
+
       - name: Run the release command for targets
         id: release-targets
         if: env.INPUT_RELEASE_COMMAND == ''
@@ -179,12 +185,15 @@ jobs:
               }
             }
 
-            await exec.exec('git', ['stash']);
-            await exec.exec('git', ['reset', '--hard', 'origin']);
-            await exec.exec('git', ['stash', 'pop']);
-
           release-target: ${{ env.INPUT_RELEASE_TARGET }}
           release-targets: ${{ env.INPUT_RELEASE_TARGETS }}
+
+      - name: Remove temporary commits
+        if: env.INPUT_RELEASE_COMMAND == ''
+        run: |
+          git stash
+          git reset --hard @{upstream}
+          git stash pop || true
 
       - name: Release info
         id: release-info
