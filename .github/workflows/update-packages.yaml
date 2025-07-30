@@ -238,6 +238,7 @@ jobs:
     needs: prepare-updates
     if: needs.prepare-updates.outputs.updates != '[]'
     strategy:
+      fail-fast: false
       matrix:
         update: ${{ fromJson(needs.prepare-updates.outputs.updates) }}
 
