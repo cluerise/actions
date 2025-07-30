@@ -75,9 +75,13 @@ jobs:
         id: get-outdated-packages
         run: |
           {
-            echo "outdated-packages<<EOF_OUTDATED_PACKAGES"
-            pnpm outdated --recursive --json || true
-            echo "EOF_OUTDATED_PACKAGES"
+            echo "outdated-prod-packages<<EOF_OUTDATED_PROD_PACKAGES"
+            pnpm outdated --recursive --json --prod || true
+            echo "EOF_OUTDATED_PROD_PACKAGES"
+
+            echo "outdated-dev-packages<<EOF_OUTDATED_DEV_PACKAGES"
+            pnpm outdated --recursive --json --dev || true
+            echo "EOF_OUTDATED_DEV_PACKAGES"
           } >> $GITHUB_OUTPUT;
 
       - name: Prepare updates
@@ -85,6 +89,29 @@ jobs:
         uses: actions/github-script@v7.0.1
         with:
           script: |
+            const preparePackages = (prodPackages, devPackages) => {
+              const packages = {};
+
+              const packageNames = new Set([
+                ...Object.keys(prodPackages),
+                ...Object.keys(devPackages)
+              ])
+
+              for (const packageName of packageNames) {
+                const prodPackage = prodPackages[packageName];
+                const devPackage = devPackages[packageName];
+                const package = prodPackage ?? devPackage;
+
+                packages[packageName] = {
+                  current: package.current,
+                  latest: package.latest,
+                  dependencyType: package.dependencyType
+                };
+              }
+
+              return packages;
+            };
+
             const getPackageScope = (package) => {
               switch (package.dependencyType) {
                 case 'dependencies':
@@ -162,9 +189,11 @@ jobs:
             // -----------------------------------------------------------------
 
             const maxPullRequests = parseInt(core.getInput('max-pull-requests', { required: true }), 10);
-            const outdatedPackages = JSON.parse(core.getInput('outdated-packages', { required: true }));
             const packageGroups = JSON.parse(core.getInput('package-groups', { required: true }));
+            const outdatedProdPackages = JSON.parse(core.getInput('outdated-prod-packages', { required: true }));
+            const outdatedDevPackages = JSON.parse(core.getInput('outdated-dev-packages', { required: true }));
 
+            const outdatedPackages = preparePackages(outdatedProdPackages, outdatedDevPackages);
             const { groupedPackages, ungroupedPackages } = groupPackages(outdatedPackages, packageGroups);
 
             const groupedUpdates = Object.entries(groupedPackages).map(([groupName, packages]) => {
@@ -200,7 +229,8 @@ jobs:
 
           max-pull-requests: ${{ env.INPUT_MAX_PULL_REQUESTS }}
           package-groups: ${{ env.INPUT_PACKAGE_GROUPS }}
-          outdated-packages: ${{ steps.get-outdated-packages.outputs.outdated-packages }}
+          outdated-prod-packages: ${{ steps.get-outdated-packages.outputs.outdated-prod-packages }}
+          outdated-dev-packages: ${{ steps.get-outdated-packages.outputs.outdated-dev-packages }}
 
   create-pull-requests:
     name: Create pull request
