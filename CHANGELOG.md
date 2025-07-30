@@ -1,5 +1,21 @@
 # Changelog: `@cluerise/actions`
 
+## [6.0.0](https://github.com/cluerise/actions/compare/v5.4.1...v6.0.0) (2025-07-30)
+
+### ⚠ BREAKING CHANGES!
+
+- Recursive release (#474)
+
+### Features
+
+- Recursive release ([#474](https://github.com/cluerise/actions/issues/474)) ([76aa3a9](https://github.com/cluerise/actions/commit/76aa3a9c9cbf3ec8298b7c15819cfd2415d4a59f))
+
+### Fixes
+
+- Release fallback syntax error ([#477](https://github.com/cluerise/actions/issues/477)) ([d001710](https://github.com/cluerise/actions/commit/d00171086308cc52c4a97d74fb50d19036159296))
+- Release targets and commits ([#476](https://github.com/cluerise/actions/issues/476)) ([58a99be](https://github.com/cluerise/actions/commit/58a99be3a44cf996b327e97c1873acb51ae0370b))
+- Update packages scope ([#473](https://github.com/cluerise/actions/issues/473)) ([fbfb79b](https://github.com/cluerise/actions/commit/fbfb79be6c941c3e47468a0bc4713967cb61a0c3))
+
 ## [5.4.1](https://github.com/cluerise/actions/compare/v5.4.0...v5.4.1) (2025-07-28)
 
 ### Fixes
