@@ -1,5 +1,11 @@
 # Changelog: `@cluerise/actions`
 
+## [6.0.3](https://github.com/cluerise/actions/compare/v6.0.2...v6.0.3) (2025-07-30)
+
+### Fixes
+
+- Release with empty temporary commits ([#486](https://github.com/cluerise/actions/issues/486)) ([5842b2c](https://github.com/cluerise/actions/commit/5842b2cab809c2c9c70e4039658b89702fab1c9d))
+
 ## [6.0.2](https://github.com/cluerise/actions/compare/v6.0.1...v6.0.2) (2025-07-30)
 
 ### Fixes
