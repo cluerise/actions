@@ -18,7 +18,7 @@ on:
         description: Release target name
       release-targets:
         type: string
-        description: JSON array defining release targets and their packages
+        description: JSON object defining release targets and their packages
       npm-config-userconfig:
         type: string
         description: NPM configuration file path
@@ -42,7 +42,7 @@ env:
   INPUT_MANAGER: ${{ inputs.manager }}
   INPUT_RELEASE_COMMAND: ${{ inputs.release-command }}
   INPUT_RELEASE_TARGET: ${{ inputs.release-target }}
-  INPUT_RELEASE_TARGETS: ${{ inputs.release-targets || '[]' }}
+  INPUT_RELEASE_TARGETS: ${{ inputs.release-targets || '{}' }}
   INPUT_EXTERNAL_CALL: ${{ inputs.__external-call || false }}
   SECRET_TOKEN: ${{ secrets.token }}
   SECRET_APP_PRIVATE_KEY: ${{ secrets.app-private-key || secrets.CLUERISE_PUBLIC_BOT_APP_PRIVATE_KEY }}
@@ -60,7 +60,7 @@ jobs:
 
     steps:
       - name: Set release command
-        if: env.INPUT_RELEASE_COMMAND == '' && env.INPUT_RELEASE_TARGET == '' && env.INPUT_RELEASE_TARGETS == '[]'
+        if: env.INPUT_RELEASE_COMMAND == '' && env.INPUT_RELEASE_TARGET == '' && env.INPUT_RELEASE_TARGETS == '{}'
         run: echo "INPUT_RELEASE_COMMAND=pnpm run release create" >> $GITHUB_ENV
 
       - name: Check required secrets
@@ -154,31 +154,37 @@ jobs:
 
             // -----------------------------------------------------------------
 
-            const targetName = core.getInput('target-name', { required: true });
-            const targets = JSON.parse(core.getInput('targets', { required: true }));
+            const targetName = core.getInput('release-target', { required: true });
+            const targets = JSON.parse(core.getInput('release-targets', { required: true }));
 
-            for (const target of targets) {
-              if (target.name !== targetName) {
-                continue;
-              }
+            const packageNames = targets[targetName];
+            if (!packageNames) {
+              core.setFailed(`Release target "${targetName}" not found in targets: ${JSON.stringify(Object.keys(targets))}`);
+              return;
+            }
 
-              for (const packageName of target.packages) {
-                const oldReleaseInfo = await getReleaseInfo(packageName);
-                await exec.exec('pnpm', ['run', '--filter', packageName, 'release', 'create']);
-                const newReleaseInfo = await getReleaseInfo(packageName);
+            for (const packageName of packageNames) {
+              const oldReleaseInfo = await getReleaseInfo(packageName);
+              await exec.exec('pnpm', ['run', '--filter', packageName, 'release', 'create']);
+              const newReleaseInfo = await getReleaseInfo(packageName);
 
-                if (oldReleaseInfo.version !== newReleaseInfo.version) {
-                  const scope = await getPackageScope(packageName);
-                  const scopeName = scope ? `(${scope})` : '';
+              if (oldReleaseInfo.version !== newReleaseInfo.version) {
+                const scope = await getPackageScope(packageName);
+                const scopeName = scope ? `(${scope})` : '';
 
-                  await exec.exec('find', ['.', '-type', 'f', '-name', 'package.json', '!', '-path', '*/node_modules/*', '-exec', 'sed', '-i', `s|"${packageName}": "workspace:\\*"|"${packageName}": "${newReleaseInfo.version}"|g`, '{}', '+']);
-                  await exec.exec('git', ['commit', '-a', '-m', `deps${scopeName}: Update ${packageName} ${oldReleaseInfo.version} to ${newReleaseInfo.version}`]);
-                }
+                await exec.exec('git', ['stash']);
+                await exec.exec('find', ['.', '-type', 'f', '-name', 'package.json', '!', '-path', '*/node_modules/*', '-exec', 'sed', '-i', `s|"${packageName}": "workspace:\\*"|"${packageName}": "${newReleaseInfo.version}"|g`, '{}', '+']);
+                await exec.exec('git', ['commit', '-a', '-m', `deps${scopeName}: Update ${packageName} ${oldReleaseInfo.version} to ${newReleaseInfo.version}`]);
+                await exec.exec('git', ['stash', 'pop']);
               }
             }
 
-          target-name: ${{ env.INPUT_RELEASE_TARGET }}
-          targets: ${{ env.INPUT_RELEASE_TARGETS }}
+            await exec.exec('git', ['stash']);
+            await exec.exec('git', ['reset', '--hard', 'origin']);
+            await exec.exec('git', ['stash', 'pop']);
+
+          release-target: ${{ env.INPUT_RELEASE_TARGET }}
+          release-targets: ${{ env.INPUT_RELEASE_TARGETS }}
 
       - name: Release info
         id: release-info
