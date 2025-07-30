@@ -1,5 +1,12 @@
 # Changelog: `@cluerise/actions`
 
+## [6.0.1](https://github.com/cluerise/actions/compare/v6.0.0...v6.0.1) (2025-07-30)
+
+### Fixes
+
+- Disable fail fast strategy ([#479](https://github.com/cluerise/actions/issues/479)) ([86d4d05](https://github.com/cluerise/actions/commit/86d4d057041c56732f8115516e2a981f919ef6e3))
+- Release commits by defining Git user ([#480](https://github.com/cluerise/actions/issues/480)) ([595dc97](https://github.com/cluerise/actions/commit/595dc976a1ad43361c71b9642fe58e44a57b2cd9))
+
 ## [6.0.0](https://github.com/cluerise/actions/compare/v5.4.1...v6.0.0) (2025-07-30)
 
 ### ⚠ BREAKING CHANGES!
