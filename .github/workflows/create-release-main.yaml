@@ -38,6 +38,7 @@ jobs:
     if: needs.prepare-release-info.outputs.package-paths != '[]'
     strategy:
       max-parallel: 1
+      fail-fast: false
       matrix:
         package-path: ${{ fromJson(needs.prepare-release-info.outputs.package-paths) }}
 
