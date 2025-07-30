@@ -110,14 +110,14 @@ jobs:
         uses: actions/github-script@v7.0.1
         with:
           script: |
-            const getPackageScope = (packageName) => {
+            const getPackageScope = async (packageName) => {
               const prodCommand = `pnpm ls -r ${packageName} --json | grep dependencies | wc -l`;
               const devCommand = `pnpm ls -r ${packageName} --json | grep devDependencies | wc -l`;
 
               let prodCommandOutput = '';
               let devCommandOutput = '';
 
-              await exec.exec(prodCommand, {
+              await exec.exec('/bin/bash', ['-c', prodCommand], {
                 listeners: {
                   stdout: (data) => {
                     prodCommandOutput += data.toString();
@@ -125,7 +125,7 @@ jobs:
                 }
               });
 
-              await exec.exec(devCommand, {
+              await exec.exec('/bin/bash', ['-c', devCommand], {
                 listeners: {
                   stdout: (data) => {
                     devCommandOutput += data.toString();
@@ -140,10 +140,8 @@ jobs:
             };
 
             const getReleaseInfo = async (packageName) => {
-              const command = `pnpm run --filter "${packageName}" --silent release info`;
-
               let releaseInfoData = '';
-              await exec.exec(command, {
+              await exec.exec('pnpm', ['run', '--filter', packageName, '--silent', 'release', 'info'], {
                 listeners: {
                   stdout: (data) => {
                     releaseInfoData += data.toString();
@@ -166,15 +164,15 @@ jobs:
 
               for (const packageName of target.packages) {
                 const oldReleaseInfo = await getReleaseInfo(packageName);
-                await exec.exec(`pnpm run --filter "${packageName}" release create`);
+                await exec.exec('pnpm', ['run', '--filter', packageName, 'release', 'create']);
                 const newReleaseInfo = await getReleaseInfo(packageName);
 
                 if (oldReleaseInfo.version !== newReleaseInfo.version) {
-                  const scope = getPackageScope(packageName);
+                  const scope = await getPackageScope(packageName);
                   const scopeName = scope ? `(${scope})` : '';
 
-                  await exec.exec(`find . -type f -name "package.json" ! -path "*/node_modules/*" -exec sed -i 's|"${packageName}": "workspace:\*"|"${packageName}": "${newReleaseInfo.version}"|g' {} +`);
-                  await exec.exec(`git commit -a -m "deps${scopeName}: Update ${packageName} ${oldReleaseInfo.version} to ${newReleaseInfo.version}"`);
+                  await exec.exec('find', ['.', '-type', 'f', '-name', 'package.json', '!', '-path', '*/node_modules/*', '-exec', 'sed', '-i', `s|"${packageName}": "workspace:\\*"|"${packageName}": "${newReleaseInfo.version}"|g`, '{}', '+']);
+                  await exec.exec('git', ['commit', '-a', '-m', `deps${scopeName}: Update ${packageName} ${oldReleaseInfo.version} to ${newReleaseInfo.version}`]);
                 }
               }
             }
@@ -189,7 +187,7 @@ jobs:
           script: |
             const commandReleasesInput = core.getInput('command-releases');
             const targetReleasesInput = core.getInput('target-releases');
-            const releasesInput = commandReleasesInput ?? targetReleasesInput;
+            const releasesInput = commandReleasesInput || targetReleasesInput;
 
             const {
               release: defaultReleaseValue,
