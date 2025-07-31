@@ -1,5 +1,11 @@
 # Changelog: `@cluerise/actions`
 
+## [6.0.5](https://github.com/cluerise/actions/compare/v6.0.4...v6.0.5) (2025-07-31)
+
+### Fixes
+
+- Use correct release data ([#490](https://github.com/cluerise/actions/issues/490)) ([175eb2d](https://github.com/cluerise/actions/commit/175eb2dea02baa2175e05b88a96e2518a80adce1))
+
 ## [6.0.4](https://github.com/cluerise/actions/compare/v6.0.3...v6.0.4) (2025-07-31)
 
 ### Fixes
