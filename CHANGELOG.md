@@ -1,5 +1,11 @@
 # Changelog: `@cluerise/actions`
 
+## [6.0.4](https://github.com/cluerise/actions/compare/v6.0.3...v6.0.4) (2025-07-31)
+
+### Fixes
+
+- Remove release info inputs ([#488](https://github.com/cluerise/actions/issues/488)) ([77deab3](https://github.com/cluerise/actions/commit/77deab3f956d094a1f381fa73b4e9f22d6fcb36b))
+
 ## [6.0.3](https://github.com/cluerise/actions/compare/v6.0.2...v6.0.3) (2025-07-30)
 
 ### Fixes
