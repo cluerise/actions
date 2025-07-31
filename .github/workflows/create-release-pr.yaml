@@ -148,10 +148,6 @@ jobs:
             const getReleaseInfo = async (packageName) => {
               let releaseInfoData = '';
               await exec.exec('pnpm', ['run', '--filter', packageName, '--silent', 'release', 'info'], {
-                env: {
-                  ...process.env,
-                  GITHUB_ACTIONS: 'false',
-                },
                 listeners: {
                   stdout: (data) => {
                     releaseInfoData += data.toString();
@@ -211,14 +207,11 @@ jobs:
               ? commandReleasesInput
               : targetReleasesInput;
 
-            const {
-              release: defaultReleaseValue,
-              ...releaseValues
-            } = releasesInput;
+            const defaultRelease = JSON.parse(releasesInput.release);
 
-            const defaultRelease = JSON.parse(defaultReleaseValue);
-            const releases = Object.values(releaseValues)
-              .map(releaseValue => JSON.parse(releaseValue))
+            const releases = Object.entries(releasesInput)
+              .filter(([key]) => key.startsWith('release.'))
+              .map(([_key, value]) => JSON.parse(value))
               .toSorted((releaseA, releaseB) => releaseA.name.localeCompare(releaseB.name));
 
             const title = releases.length === 1
