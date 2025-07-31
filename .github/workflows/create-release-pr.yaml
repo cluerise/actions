@@ -148,6 +148,10 @@ jobs:
             const getReleaseInfo = async (packageName) => {
               let releaseInfoData = '';
               await exec.exec('pnpm', ['run', '--filter', packageName, '--silent', 'release', 'info'], {
+                env: {
+                  ...process.env,
+                  GITHUB_ACTIONS: 'false',
+                },
                 listeners: {
                   stdout: (data) => {
                     releaseInfoData += data.toString();
