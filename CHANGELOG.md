@@ -1,5 +1,27 @@
 # Changelog: `@cluerise/actions`
 
+## [6.1.0](https://github.com/cluerise/actions/compare/v6.0.5...v6.1.0) (2025-09-07)
+
+### Features
+
+- Single PR packages update ([#517](https://github.com/cluerise/actions/issues/517)) ([f91acfa](https://github.com/cluerise/actions/commit/f91acfaeb7ee4f44d35fc5f1cd1ad3c9c290402f))
+
+### Dependency updates
+
+<details>
+<summary>Show all dependency updates</summary>
+
+- **actions:** Bump actions/checkout from 4.2.2 to 5.0.0 in /install ([#499](https://github.com/cluerise/actions/issues/499)) ([6288523](https://github.com/cluerise/actions/commit/6288523c2c11adf3a7f18e4ecc2fb84b6e352e29))
+- **actions:** Bump actions/checkout from 4.2.2 to 5.0.0 in /rebase-pr ([#498](https://github.com/cluerise/actions/issues/498)) ([d817a4f](https://github.com/cluerise/actions/commit/d817a4fd766c57a5a426df2c10edd25b68728444))
+- **actions:** Bump actions/github-script from 7.0.1 to 8.0.0 ([#512](https://github.com/cluerise/actions/issues/512)) ([3e2f538](https://github.com/cluerise/actions/commit/3e2f538e7b5470a1b380b81a68b45fb33041f695))
+- **actions:** Bump actions/github-script from 7.0.1 to 8.0.0 in /add-pr-labels ([#510](https://github.com/cluerise/actions/issues/510)) ([547688d](https://github.com/cluerise/actions/commit/547688d5a826ac983fa7406d8b1ea8453866ca68))
+- **actions:** Bump actions/github-script from 7.0.1 to 8.0.0 in /get-github-app-token ([#511](https://github.com/cluerise/actions/issues/511)) ([0a214fc](https://github.com/cluerise/actions/commit/0a214fc5795da45e54bc059261fa6e0a89e21ecd))
+- **actions:** Bump actions/github-script from 7.0.1 to 8.0.0 in /update-pr-title ([#508](https://github.com/cluerise/actions/issues/508)) ([7f37531](https://github.com/cluerise/actions/commit/7f37531e74478c0846f0d66fc6e9b02696f7589d))
+- **actions:** Bump actions/setup-node from 4.4.0 to 5.0.0 ([#513](https://github.com/cluerise/actions/issues/513)) ([59c170b](https://github.com/cluerise/actions/commit/59c170b513fdbb8647d3a1d3e424a2e3e3e5ce1e))
+- **actions:** Bump actions/setup-node from 4.4.0 to 5.0.0 in /install ([#509](https://github.com/cluerise/actions/issues/509)) ([754c8f0](https://github.com/cluerise/actions/commit/754c8f0302c4f4311f2ab2ba6aa7950bcd27c850))
+
+</details>
+
 ## [6.0.5](https://github.com/cluerise/actions/compare/v6.0.4...v6.0.5) (2025-07-31)
 
 ### Fixes
