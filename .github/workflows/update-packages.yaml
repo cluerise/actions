@@ -5,6 +5,13 @@ on:
     - cron: '0 11 * * 0' # Every Sunday at 11:00 UTC
   workflow_dispatch:
     inputs:
+      update-strategy:
+        type: choice
+        description: Update strategy
+        options:
+          - Single PR
+          - Multiple PRs
+        default: Single PR
       max-pull-requests:
         type: number
         description: Max pull requests
@@ -13,6 +20,9 @@ on:
       app-id:
         type: string
         description: GitHub app ID
+      update-strategy:
+        type: string
+        description: Update strategy (Single PR or Multiple PRs)
       max-pull-requests:
         type: number
         description: Max pull requests
@@ -39,6 +49,7 @@ on:
 
 env:
   INPUT_APP_ID: ${{ inputs.app-id || vars.CLUERISE_PUBLIC_BOT_APP_ID }}
+  INPUT_UPDATE_STRATEGY: ${{ inputs.update-strategy || 'Single PR' }}
   INPUT_MAX_PULL_REQUESTS: ${{ fromJSON(inputs.max-pull-requests || '3') }}
   INPUT_PACKAGE_GROUPS: ${{ inputs.package-groups || '{}' }}
   INPUT_EXTERNAL_CALL: ${{ inputs.__external-call || false }}
@@ -188,13 +199,15 @@ jobs:
 
             // -----------------------------------------------------------------
 
+            const updateStrategy = core.getInput('update-strategy', { required: true });
             const maxPullRequests = parseInt(core.getInput('max-pull-requests', { required: true }), 10);
             const packageGroups = JSON.parse(core.getInput('package-groups', { required: true }));
             const outdatedProdPackages = JSON.parse(core.getInput('outdated-prod-packages', { required: true }));
             const outdatedDevPackages = JSON.parse(core.getInput('outdated-dev-packages', { required: true }));
 
             const outdatedPackages = preparePackages(outdatedProdPackages, outdatedDevPackages);
-            const { groupedPackages, ungroupedPackages } = groupPackages(outdatedPackages, packageGroups);
+            const updateGroups = updateStrategy === 'Single PR' ? { all: Object.keys(outdatedPackages) } : packageGroups;
+            const { groupedPackages, ungroupedPackages } = groupPackages(outdatedPackages, updateGroups);
 
             const groupedUpdates = Object.entries(groupedPackages).map(([groupName, packages]) => {
               const scope = getPackageGroupScope(Object.values(packages));
@@ -227,6 +240,7 @@ jobs:
             const updates = [...groupedUpdates, ...ungroupedUpdates].slice(0, maxPullRequests);
             core.setOutput('updates', JSON.stringify(updates));
 
+          update-strategy: ${{ env.INPUT_UPDATE_STRATEGY }}
           max-pull-requests: ${{ env.INPUT_MAX_PULL_REQUESTS }}
           package-groups: ${{ env.INPUT_PACKAGE_GROUPS }}
           outdated-prod-packages: ${{ steps.get-outdated-packages.outputs.outdated-prod-packages }}
