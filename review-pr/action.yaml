@@ -57,7 +57,7 @@ runs:
             env.INPUT_DEPENDENCY_APPROVED == 'true'
           )
         )
-      uses: octokit/graphql-action@v2.3.2
+      uses: octokit/graphql-action@v3.0.0
       with:
         token: ${{ env.INPUT_TOKEN }}
         query: |
@@ -70,7 +70,7 @@ runs:
 
     - name: Get user for review
       id: get-user-id
-      uses: octokit/graphql-action@v2.3.2
+      uses: octokit/graphql-action@v3.0.0
       with:
         token: ${{ env.INPUT_TOKEN }}
         query: |
@@ -101,7 +101,7 @@ runs:
             env.INPUT_DEPENDENCY_APPROVED == 'false'
           )
         )
-      uses: octokit/graphql-action@v2.3.2
+      uses: octokit/graphql-action@v3.0.0
       with:
         token: ${{ env.INPUT_TOKEN }}
         query: |
