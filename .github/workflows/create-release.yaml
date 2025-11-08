@@ -110,7 +110,7 @@ jobs:
 
       - name: Get id of the repository and latest branch
         id: get-latest-ref
-        uses: octokit/graphql-action@v2.3.2
+        uses: octokit/graphql-action@v3.0.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           query: |
@@ -128,7 +128,7 @@ jobs:
 
       - name: Create the latest branch
         if: fromJson(steps.get-latest-ref.outputs.data).repository.ref == null
-        uses: octokit/graphql-action@v2.3.2
+        uses: octokit/graphql-action@v3.0.0
         with:
           token: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
           query: |
@@ -143,7 +143,7 @@ jobs:
 
       - name: Reset the latest branch
         if: fromJson(steps.get-latest-ref.outputs.data).repository.ref != null
-        uses: octokit/graphql-action@v2.3.2
+        uses: octokit/graphql-action@v3.0.0
         with:
           token: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
           query: |
