@@ -30,7 +30,7 @@ runs:
 
     - name: Get PR info
       id: get-pr-info
-      uses: octokit/graphql-action@v2.3.2
+      uses: octokit/graphql-action@v3.0.0
       with:
         token: ${{ env.INPUT_TOKEN }}
         query: |
@@ -63,7 +63,7 @@ runs:
 
     - name: Rebase remote branch with multiple commits
       if: ${{ env.STRATEGY == 'rebase' }}
-      uses: octokit/graphql-action@v2.3.2
+      uses: octokit/graphql-action@v3.0.0
       with:
         token: ${{ env.INPUT_TOKEN }}
         query: |
@@ -106,7 +106,7 @@ runs:
 
     - name: Reset remote branch
       if: ${{ env.STRATEGY == 'squash' }}
-      uses: octokit/graphql-action@v2.3.2
+      uses: octokit/graphql-action@v3.0.0
       with:
         token: ${{ env.INPUT_TOKEN }}
         query: |
@@ -121,7 +121,7 @@ runs:
     - name: Get id of the temporary rebase branch
       id: get-rebase-branch-info
       if: ${{ env.STRATEGY == 'squash' }}
-      uses: octokit/graphql-action@v2.3.2
+      uses: octokit/graphql-action@v3.0.0
       with:
         token: ${{ env.INPUT_TOKEN }}
         query: |
@@ -138,7 +138,7 @@ runs:
 
     - name: Delete temporary rebase branch
       if: ${{ env.STRATEGY == 'squash' }}
-      uses: octokit/graphql-action@v2.3.2
+      uses: octokit/graphql-action@v3.0.0
       with:
         token: ${{ env.INPUT_TOKEN }}
         query: |
