@@ -20,7 +20,7 @@ runs:
 
     - name: Assign author
       if: github.event.action == 'opened' && github.event.pull_request.user.type == 'User'
-      uses: octokit/graphql-action@v2.3.2
+      uses: octokit/graphql-action@v3.0.0
       with:
         token: ${{ env.INPUT_TOKEN }}
         query: |
