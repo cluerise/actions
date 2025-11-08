@@ -20,7 +20,7 @@ runs:
 
     - name: Get pull request info
       id: get-pr-info
-      uses: octokit/graphql-action@v2.3.2
+      uses: octokit/graphql-action@v3.0.0
       with:
         token: ${{ env.INPUT_TOKEN }}
         query: |
