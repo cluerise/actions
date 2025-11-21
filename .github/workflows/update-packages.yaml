@@ -104,6 +104,13 @@ jobs:
         uses: actions/github-script@v8.0.0
         with:
           script: |
+            const getCurrentDateString = () => {
+              const dateTime = new Date();
+              const [date, _time] = dateTime.toISOString().split('T');
+
+              return date;
+            };
+
             const preparePackages = (prodPackages, devPackages, ignoredPackages) => {
               const packages = {};
 
@@ -118,6 +125,7 @@ jobs:
                 const package = prodPackage ?? devPackage;
 
                 packages[packageName] = {
+                  name: packageName,
                   current: package.current,
                   latest: package.latest,
                   dependencyType: package.dependencyType
@@ -138,8 +146,10 @@ jobs:
               }
             };
 
-            const getPackageGroupScope = (packages) => {
-              const scopes = packages.map(getPackageScope).filter(Boolean);
+            const getGroupScope = (group) => {
+              const scopes = Object.values(group.packages)
+                .map((package) => getPackageScope(package))
+                .filter(Boolean);
 
               if (scopes.includes('prod')) {
                 return 'prod';
@@ -152,25 +162,28 @@ jobs:
               return null;
             };
 
-            const groupPackages = (packages, groups) => {
-              const groupedPackages = {};
+            const groupPackages = (packages, packageGroups) => {
               const groupedPackageNames = new Set();
 
-              for (const groupName in groups) {
-                const group = groups[groupName].reduce(
-                  (acc, packageName) => {
-                    if (packages[packageName]) {
-                      acc[packageName] = packages[packageName];
-                      groupedPackageNames.add(packageName);
-                    }
+              const groups = {};
+              for (const groupName in packageGroups) {
+                const group = {
+                  name: groupName,
+                  packages: packageGroups[groupName].reduce(
+                    (acc, packageName) => {
+                      if (packages[packageName]) {
+                        acc[packageName] = packages[packageName];
+                        groupedPackageNames.add(packageName);
+                      }
 
-                    return acc;
-                  },
-                  {}
-                );
+                      return acc;
+                    },
+                    {}
+                  )
+                };
 
-                if (Object.keys(group).length > 0) {
-                  groupedPackages[groupName] = group;
+                if (Object.keys(group.packages).length > 0) {
+                  groups[groupName] = group;
                 }
               }
 
@@ -182,9 +195,66 @@ jobs:
               }
 
               return {
-                groupedPackages,
-                ungroupedPackages,
+                groups,
+                packages: ungroupedPackages,
               };
+            };
+
+            const createScopeBranchName = (scope) => scope ? `-${scope}` : '';
+
+            const createGroupBranchName = (group) => {
+              const scope = getGroupScope(group);
+              const scopeBranchName = createScopeBranchName(scope);
+
+              const date = getCurrentDateString();
+
+              if (group.name === 'all') {
+                return `deps${scopeBranchName}-${date}`;
+              }
+
+              return `deps${scopeBranchName}-${groupName}-${date}`;
+            };
+
+            const createPackageBranchName = (package) => {
+              const scope = getPackageScope(package);
+              const scopeBranchName = createScopeBranchName(scope);
+
+              return `deps${scopeBranchName}-${package.name}-${package.latest}`;
+            };
+
+            const createGroupPullRequestTitle = (group) => {
+              const scope = getGroupScope(group);
+              const scopeName = scope ? `(${scope})` : '';
+
+              const date = getCurrentDateString();
+
+              if (group.name === 'all') {
+                return `deps${scopeName}: Update packages (${date})`;
+              }
+
+              return `deps${scopeName}: Update ${groupName} packages (${date})`;
+            };
+
+            const createPackagePullRequestTitle = (package) => {
+              const scope = getPackageScope(package);
+              const scopeName = scope ? `(${scope})` : '';
+
+              return `deps${scopeName}: Update ${package.name} ${package.current} to ${package.latest}`;
+            };
+
+            const createScopePullRequestLabel = (scope) =>
+              ['type: deps', scope ? `scope: ${scope}` : null]
+                .filter(Boolean)
+                .join('\n');
+
+            const createGroupPullRequestLabels = (group) => {
+              const scope = getGroupScope(group);
+              return createScopePullRequestLabel(scope);
+            };
+
+            const createPackagePullRequestLabels = (package) => {
+              const scope = getPackageScope(package);
+              return createScopePullRequestLabel(scope);
             };
 
             const createPackageTable = (packages) => {
@@ -211,38 +281,26 @@ jobs:
             const outdatedDevPackages = JSON.parse(core.getInput('outdated-dev-packages', { required: true }));
 
             const outdatedPackages = preparePackages(outdatedProdPackages, outdatedDevPackages, ignoredPackages);
-            const updateGroups = updateStrategy === 'Single PR' ? { all: Object.keys(outdatedPackages) } : packageGroups;
-            const { groupedPackages, ungroupedPackages } = groupPackages(outdatedPackages, updateGroups);
+            const updatePackageGroups = updateStrategy === 'Single PR' ? { all: Object.keys(outdatedPackages) } : packageGroups;
+            const { groups, packages } = groupPackages(outdatedPackages, updatePackageGroups);
 
-            const groupedUpdates = Object.entries(groupedPackages).map(([groupName, packages]) => {
-              const scope = getPackageGroupScope(Object.values(packages));
-              const scopeName = scope ? `(${scope})` : '';
-              const scopeBranchName = scope ? `-${scope}` : '';
+            const groupUpdates = Object.entries(groups).map(([groupName, group]) => ({
+              title: createGroupPullRequestTitle(group),
+              body: createPackageTable(group.packages),
+              branchName: createGroupBranchName(group),
+              versionedPackageNames: Object.keys(group.packages).map(packageName => `${packageName}@${group.packages[packageName].latest}`),
+              labels: createGroupPullRequestLabels(group),
+            }));
 
-              return {
-                title: `deps${scopeName}: Update ${groupName} packages`,
-                body: createPackageTable(packages),
-                branchName: `deps${scopeBranchName}-${groupName}`,
-                versionedPackageNames: Object.keys(packages).map(packageName => `${packageName}@${packages[packageName].latest}`),
-                labels: ['type: deps', scope ? `scope: ${scope}` : null].filter(Boolean).join('\n')
-              };
-            });
+            const packageUpdates = Object.entries(packages).map(([packageName, package]) => ({
+              title: createPackagePullRequestTitle(package),
+              body: createPackageTable({ [packageName]: package }),
+              branchName: createPackageBranchName(package),
+              versionedPackageNames: [`${packageName}@${package.latest}`],
+              labels: createPackagePullRequestLabels(package),
+            }));
 
-            const ungroupedUpdates = Object.entries(ungroupedPackages).map(([packageName, package]) => {
-              const scope = getPackageScope(package);
-              const scopeName = scope ? `(${scope})` : '';
-              const scopeBranchName = scope ? `-${scope}` : '';
-
-              return {
-                title: `deps${scopeName}: Update ${packageName} ${package.current} to ${package.latest}`,
-                body: createPackageTable({ [packageName]: package }),
-                branchName: `deps${scopeBranchName}-${packageName}`,
-                versionedPackageNames: [`${packageName}@${package.latest}`],
-                labels: ['type: deps', scope ? `scope: ${scope}` : null].filter(Boolean).join('\n')
-              };
-            });
-
-            const updates = [...groupedUpdates, ...ungroupedUpdates].slice(0, maxPullRequests);
+            const updates = [...groupUpdates, ...packageUpdates].slice(0, maxPullRequests);
             core.setOutput('updates', JSON.stringify(updates));
 
           update-strategy: ${{ env.INPUT_UPDATE_STRATEGY }}
