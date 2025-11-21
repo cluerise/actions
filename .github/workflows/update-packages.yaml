@@ -29,6 +29,9 @@ on:
       package-groups:
         type: string
         description: JSON object defining package groups for updates
+      ignored-packages:
+        type: string
+        description: JSON array of package names to ignore
       npm-config-userconfig:
         type: string
         description: NPM configuration file path
@@ -52,6 +55,7 @@ env:
   INPUT_UPDATE_STRATEGY: ${{ inputs.update-strategy || 'Single PR' }}
   INPUT_MAX_PULL_REQUESTS: ${{ fromJSON(inputs.max-pull-requests || '3') }}
   INPUT_PACKAGE_GROUPS: ${{ inputs.package-groups || '{}' }}
+  INPUT_IGNORED_PACKAGES: ${{ inputs.ignored-packages || '[]' }}
   INPUT_EXTERNAL_CALL: ${{ inputs.__external-call || false }}
   SECRET_TOKEN: ${{ secrets.token }}
   SECRET_APP_PRIVATE_KEY: ${{ secrets.app-private-key || secrets.CLUERISE_PUBLIC_BOT_APP_PRIVATE_KEY }}
@@ -100,13 +104,13 @@ jobs:
         uses: actions/github-script@v8.0.0
         with:
           script: |
-            const preparePackages = (prodPackages, devPackages) => {
+            const preparePackages = (prodPackages, devPackages, ignoredPackages) => {
               const packages = {};
 
               const packageNames = new Set([
                 ...Object.keys(prodPackages),
                 ...Object.keys(devPackages)
-              ])
+              ]).difference(new Set(ignoredPackages));
 
               for (const packageName of packageNames) {
                 const prodPackage = prodPackages[packageName];
@@ -202,10 +206,11 @@ jobs:
             const updateStrategy = core.getInput('update-strategy', { required: true });
             const maxPullRequests = parseInt(core.getInput('max-pull-requests', { required: true }), 10);
             const packageGroups = JSON.parse(core.getInput('package-groups', { required: true }));
+            const ignoredPackages = JSON.parse(core.getInput('ignored-packages', { required: true }));
             const outdatedProdPackages = JSON.parse(core.getInput('outdated-prod-packages', { required: true }));
             const outdatedDevPackages = JSON.parse(core.getInput('outdated-dev-packages', { required: true }));
 
-            const outdatedPackages = preparePackages(outdatedProdPackages, outdatedDevPackages);
+            const outdatedPackages = preparePackages(outdatedProdPackages, outdatedDevPackages, ignoredPackages);
             const updateGroups = updateStrategy === 'Single PR' ? { all: Object.keys(outdatedPackages) } : packageGroups;
             const { groupedPackages, ungroupedPackages } = groupPackages(outdatedPackages, updateGroups);
 
@@ -243,6 +248,7 @@ jobs:
           update-strategy: ${{ env.INPUT_UPDATE_STRATEGY }}
           max-pull-requests: ${{ env.INPUT_MAX_PULL_REQUESTS }}
           package-groups: ${{ env.INPUT_PACKAGE_GROUPS }}
+          ignored-packages: ${{ env.INPUT_IGNORED_PACKAGES }}
           outdated-prod-packages: ${{ steps.get-outdated-packages.outputs.outdated-prod-packages }}
           outdated-dev-packages: ${{ steps.get-outdated-packages.outputs.outdated-dev-packages }}
 
