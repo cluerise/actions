@@ -1,5 +1,35 @@
 # Changelog: `@cluerise/actions`
 
+## [7.0.0](https://github.com/cluerise/actions/compare/v6.1.0...v7.0.0) (2025-11-21)
+
+### ⚠ BREAKING CHANGES!
+
+- Update branch names and PR titles with dates (#568)
+
+### Features
+
+- Ignore packages during update ([#562](https://github.com/cluerise/actions/issues/562)) ([a360fd6](https://github.com/cluerise/actions/commit/a360fd63bf2283bf55d744c9d8605e420b450a27))
+- Update branch names and PR titles with dates ([#568](https://github.com/cluerise/actions/issues/568)) ([54a799c](https://github.com/cluerise/actions/commit/54a799c78d26dab14203a0a7d357d55602cedc5c))
+
+### Dependency updates
+
+<details>
+<summary>Show all dependency updates</summary>
+
+- **actions:** Bump actions/checkout from 5.0.0 to 6.0.0 in /install ([#565](https://github.com/cluerise/actions/issues/565)) ([afb722c](https://github.com/cluerise/actions/commit/afb722cb51db785151be688bd1a733d52475823b))
+- **actions:** Bump actions/checkout from 5.0.0 to 6.0.0 in /rebase-pr ([#564](https://github.com/cluerise/actions/issues/564)) ([d3b4336](https://github.com/cluerise/actions/commit/d3b4336ed3f27c00ed0ec091191a350e374bfb61))
+- **actions:** Bump actions/setup-node from 5.0.0 to 6.0.0 ([#539](https://github.com/cluerise/actions/issues/539)) ([37b098f](https://github.com/cluerise/actions/commit/37b098fdc0796055fa71743367392da929a70172))
+- **actions:** Bump actions/setup-node from 5.0.0 to 6.0.0 in /install ([#538](https://github.com/cluerise/actions/issues/538)) ([95f038b](https://github.com/cluerise/actions/commit/95f038b75dca558b08b741a1758712a19e40b4e4))
+- **actions:** Bump octokit/graphql-action from 2.3.2 to 3.0.0 ([#553](https://github.com/cluerise/actions/issues/553)) ([4efa9a8](https://github.com/cluerise/actions/commit/4efa9a8afc23faf93697b2bb39fb1f375bfc5209))
+- **actions:** Bump octokit/graphql-action from 2.3.2 to 3.0.0 in /assign-pr-author ([#549](https://github.com/cluerise/actions/issues/549)) ([470b831](https://github.com/cluerise/actions/commit/470b83143a4a22999134a97eaf3c3cd1b85b4bde))
+- **actions:** Bump octokit/graphql-action from 2.3.2 to 3.0.0 in /auto-merge-pr ([#551](https://github.com/cluerise/actions/issues/551)) ([7ea6669](https://github.com/cluerise/actions/commit/7ea6669bde65911fe7c2395e6cc946151bc72b0b))
+- **actions:** Bump octokit/graphql-action from 2.3.2 to 3.0.0 in /check-ci-suitability ([#552](https://github.com/cluerise/actions/issues/552)) ([6a6e150](https://github.com/cluerise/actions/commit/6a6e1503dea9aaca0e802ea7c3c2b7416681308f))
+- **actions:** Bump octokit/graphql-action from 2.3.2 to 3.0.0 in /rebase-pr ([#554](https://github.com/cluerise/actions/issues/554)) ([de59520](https://github.com/cluerise/actions/commit/de59520adcc16857c61bfdc21bdc6414d10421b2))
+- **actions:** Bump octokit/graphql-action from 2.3.2 to 3.0.0 in /review-pr ([#550](https://github.com/cluerise/actions/issues/550)) ([41e5f32](https://github.com/cluerise/actions/commit/41e5f3202d93c122b3475cb8a7382e7c00783ccc))
+- **actions:** Bump pnpm/action-setup from 4.1.0 to 4.2.0 in /install ([#532](https://github.com/cluerise/actions/issues/532)) ([8ee8d24](https://github.com/cluerise/actions/commit/8ee8d248d317eb19328c551e7892f8c3e4244313))
+
+</details>
+
 ## [6.1.0](https://github.com/cluerise/actions/compare/v6.0.5...v6.1.0) (2025-09-07)
 
 ### Features
