@@ -212,7 +212,7 @@ jobs:
                 return `deps${scopeBranchName}-${date}`;
               }
 
-              return `deps${scopeBranchName}-${groupName}-${date}`;
+              return `deps${scopeBranchName}-${group.name}-${date}`;
             };
 
             const createPackageBranchName = (package) => {
@@ -232,7 +232,7 @@ jobs:
                 return `deps${scopeName}: Update packages (${date})`;
               }
 
-              return `deps${scopeName}: Update ${groupName} packages (${date})`;
+              return `deps${scopeName}: Update ${group.name} packages (${date})`;
             };
 
             const createPackagePullRequestTitle = (package) => {
