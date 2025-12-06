@@ -120,7 +120,7 @@ jobs:
         run: echo "UPDATED_NODE_VERSION=${{ steps.update-node-versions-yarn.outputs.version }}" >> $GITHUB_ENV
 
       - name: Setup new Node.js
-        uses: actions/setup-node@v6.0.0
+        uses: actions/setup-node@v6.1.0
         with:
           cache: ${{ env.INPUT_MANAGER }}
           node-version: ${{ env.INPUT_NODE_VERSION }}
