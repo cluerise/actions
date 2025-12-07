@@ -79,7 +79,7 @@ runs:
 
     - name: Checkout
       if: ${{ env.STRATEGY == 'squash' }}
-      uses: actions/checkout@v6.0.0
+      uses: actions/checkout@v6.0.1
       with:
         ref: ${{ fromJson(steps.get-pr-info.outputs.data).node.headRef.name }}
         fetch-depth: 0
