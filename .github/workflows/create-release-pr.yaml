@@ -224,7 +224,7 @@ jobs:
               ...releases.map(release => [
                 `\`${release.name}\``,
                 release.type,
-                `\`${release.versions.from}\` to \`${release.versions.to}\``,
+                release.versions.from ? `\`${release.versions.from}\` to \`${release.versions.to}\`` : `\`${release.versions.to}\``,
                 `\`${release.tag}\``
               ])
             ];
