@@ -1,5 +1,23 @@
 # Changelog: `@cluerise/actions`
 
+## [7.0.1](https://github.com/cluerise/actions/compare/v7.0.0...v7.0.1) (2025-12-10)
+
+### Fixes
+
+- Release table for the initial release ([#578](https://github.com/cluerise/actions/issues/578)) ([d7646a9](https://github.com/cluerise/actions/commit/d7646a963fbf4cba37d11b945243197adc7be8a1))
+
+### Dependency updates
+
+<details>
+<summary>Show all dependency updates</summary>
+
+- **actions:** Bump actions/checkout from 6.0.0 to 6.0.1 in /install ([#574](https://github.com/cluerise/actions/issues/574)) ([218bf06](https://github.com/cluerise/actions/commit/218bf06ff7bb01aef1ccbcb031261b788b0ddcb0))
+- **actions:** Bump actions/checkout from 6.0.0 to 6.0.1 in /rebase-pr ([#576](https://github.com/cluerise/actions/issues/576)) ([04ef0b4](https://github.com/cluerise/actions/commit/04ef0b40dff769e4d9c1187222d8a3f4b444efc8))
+- **actions:** Bump actions/setup-node from 6.0.0 to 6.1.0 ([#575](https://github.com/cluerise/actions/issues/575)) ([155d8f1](https://github.com/cluerise/actions/commit/155d8f105fc11c6a01b28a4974a3a5a6494c3c82))
+- **actions:** Bump actions/setup-node from 6.0.0 to 6.1.0 in /install ([#573](https://github.com/cluerise/actions/issues/573)) ([fc67c47](https://github.com/cluerise/actions/commit/fc67c471772e67025c2ccffeb5831f88f039f639))
+
+</details>
+
 ## [7.0.0](https://github.com/cluerise/actions/compare/v6.1.0...v7.0.0) (2025-11-21)
 
 ### ⚠ BREAKING CHANGES!
