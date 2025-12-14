@@ -38,7 +38,7 @@ runs:
           github.event.pull_request.user.login == 'github-actions[bot]' ||
           github.event.pull_request.user.login == env.INPUT_TRUSTED_BOT
         )
-      uses: octokit/graphql-action@v3.0.0
+      uses: octokit/graphql-action@v3.0.2
       with:
         token: ${{ env.INPUT_TOKEN }}
         query: |
