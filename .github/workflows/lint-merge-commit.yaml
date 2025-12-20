@@ -55,7 +55,7 @@ jobs:
 
       - name: Get closing issues references
         id: get-closing-issues-references
-        uses: octokit/graphql-action@v3.0.0
+        uses: octokit/graphql-action@v3.0.2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           query: |
