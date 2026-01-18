@@ -218,6 +218,10 @@ jobs:
               ? commandReleasesInput
               : targetReleasesInput;
 
+            if (!releasesInput.release) {
+              return;
+            }
+
             const defaultRelease = JSON.parse(releasesInput.release);
 
             const releases = Object.entries(releasesInput)
