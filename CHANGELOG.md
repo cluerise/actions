@@ -1,5 +1,23 @@
 # Changelog: `@cluerise/actions`
 
+## [7.0.2](https://github.com/cluerise/actions/compare/v7.0.1...v7.0.2) (2026-01-18)
+
+### Dependency updates
+
+<details>
+<summary>Show all dependency updates</summary>
+
+- **actions:** Bump actions/setup-node from 6.1.0 to 6.2.0 ([#601](https://github.com/cluerise/actions/issues/601)) ([bb59c66](https://github.com/cluerise/actions/commit/bb59c66ffd80ed268f5e432c27d40a206c50e250))
+- **actions:** Bump actions/setup-node from 6.1.0 to 6.2.0 in /install ([#600](https://github.com/cluerise/actions/issues/600)) ([926ebb3](https://github.com/cluerise/actions/commit/926ebb349cc2277851c1539993c22061617c45ac))
+- **actions:** Bump octokit/graphql-action from 3.0.0 to 3.0.2 ([#584](https://github.com/cluerise/actions/issues/584)) ([831055e](https://github.com/cluerise/actions/commit/831055e7dfc3c54241aa84f63e2a7fe869199b93))
+- **actions:** Bump octokit/graphql-action from 3.0.0 to 3.0.2 in /assign-pr-author ([#583](https://github.com/cluerise/actions/issues/583)) ([6b4952f](https://github.com/cluerise/actions/commit/6b4952fb206c5e24c0d88da4424a81e85ed2a392))
+- **actions:** Bump octokit/graphql-action from 3.0.0 to 3.0.2 in /auto-merge-pr ([#581](https://github.com/cluerise/actions/issues/581)) ([a2b2fcb](https://github.com/cluerise/actions/commit/a2b2fcb0e2b0dc81e179f38329a45d564bf3abe3))
+- **actions:** Bump octokit/graphql-action from 3.0.0 to 3.0.2 in /check-ci-suitability ([#582](https://github.com/cluerise/actions/issues/582)) ([bf72c23](https://github.com/cluerise/actions/commit/bf72c2316fbfa4e82f20f848e5836f9607bb874e))
+- **actions:** Bump octokit/graphql-action from 3.0.0 to 3.0.2 in /rebase-pr ([#585](https://github.com/cluerise/actions/issues/585)) ([515c85f](https://github.com/cluerise/actions/commit/515c85f7fdfd66bb7f75e14e40c21e8708fc31ad))
+- **actions:** Bump octokit/graphql-action from 3.0.0 to 3.0.2 in /review-pr ([#580](https://github.com/cluerise/actions/issues/580)) ([3f08896](https://github.com/cluerise/actions/commit/3f0889680fe0e76ea52fb395028ce989ab093c0e))
+
+</details>
+
 ## [7.0.1](https://github.com/cluerise/actions/compare/v7.0.0...v7.0.1) (2025-12-10)
 
 ### Fixes
