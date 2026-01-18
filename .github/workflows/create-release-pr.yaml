@@ -203,14 +203,14 @@ jobs:
             const commandReleasesInput = JSON.parse(core.getInput('command-releases'));
             const targetReleasesInput = JSON.parse(core.getInput('target-releases'));
 
-            const releasesInput = typeof commandReleasesInput === 'object' && Object.keys(commandReleasesInput).length > 0
-              ? commandReleasesInput
-              : targetReleasesInput;
+            const { input: releasesInput, key: releaseInputKey } = typeof commandReleasesInput === 'object' && Object.keys(commandReleasesInput).length > 0
+              ? { input: commandReleasesInput, key: 'release' }
+              : { input: targetReleasesInput, key: 'info' };
 
-            const defaultRelease = JSON.parse(releasesInput.release);
+            const defaultRelease = JSON.parse(releasesInput[releaseInputKey]);
 
             const releases = Object.entries(releasesInput)
-              .filter(([key]) => key.startsWith('release.'))
+              .filter(([key]) => key.startsWith(`${releaseInputKey}.`))
               .map(([_key, value]) => JSON.parse(value))
               .toSorted((releaseA, releaseB) => releaseA.name.localeCompare(releaseB.name));
 
