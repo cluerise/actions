@@ -147,7 +147,7 @@ jobs:
 
             const createRelease = async (packageName) => {
               let releaseData = '';
-              await exec.exec('pnpm', ['run', '--filter', packageName, '--silent', 'release', 'create'], {
+              await exec.exec('pnpm', ['run', '--filter', packageName, '--silent', 'release', 'create', '--silent'], {
                 listeners: {
                   stdout: (data) => {
                     releaseData += data.toString();
