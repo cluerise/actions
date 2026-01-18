@@ -219,6 +219,9 @@ jobs:
               : targetReleasesInput;
 
             if (!releasesInput.release) {
+              core.setOutput('title', 'No release created');
+              core.setOutput('body', '');
+
               return;
             }
 
