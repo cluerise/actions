@@ -33,7 +33,7 @@ jobs:
 
     steps:
       - name: Install
-        uses: cluerise/actions/install@v7.0.6
+        uses: cluerise/actions/install@v7.0.7
         with:
           manager: ${{ env.INPUT_MANAGER }}
 
