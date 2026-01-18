@@ -155,20 +155,11 @@ jobs:
                 }
               });
 
+              if (releaseData.trim().length === 0) {
+                return null;
+              }
+
               return JSON.parse(releaseData);
-            };
-
-            const getReleaseInfo = async (packageName) => {
-              let releaseInfoData = '';
-              await exec.exec('pnpm', ['run', '--filter', packageName, '--silent', 'release', 'info'], {
-                listeners: {
-                  stdout: (data) => {
-                    releaseInfoData += data.toString();
-                  }
-                }
-              });
-
-              return JSON.parse(releaseInfoData);
             };
 
             // -----------------------------------------------------------------
@@ -182,28 +173,28 @@ jobs:
               return;
             }
 
-            const releases = {};
+            const releases = [];
 
             for (const packageName of packageNames) {
-              const oldReleaseInfo = await getReleaseInfo(packageName);
               const release = await createRelease(packageName);
-              const newReleaseInfo = await getReleaseInfo(packageName);
 
-              releases['release'] = release;
-              releases[`release.${release.name}`] = release;
+              if (release !== null) {
+                releases.push(release);
 
-              if (oldReleaseInfo.version !== newReleaseInfo.version) {
                 const scope = await getPackageScope(packageName);
                 const scopeName = scope ? `(${scope})` : '';
 
                 await exec.exec('git', ['stash']);
-                await exec.exec('find', ['.', '-type', 'f', '-name', 'package.json', '!', '-path', '*/node_modules/*', '-exec', 'sed', '-i', `s|"${packageName}": "workspace:\\*"|"${packageName}": "${newReleaseInfo.version}"|g`, '{}', '+']);
-                await exec.exec('git', ['commit', '--allow-empty', '--no-verify', '-a', '-m', `deps${scopeName}: Update ${packageName} ${oldReleaseInfo.version} to ${newReleaseInfo.version}`]);
+                await exec.exec('find', ['.', '-type', 'f', '-name', 'package.json', '!', '-path', '*/node_modules/*', '-exec', 'sed', '-i', `s|"${packageName}": "workspace:\\*"|"${packageName}": "${release.versions.to}"|g`, '{}', '+']);
+                await exec.exec('git', ['commit', '--allow-empty', '--no-verify', '-a', '-m', `deps${scopeName}: Update ${packageName} ${release.versions.from} to ${release.versions.to}`]);
                 await exec.exec('git', ['stash', 'pop']);
               }
             }
 
-            core.setOutput('releases', releases);
+            for (const release of releases) {
+              core.setOutput('release', release);
+              core.setOutput(`release.${release.name}`, release);
+            }
 
           release-target: ${{ env.INPUT_RELEASE_TARGET }}
           release-targets: ${{ env.INPUT_RELEASE_TARGETS }}
@@ -255,7 +246,7 @@ jobs:
             core.setOutput('body', table);
 
           command-releases: ${{ toJSON(steps.release-command.outputs) }}
-          target-releases: ${{ toJSON(steps.release-targets.releases) }}
+          target-releases: ${{ toJSON(steps.release-targets.outputs) }}
 
       - name: Create a pull request with the release (main)
         if: env.INPUT_EXTERNAL_CALL == 'false'
