@@ -145,6 +145,19 @@ jobs:
               return prodDependencyType ? 'prod' : devDependencyType ? 'dev' : null;
             };
 
+            const createRelease = async (packageName) => {
+              let releaseData = '';
+              await exec.exec('pnpm', ['run', '--filter', packageName, '--silent', 'release', 'create'], {
+                listeners: {
+                  stdout: (data) => {
+                    releaseData += data.toString();
+                  }
+                }
+              });
+
+              return JSON.parse(releaseData);
+            };
+
             const getReleaseInfo = async (packageName) => {
               let releaseInfoData = '';
               await exec.exec('pnpm', ['run', '--filter', packageName, '--silent', 'release', 'info'], {
@@ -169,10 +182,15 @@ jobs:
               return;
             }
 
+            const releases = {};
+
             for (const packageName of packageNames) {
               const oldReleaseInfo = await getReleaseInfo(packageName);
-              await exec.exec('pnpm', ['run', '--filter', packageName, 'release', 'create']);
+              const release = await createRelease(packageName);
               const newReleaseInfo = await getReleaseInfo(packageName);
+
+              releases['release'] = release;
+              releases[`release.${release.name}`] = release;
 
               if (oldReleaseInfo.version !== newReleaseInfo.version) {
                 const scope = await getPackageScope(packageName);
@@ -184,6 +202,8 @@ jobs:
                 await exec.exec('git', ['stash', 'pop']);
               }
             }
+
+            core.setOutput('releases', releases);
 
           release-target: ${{ env.INPUT_RELEASE_TARGET }}
           release-targets: ${{ env.INPUT_RELEASE_TARGETS }}
@@ -203,14 +223,14 @@ jobs:
             const commandReleasesInput = JSON.parse(core.getInput('command-releases'));
             const targetReleasesInput = JSON.parse(core.getInput('target-releases'));
 
-            const { input: releasesInput, key: releaseInputKey } = typeof commandReleasesInput === 'object' && Object.keys(commandReleasesInput).length > 0
-              ? { input: commandReleasesInput, key: 'release' }
-              : { input: targetReleasesInput, key: 'info' };
+            const releasesInput = typeof commandReleasesInput === 'object' && Object.keys(commandReleasesInput).length > 0
+              ? commandReleasesInput
+              : targetReleasesInput;
 
-            const defaultRelease = JSON.parse(releasesInput[releaseInputKey]);
+            const defaultRelease = JSON.parse(releasesInput.release);
 
             const releases = Object.entries(releasesInput)
-              .filter(([key]) => key.startsWith(`${releaseInputKey}.`))
+              .filter(([key]) => key.startsWith('release.'))
               .map(([_key, value]) => JSON.parse(value))
               .toSorted((releaseA, releaseB) => releaseA.name.localeCompare(releaseB.name));
 
@@ -235,7 +255,7 @@ jobs:
             core.setOutput('body', table);
 
           command-releases: ${{ toJSON(steps.release-command.outputs) }}
-          target-releases: ${{ toJSON(steps.release-targets.outputs) }}
+          target-releases: ${{ toJSON(steps.release-targets.releases) }}
 
       - name: Create a pull request with the release (main)
         if: env.INPUT_EXTERNAL_CALL == 'false'
