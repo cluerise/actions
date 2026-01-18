@@ -1,5 +1,11 @@
 # Changelog: `@cluerise/actions`
 
+## [7.0.5](https://github.com/cluerise/actions/compare/v7.0.4...v7.0.5) (2026-01-18)
+
+### Fixes
+
+- Parse release create ([#611](https://github.com/cluerise/actions/issues/611)) ([396d4a4](https://github.com/cluerise/actions/commit/396d4a42a0cccca3806a526298b29a0e6c345d54))
+
 ## [7.0.4](https://github.com/cluerise/actions/compare/v7.0.3...v7.0.4) (2026-01-18)
 
 ### Fixes
