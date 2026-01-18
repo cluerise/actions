@@ -1,5 +1,11 @@
 # Changelog: `@cluerise/actions`
 
+## [7.0.3](https://github.com/cluerise/actions/compare/v7.0.2...v7.0.3) (2026-01-18)
+
+### Fixes
+
+- Release tool keys ([#606](https://github.com/cluerise/actions/issues/606)) ([fa05011](https://github.com/cluerise/actions/commit/fa050110c757673c7f1382ea1009e78034f99bfb))
+
 ## [7.0.2](https://github.com/cluerise/actions/compare/v7.0.1...v7.0.2) (2026-01-18)
 
 ### Dependency updates
