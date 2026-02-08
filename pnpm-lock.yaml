@@ -10,10 +10,10 @@ importers:
     devDependencies:
       '@cluerise/tools':
         specifier: 5.3.13
-        version: 5.3.13(@types/node@25.2.0)(jiti@2.6.1)(typescript@5.9.3)
+        version: 5.3.13(@types/node@25.2.2)(jiti@2.6.1)(typescript@5.9.3)
       '@types/node':
-        specifier: 25.2.0
-        version: 25.2.0
+        specifier: 25.2.2
+        version: 25.2.2
       typescript:
         specifier: 5.9.3
         version: 5.9.3
@@ -374,8 +374,8 @@ packages:
   '@types/ms@2.1.0':
     resolution: {integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==}
 
-  '@types/node@25.2.0':
-    resolution: {integrity: sha512-DZ8VwRFUNzuqJ5khrvwMXHmvPe+zGayJhr2CDNiKB1WBE1ST8Djl00D0IC4vvNmHMdj6DlbYRIaFE7WHjlDl5w==}
+  '@types/node@25.2.2':
+    resolution: {integrity: sha512-BkmoP5/FhRYek5izySdkOneRyXYN35I860MFAGupTdebyE66uZaR+bXLHq8k4DirE5DwQi3NuhvRU1jqTVwUrQ==}
 
   '@types/normalize-package-data@2.4.4':
     resolution: {integrity: sha512-37i+OaWTh9qeK4LSHPsyRC7NahnGotNuZvjLSgcPzblpHB3rrCJxAOgI5gCdKm7coonsaX1Of0ILiTcnZjbfxA==}
@@ -2865,12 +2865,12 @@ snapshots:
 
   '@babel/helper-validator-identifier@7.28.5': {}
 
-  '@cluerise/tools@5.3.13(@types/node@25.2.0)(jiti@2.6.1)(typescript@5.9.3)':
+  '@cluerise/tools@5.3.13(@types/node@25.2.2)(jiti@2.6.1)(typescript@5.9.3)':
     dependencies:
       '@actions/core': 2.0.3
-      '@commitlint/cli': 20.3.1(@types/node@25.2.0)(typescript@5.9.3)
+      '@commitlint/cli': 20.3.1(@types/node@25.2.2)(typescript@5.9.3)
       '@commitlint/config-conventional': 20.3.1
-      '@commitlint/load': 20.3.1(@types/node@25.2.0)(typescript@5.9.3)
+      '@commitlint/load': 20.3.1(@types/node@25.2.2)(typescript@5.9.3)
       '@commitlint/types': 20.3.1
       '@eslint/js': 9.39.2
       '@eslint/json': 0.14.0
@@ -2909,11 +2909,11 @@ snapshots:
   '@colors/colors@1.5.0':
     optional: true
 
-  '@commitlint/cli@20.3.1(@types/node@25.2.0)(typescript@5.9.3)':
+  '@commitlint/cli@20.3.1(@types/node@25.2.2)(typescript@5.9.3)':
     dependencies:
       '@commitlint/format': 20.4.0
       '@commitlint/lint': 20.4.0
-      '@commitlint/load': 20.3.1(@types/node@25.2.0)(typescript@5.9.3)
+      '@commitlint/load': 20.3.1(@types/node@25.2.2)(typescript@5.9.3)
       '@commitlint/read': 20.4.0
       '@commitlint/types': 20.3.1
       tinyexec: 1.0.2
@@ -2956,7 +2956,7 @@ snapshots:
       '@commitlint/rules': 20.4.0
       '@commitlint/types': 20.4.0
 
-  '@commitlint/load@20.3.1(@types/node@25.2.0)(typescript@5.9.3)':
+  '@commitlint/load@20.3.1(@types/node@25.2.2)(typescript@5.9.3)':
     dependencies:
       '@commitlint/config-validator': 20.4.0
       '@commitlint/execute-rule': 20.0.0
@@ -2964,7 +2964,7 @@ snapshots:
       '@commitlint/types': 20.3.1
       chalk: 5.6.2
       cosmiconfig: 9.0.0(typescript@5.9.3)
-      cosmiconfig-typescript-loader: 6.2.0(@types/node@25.2.0)(cosmiconfig@9.0.0(typescript@5.9.3))(typescript@5.9.3)
+      cosmiconfig-typescript-loader: 6.2.0(@types/node@25.2.2)(cosmiconfig@9.0.0(typescript@5.9.3))(typescript@5.9.3)
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       lodash.uniq: 4.5.0
@@ -3355,7 +3355,7 @@ snapshots:
 
   '@types/conventional-commits-parser@5.0.2':
     dependencies:
-      '@types/node': 25.2.0
+      '@types/node': 25.2.2
 
   '@types/css-tree@2.3.11': {}
 
@@ -3375,7 +3375,7 @@ snapshots:
 
   '@types/ms@2.1.0': {}
 
-  '@types/node@25.2.0':
+  '@types/node@25.2.2':
     dependencies:
       undici-types: 7.16.0
 
@@ -3828,9 +3828,9 @@ snapshots:
 
   core-util-is@1.0.3: {}
 
-  cosmiconfig-typescript-loader@6.2.0(@types/node@25.2.0)(cosmiconfig@9.0.0(typescript@5.9.3))(typescript@5.9.3):
+  cosmiconfig-typescript-loader@6.2.0(@types/node@25.2.2)(cosmiconfig@9.0.0(typescript@5.9.3))(typescript@5.9.3):
     dependencies:
-      '@types/node': 25.2.0
+      '@types/node': 25.2.2
       cosmiconfig: 9.0.0(typescript@5.9.3)
       jiti: 2.6.1
       typescript: 5.9.3
