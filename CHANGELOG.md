@@ -1,5 +1,21 @@
 # Changelog: `@cluerise/actions`
 
+## [7.1.0](https://github.com/cluerise/actions/compare/v7.0.7...v7.1.0) (2026-03-03)
+
+### Features
+
+- Release without latest branch ([#645](https://github.com/cluerise/actions/issues/645)) ([8c230b2](https://github.com/cluerise/actions/commit/8c230b2b985465b81445012ee5fa2fd5a05ba515))
+
+### Dependency updates
+
+<details>
+<summary>Show all dependency updates</summary>
+
+- **actions:** Bump actions/checkout from 6.0.1 to 6.0.2 in /install ([#617](https://github.com/cluerise/actions/issues/617)) ([11387e8](https://github.com/cluerise/actions/commit/11387e8787514ea0381ef784876e0f4fee207a6d))
+- **actions:** Bump actions/checkout from 6.0.1 to 6.0.2 in /rebase-pr ([#618](https://github.com/cluerise/actions/issues/618)) ([618b1d4](https://github.com/cluerise/actions/commit/618b1d45e2eda2d5e756caa5858936633bf2f137))
+
+</details>
+
 ## [7.0.7](https://github.com/cluerise/actions/compare/v7.0.6...v7.0.7) (2026-01-18)
 
 ### Fixes

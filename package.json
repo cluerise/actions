@@ -1,6 +1,6 @@
 {
   "name": "@cluerise/actions",
-  "version": "7.0.7",
+  "version": "7.1.0",
   "description": "GitHub actions",
   "author": "Branislav Holý <brano@holy.am>",
   "repository": "github:cluerise/actions",
