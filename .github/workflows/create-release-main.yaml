@@ -62,6 +62,7 @@ jobs:
         run: echo "RELEASE_TITLE=Release ${{ fromJson(steps.get-release-info.outputs.info).tag }}" >> $GITHUB_ENV
 
       - name: Get id of the repository and latest branch
+        if: fromJson(steps.get-release-info.outputs.info).latestBranch != null
         id: get-latest-ref
         uses: octokit/graphql-action@v3.0.2
         with:
@@ -80,7 +81,7 @@ jobs:
           name: ${{ toJson(fromJson(steps.get-release-info.outputs.info).latestBranch) }}
 
       - name: Create the latest branch
-        if: fromJson(steps.get-latest-ref.outputs.data).repository.ref == null
+        if: fromJson(steps.get-release-info.outputs.info).latestBranch != null && fromJson(steps.get-latest-ref.outputs.data).repository.ref == null
         uses: octokit/graphql-action@v3.0.2
         with:
           token: ${{ steps.get-bot-token.outputs.token }}
@@ -95,7 +96,7 @@ jobs:
           oid: ${{ github.event.pull_request.merge_commit_sha }}
 
       - name: Reset the latest branch
-        if: fromJson(steps.get-latest-ref.outputs.data).repository.ref != null
+        if: fromJson(steps.get-release-info.outputs.info).latestBranch != null && fromJson(steps.get-latest-ref.outputs.data).repository.ref != null
         uses: octokit/graphql-action@v3.0.2
         with:
           token: ${{ steps.get-bot-token.outputs.token }}
