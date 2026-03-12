@@ -9,8 +9,8 @@ importers:
   .:
     devDependencies:
       '@cluerise/tools':
-        specifier: 5.4.2
-        version: 5.4.2(@types/node@25.5.0)(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.3.0)(jiti@2.6.1)(typescript@5.9.3)
+        specifier: 5.4.3
+        version: 5.4.3(@types/node@25.5.0)(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.3.0)(jiti@2.6.1)(typescript@5.9.3)
       '@types/node':
         specifier: 25.5.0
         version: 25.5.0
@@ -40,8 +40,8 @@ packages:
     resolution: {integrity: sha512-qSs4ifwzKJSV39ucNjsvc6WVHs6b7S03sOh2OcHF9UHfVPqWWALUsNUVzhSBiItjRZoLHx7nIarVjqKVusUZ1Q==}
     engines: {node: '>=6.9.0'}
 
-  '@cluerise/tools@5.4.2':
-    resolution: {integrity: sha512-1UZerUjNJiFseQhg9obBW+mzNQRTQCG86KafKyOMsOuY9H2/j6BYpC8uLoZbK/56PiEv6wK/E97VcHvoQbYbDQ==}
+  '@cluerise/tools@5.4.3':
+    resolution: {integrity: sha512-VKUAqWtz6XaZzzbixAq+KRC3AsNFTqABUaJgC5NFJlZUMSy9shyhpinv0iYW/6gBiE+mkaPFVsxR5XhVgCCBDg==}
     hasBin: true
 
   '@colors/colors@1.5.0':
@@ -2883,7 +2883,7 @@ snapshots:
 
   '@babel/helper-validator-identifier@7.28.5': {}
 
-  '@cluerise/tools@5.4.2(@types/node@25.5.0)(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.3.0)(jiti@2.6.1)(typescript@5.9.3)':
+  '@cluerise/tools@5.4.3(@types/node@25.5.0)(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.3.0)(jiti@2.6.1)(typescript@5.9.3)':
     dependencies:
       '@actions/core': 3.0.0
       '@commitlint/cli': 20.4.4(@types/node@25.5.0)(conventional-commits-filter@5.0.0)(conventional-commits-parser@6.3.0)(typescript@5.9.3)
