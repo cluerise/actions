@@ -1,6 +1,7 @@
 # Build
 build/
 dist/
+packages/*/link/
 
 # Cloudflare
 .wrangler/
@@ -14,6 +15,9 @@ node_modules/
 .env.local
 .env.*.local
 .envrc
+
+# I18n
+packages/**/catalogs/*.ts
 
 # Lint Staged
 .lint-staged-temp-tsconfig.json
