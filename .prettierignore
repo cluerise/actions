@@ -10,6 +10,7 @@
 # Build
 build/
 dist/
+packages/*/link/
 
 # Cloudflare
 .wrangler/
@@ -26,6 +27,10 @@ node_modules/
 .envrc
 .envrc.*
 
+# Fonts
+*.ttf
+*.woff2
+
 # Git
 .git/
 
@@ -33,6 +38,17 @@ node_modules/
 hooks/*
 !hooks/*.js
 !hooks/*.ts
+
+# Images
+*.avif
+*.ico
+*.png
+*.svg
+*.webp
+
+# I18n
+*.po
+packages/**/catalogs/*.ts
 
 # Lock files
 pnpm-lock.yaml
@@ -46,8 +62,30 @@ etc/
 # NPM, PNPM
 .npmrc.*
 
+# Patches
+*.patch
+
 # Stryker
 .stryker-tmp/
 
+# Swift
+*.swift
+
 # Tests coverage
 coverage/
+
+# Text
+*.txt
+
+# Xcode
+*.entitlements
+*.pbxproj
+*.plist
+*.resolved
+*.storekit
+*.swift
+*.xcscheme
+*.xcstrings
+
+# XML
+*.xml
