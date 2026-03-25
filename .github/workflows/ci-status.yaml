@@ -70,7 +70,7 @@ jobs:
           } >> $GITHUB_ENV
 
       - name: Send status
-        uses: octokit/request-action@dad4362715b7fb2ddedf9772c8670824af564f0d
+        uses: octokit/request-action@b91aabaa861c777dcdb14e2387e30eddf04619ae
         with:
           route: POST /repos/{owner}/{repo}/statuses/{sha}
           owner: ${{ github.event.repository.owner.login }}
