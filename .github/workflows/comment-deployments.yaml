@@ -6,9 +6,19 @@ on:
       app-id:
         type: string
         description: GitHub app ID
+      pull-request-number:
+        type: number
+        description: Pull request number
+      branch-name:
+        type: string
+        description: Branch name
+      commit-hash:
+        type: string
+        description: Commit hash
       deployments:
         type: string
         description: JSON array of deployments
+        required: true
     secrets:
       token:
         description: GitHub access token
@@ -19,12 +29,15 @@ on:
 
 env:
   INPUT_APP_ID: ${{ inputs.app-id }}
-  INPUT_DEPLOYMENTS: ${{ inputs.deployments || '[]' }}
+  INPUT_PULL_REQUEST_NUMBER: ${{ inputs.pull-request-number || github.event.pull_request.number }}
+  INPUT_BRANCH_NAME: ${{ inputs.branch-name || github.head_ref }}
+  INPUT_COMMIT_HASH: ${{ inputs.commit-hash || github.sha }}
+  INPUT_DEPLOYMENTS: ${{ inputs.deployments }}
   SECRET_TOKEN: ${{ secrets.token }}
   SECRET_APP_PRIVATE_KEY: ${{ secrets.app-private-key }}
 
 concurrency:
-  group: comment-deployments-${{ github.event.pull_request.number }}
+  group: comment-deployments-${{ inputs.pull-request-number || github.event.pull_request.number }}
   cancel-in-progress: true
 
 permissions:
@@ -52,19 +65,20 @@ jobs:
       - name: Comment
         uses: actions/github-script@v8.0.0
         with:
+          pull-request-number: ${{ env.INPUT_PULL_REQUEST_NUMBER }}
+          branch-name: ${{ env.INPUT_BRANCH_NAME }}
+          commit-hash: ${{ env.INPUT_COMMIT_HASH }}
           deployments: ${{ env.INPUT_DEPLOYMENTS }}
           github-token: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
           script: |
             const commentMarker = '<!-- deployment-comment -->';
+
+            const pullRequestNumber = parseInt(core.getInput('pull-request-number', { required: true }), 10);
+            const branchName = core.getInput('branch-name', { required: true });
+            const commitHash = core.getInput('commit-hash', { required: true });
             const deployments = JSON.parse(core.getInput('deployments', { required: true }));
 
             const { owner, repo } = context.repo;
-
-            const {
-              number: pullRequestNumber,
-              head: { ref: branchName, sha: commitHash }
-            } = context.payload.pull_request;
-
             const shortCommitHash = commitHash.slice(0, 10);
 
             const body = [
