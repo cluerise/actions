@@ -1,5 +1,24 @@
 # Changelog: `@cluerise/actions`
 
+## [7.2.0](https://github.com/cluerise/actions/compare/v7.1.0...v7.2.0) (2026-03-28)
+
+### Features
+
+- Comment deployments ([#665](https://github.com/cluerise/actions/issues/665)) ([e753785](https://github.com/cluerise/actions/commit/e753785761ea50ff356d6c7dfa8c3ff8832a0cc2))
+
+### Dependency updates
+
+<details>
+<summary>Show all dependency updates</summary>
+
+- **actions:** Bump actions/setup-node from 6.2.0 to 6.3.0 ([#649](https://github.com/cluerise/actions/issues/649)) ([0fa659c](https://github.com/cluerise/actions/commit/0fa659c688ecedafaaf1171ffb1646fb3e48812d))
+- **actions:** Bump actions/setup-node from 6.2.0 to 6.3.0 in /install ([#648](https://github.com/cluerise/actions/issues/648)) ([78696c5](https://github.com/cluerise/actions/commit/78696c5a39b115f9d1ab17d66d205bb5d1c1c4a6))
+- **actions:** Bump octokit/request-action from 2.4.0 to 3.0.0 ([#663](https://github.com/cluerise/actions/issues/663)) ([6420f39](https://github.com/cluerise/actions/commit/6420f399db08fda70db7e335641f949338be3d95))
+- **actions:** Bump pnpm/action-setup from 4.2.0 to 4.4.0 in /install ([#660](https://github.com/cluerise/actions/issues/660)) ([258859d](https://github.com/cluerise/actions/commit/258859d2df6864036b8686c23e9c33c9f00fc9d3))
+- **actions:** Bump pnpm/action-setup from 4.4.0 to 5.0.0 in /install ([#662](https://github.com/cluerise/actions/issues/662)) ([0ee205a](https://github.com/cluerise/actions/commit/0ee205a4306ac17b0c1756c08ece9188dc1b4290))
+
+</details>
+
 ## [7.1.0](https://github.com/cluerise/actions/compare/v7.0.7...v7.1.0) (2026-03-03)
 
 ### Features
