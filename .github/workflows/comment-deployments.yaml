@@ -31,7 +31,7 @@ env:
   INPUT_APP_ID: ${{ inputs.app-id }}
   INPUT_PULL_REQUEST_NUMBER: ${{ inputs.pull-request-number || github.event.pull_request.number }}
   INPUT_BRANCH_NAME: ${{ inputs.branch-name || github.head_ref }}
-  INPUT_COMMIT_HASH: ${{ inputs.commit-hash || github.sha }}
+  INPUT_COMMIT_HASH: ${{ inputs.commit-hash || github.event.pull_request.head.sha }}
   INPUT_DEPLOYMENTS: ${{ inputs.deployments }}
   SECRET_TOKEN: ${{ secrets.token }}
   SECRET_APP_PRIVATE_KEY: ${{ secrets.app-private-key }}
