@@ -1,5 +1,11 @@
 # Changelog: `@cluerise/actions`
 
+## [7.2.1](https://github.com/cluerise/actions/compare/v7.2.0...v7.2.1) (2026-03-28)
+
+### Fixes
+
+- Deployment comment commit hash ([#670](https://github.com/cluerise/actions/issues/670)) ([db47446](https://github.com/cluerise/actions/commit/db474463adf39a2bb87d55b817b157b560dc5660))
+
 ## [7.2.0](https://github.com/cluerise/actions/compare/v7.1.0...v7.2.0) (2026-03-28)
 
 ### Features
