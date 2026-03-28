@@ -1,0 +1,133 @@
+name: Comment deployments
+
+on:
+  workflow_call:
+    inputs:
+      app-id:
+        type: string
+        description: GitHub app ID
+      pull-request-number:
+        type: number
+        description: Pull request number
+      branch-name:
+        type: string
+        description: Branch name
+      commit-hash:
+        type: string
+        description: Commit hash
+      deployments:
+        type: string
+        description: JSON array of deployments
+        required: true
+    secrets:
+      token:
+        description: GitHub access token
+        required: false
+      app-private-key:
+        description: GitHub app private key
+        required: false
+
+env:
+  INPUT_APP_ID: ${{ inputs.app-id }}
+  INPUT_PULL_REQUEST_NUMBER: ${{ inputs.pull-request-number || github.event.pull_request.number }}
+  INPUT_BRANCH_NAME: ${{ inputs.branch-name || github.head_ref }}
+  INPUT_COMMIT_HASH: ${{ inputs.commit-hash || github.sha }}
+  INPUT_DEPLOYMENTS: ${{ inputs.deployments }}
+  SECRET_TOKEN: ${{ secrets.token }}
+  SECRET_APP_PRIVATE_KEY: ${{ secrets.app-private-key }}
+
+concurrency:
+  group: comment-deployments-${{ inputs.pull-request-number || github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  issues: write
+  pull-requests: read
+
+jobs:
+  comment-deployments:
+    name: Comment deployments
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check required secrets
+        if: env.SECRET_TOKEN == '' && (env.INPUT_APP_ID == '' || env.SECRET_APP_PRIVATE_KEY == '')
+        run: exit 1
+
+      - name: Get bot token
+        id: get-bot-token
+        if: env.SECRET_TOKEN == ''
+        uses: cluerise/actions/get-github-app-token@v7.1.0
+        with:
+          app-id: ${{ env.INPUT_APP_ID }}
+          app-private-key: ${{ env.SECRET_APP_PRIVATE_KEY }}
+
+      - name: Comment
+        uses: actions/github-script@v8.0.0
+        with:
+          pull-request-number: ${{ env.INPUT_PULL_REQUEST_NUMBER }}
+          branch-name: ${{ env.INPUT_BRANCH_NAME }}
+          commit-hash: ${{ env.INPUT_COMMIT_HASH }}
+          deployments: ${{ env.INPUT_DEPLOYMENTS }}
+          github-token: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
+          script: |
+            const commentMarker = '<!-- deployment-comment -->';
+
+            const pullRequestNumber = parseInt(core.getInput('pull-request-number', { required: true }), 10);
+            const branchName = core.getInput('branch-name', { required: true });
+            const commitHash = core.getInput('commit-hash', { required: true });
+            const deployments = JSON.parse(core.getInput('deployments', { required: true }));
+
+            const { owner, repo } = context.repo;
+            const shortCommitHash = commitHash.slice(0, 10);
+
+            const body = [
+              commentMarker,
+              '## Deployments',
+              '',
+              '| Name | Commit | URLs |',
+              '| --- | --- | --- |',
+              ...deployments.map(
+                ({ name, links }) => {
+                  const urls = links
+                    .map(link => {
+                      const url = link.url
+                        .replaceAll('%branchName%', branchName)
+                        .replaceAll('%commitHash%', commitHash)
+                        .replaceAll('%shortCommitHash%', shortCommitHash);
+
+                      return `[${link.name}](${url})`;
+                    })
+                    .join(', ');
+
+                  return `| ${name} | \`${shortCommitHash}\` | ${urls} |`;
+                }
+              ),
+            ].join('\n');
+
+            const comments = await github.paginate(github.rest.issues.listComments, {
+              owner,
+              repo,
+              issue_number: pullRequestNumber,
+              per_page: 100,
+            });
+
+            const existingComment = comments.find(
+              (comment) => comment.body?.includes(commentMarker),
+            );
+
+            if (existingComment) {
+              await github.rest.issues.updateComment({
+                owner,
+                repo,
+                comment_id: existingComment.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: pullRequestNumber,
+                body,
+              });
+            }
