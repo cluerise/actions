@@ -92,6 +92,13 @@ jobs:
           node-version: ${{ env.INPUT_NODE_VERSION }}
           node-version-file: ${{ env.INPUT_NODE_VERSION_FILE }}
 
+      - name: Disable PNPM minimumReleaseAge workspace setting
+        if: env.INPUT_MANAGER == 'pnpm'
+        run: |
+          if [ -f pnpm-workspace.yaml ]; then
+            sed -i -E 's/minimumReleaseAge:/# minimumReleaseAge:/' pnpm-workspace.yaml
+          fi
+
       - name: Update the PNPM lock file
         if: env.INPUT_MANAGER == 'pnpm'
         run: rm -rf node_modules && rm pnpm-lock.yaml && pnpm install
