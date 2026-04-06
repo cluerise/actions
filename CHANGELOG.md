@@ -1,5 +1,11 @@
 # Changelog: `@cluerise/actions`
 
+## [7.2.2](https://github.com/cluerise/actions/compare/v7.2.1...v7.2.2) (2026-04-06)
+
+### Fixes
+
+- Update lock file with minimumReleaseAge in PNPM ([#675](https://github.com/cluerise/actions/issues/675)) ([d5b9e06](https://github.com/cluerise/actions/commit/d5b9e06b918bbba99d92987d21a17c61d983c2a2))
+
 ## [7.2.1](https://github.com/cluerise/actions/compare/v7.2.0...v7.2.1) (2026-03-28)
 
 ### Fixes
