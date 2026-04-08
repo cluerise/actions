@@ -1,5 +1,11 @@
 # Changelog: `@cluerise/actions`
 
+## [7.2.3](https://github.com/cluerise/actions/compare/v7.2.2...v7.2.3) (2026-04-08)
+
+### Fixes
+
+- Disable minimumReleaseAge when updating packages ([#679](https://github.com/cluerise/actions/issues/679)) ([99830a8](https://github.com/cluerise/actions/commit/99830a8fabaf24c00c961c63cccb07f143ebd570))
+
 ## [7.2.2](https://github.com/cluerise/actions/compare/v7.2.1...v7.2.2) (2026-04-06)
 
 ### Fixes
