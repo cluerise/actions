@@ -348,6 +348,12 @@ jobs:
         if: env.INPUT_EXTERNAL_CALL == 'true'
         uses: cluerise/actions/install@v7.2.2
 
+      - name: Disable PNPM minimumReleaseAge workspace setting
+        run: |
+          if [ -f pnpm-workspace.yaml ]; then
+            sed -i -E 's/minimumReleaseAge:/# minimumReleaseAge:/' pnpm-workspace.yaml
+          fi
+
       - name: Update packages
         run: pnpm update --recursive ${{ join(matrix.update.versionedPackageNames, ' ') }}
 
