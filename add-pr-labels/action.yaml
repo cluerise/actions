@@ -28,7 +28,7 @@ runs:
 
     - name: Add labels
       if: github.event.action == 'opened' || github.event.action == 'edited'
-      uses: actions/github-script@v8.0.0
+      uses: actions/github-script@v9.0.0
       with:
         github-token: ${{ env.INPUT_TOKEN }}
         script: |
