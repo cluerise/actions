@@ -63,7 +63,7 @@ jobs:
           app-private-key: ${{ env.SECRET_APP_PRIVATE_KEY }}
 
       - name: Comment
-        uses: actions/github-script@v8.0.0
+        uses: actions/github-script@v9.0.0
         with:
           pull-request-number: ${{ env.INPUT_PULL_REQUEST_NUMBER }}
           branch-name: ${{ env.INPUT_BRANCH_NAME }}
