@@ -2,7 +2,7 @@ name: Update Node.js
 
 on:
   schedule:
-    - cron: '0 10 * * 0' # Every Sunday at 10:00 UTC
+    - cron: '0 12 * * 1' # Every Monday at 12:00 UTC
   workflow_dispatch:
   workflow_call:
     inputs:

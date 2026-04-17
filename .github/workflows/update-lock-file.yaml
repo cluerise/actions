@@ -2,7 +2,7 @@ name: Update lock file
 
 on:
   schedule:
-    - cron: '0 14 * * 0' # Every Sunday at 14:00 UTC
+    - cron: '0 12 * * 3' # Every Wednesday at 12:00 UTC
   workflow_dispatch:
   workflow_call:
     inputs:

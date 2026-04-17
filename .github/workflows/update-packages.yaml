@@ -2,7 +2,7 @@ name: Update packages
 
 on:
   schedule:
-    - cron: '0 11 * * 0' # Every Sunday at 11:00 UTC
+    - cron: '0 12 * * 5' # Every Friday at 12:00 UTC
   workflow_dispatch:
     inputs:
       update-strategy:
