@@ -1,0 +1,135 @@
+name: Publish to Play Store
+
+on:
+  workflow_call:
+    inputs:
+      android-key-alias:
+        type: string
+        required: true
+      manager:
+        type: string
+        description: Package manager (pnpm, npm, or yarn)
+      java-version:
+        type: string
+        description: Java version to use for building the Android app
+        required: true
+      java-distribution:
+        type: string
+        description: 'Java distribution to use (default: temurin)'
+      build-command:
+        type: string
+        description: Build command to run (-PversionCode will be appended to the command)
+        required: true
+      get-release-version-command:
+        type: string
+        description: Command to get the release version
+        required: true
+      package-name:
+        type: string
+        description: Package name of the Android app (e.g., com.example.app)
+        required: true
+      package-files:
+        type: string
+        description: Path to the Android app bundle or APK files to upload
+        required: true
+      play-store-service-account:
+        type: string
+        description: Service account email for Play Store authentication
+        required: true
+      play-store-workload-identity-provider:
+        type: string
+        description: Workload Identity Provider for Play Store authentication
+        required: true
+      npm-config-userconfig:
+        type: string
+        description: NPM configuration file path
+    secrets:
+      android-keystore-base64:
+        required: true
+      android-keystore-password:
+        required: true
+      android-key-password:
+        required: true
+      npm-auth-token:
+        description: NPM authentication token for private packages
+        required: false
+
+env:
+  INPUT_ANDROID_KEY_ALIAS: ${{ inputs.android-key-alias }}
+  INPUT_MANAGER: ${{ inputs.manager }}
+  INPUT_JAVA_VERSION: ${{ inputs.java-version }}
+  INPUT_JAVA_DISTRIBUTION: ${{ inputs.java-distribution || 'temurin' }}
+  INPUT_BUILD_COMMAND: ${{ inputs.build-command }}
+  INPUT_GET_RELEASE_VERSION_COMMAND: ${{ inputs.get-release-version-command }}
+  INPUT_PACKAGE_NAME: ${{ inputs.package-name }}
+  INPUT_PACKAGE_FILES: ${{ inputs.package-files }}
+  INPUT_PLAY_STORE_SERVICE_ACCOUNT: ${{ inputs.play-store-service-account }}
+  INPUT_PLAY_STORE_WORKLOAD_IDENTITY_PROVIDER: ${{ inputs.play-store-workload-identity-provider }}
+  SECRET_ANDROID_KEYSTORE_BASE64: ${{ secrets.android-keystore-base64 }}
+  SECRET_ANDROID_KEYSTORE_PASSWORD: ${{ secrets.android-keystore-password }}
+  SECRET_ANDROID_KEY_PASSWORD: ${{ secrets.android-key-password }}
+  NPM_AUTH_TOKEN: ${{ secrets.npm-auth-token }}
+  NPM_CONFIG_USERCONFIG: ${{ inputs.npm-config-userconfig }}
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    name: Publish to Play Store
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install
+        uses: cluerise/actions/install@v7.2.3
+        with:
+          manager: ${{ env.INPUT_MANAGER }}
+          fetch-depth: 20
+
+      - name: Setup Java
+        uses: actions/setup-java@v5.2.0
+        with:
+          java-version: ${{ env.INPUT_JAVA_VERSION }}
+          distribution: ${{ env.INPUT_JAVA_DISTRIBUTION }}
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v6.1.0
+
+      - name: Setup Keystore
+        run: |
+          printf '%s' "$SECRET_ANDROID_KEYSTORE_BASE64" | base64 --decode > upload-keystore.jks
+
+      - name: Build
+        env:
+          KEYSTORE_PATH: ${{ github.workspace }}/upload-keystore.jks
+          KEYSTORE_PASSWORD: ${{ env.SECRET_ANDROID_KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ env.INPUT_ANDROID_KEY_ALIAS }}
+          KEY_PASSWORD: ${{ env.SECRET_ANDROID_KEY_PASSWORD }}
+          RUN_NUMBER: ${{ github.run_number }}
+        run: ${{ env.INPUT_BUILD_COMMAND }} -PversionCode=$RUN_NUMBER
+
+      - name: Play Store Authentication
+        id: play-store-auth
+        uses: google-github-actions/auth@v3
+        with:
+          service_account: ${{ env.INPUT_PLAY_STORE_SERVICE_ACCOUNT }}
+          workload_identity_provider: ${{ env.INPUT_PLAY_STORE_WORKLOAD_IDENTITY_PROVIDER }}
+
+      - name: Get release version
+        run: echo "RELEASE_VERSION=$(${{ env.INPUT_GET_RELEASE_VERSION_COMMAND }})" >> $GITHUB_ENV
+
+      - name: Get release name
+        env:
+          RUN_NUMBER: ${{ github.run_number }}
+        run: echo "RELEASE_NAME=Version $RELEASE_VERSION ($RUN_NUMBER)" >> $GITHUB_ENV
+
+      - name: Upload
+        uses: r0adkll/upload-google-play@v1.1.5
+        with:
+          releaseName: ${{ env.RELEASE_NAME }}
+          packageName: ${{ env.INPUT_PACKAGE_NAME }}
+          tracks: internal
+          status: completed
+          releaseFiles: ${{ env.INPUT_PACKAGE_FILES }}
+          serviceAccountJson: ${{ steps.play-store-auth.outputs.credentials_file_path }}
