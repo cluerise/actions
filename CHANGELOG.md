@@ -1,5 +1,30 @@
 # Changelog: `@cluerise/actions`
 
+## [7.3.0](https://github.com/cluerise/actions/compare/v7.2.3...v7.3.0) (2026-05-24)
+
+### Features
+
+- Publish to Play Store ([#710](https://github.com/cluerise/actions/issues/710)) ([6925115](https://github.com/cluerise/actions/commit/6925115f6a62c2d3b3d6307b73417d94f267b7fc))
+
+### Dependency updates
+
+<details>
+<summary>Show all dependency updates</summary>
+
+- **actions:** Bump actions/github-script from 8.0.0 to 9.0.0 ([#685](https://github.com/cluerise/actions/issues/685)) ([7dc3374](https://github.com/cluerise/actions/commit/7dc3374c160333bfcbfd1e746e12061920f82781))
+- **actions:** Bump actions/github-script from 8.0.0 to 9.0.0 in /add-pr-labels ([#683](https://github.com/cluerise/actions/issues/683)) ([6352767](https://github.com/cluerise/actions/commit/63527676a9ffcd1e75dbb217570019a31a8447fb))
+- **actions:** Bump actions/github-script from 8.0.0 to 9.0.0 in /get-github-app-token ([#681](https://github.com/cluerise/actions/issues/681)) ([b20f5f1](https://github.com/cluerise/actions/commit/b20f5f1eb2a9de5cd393b29775cec6cfc1c027c2))
+- **actions:** Bump actions/github-script from 8.0.0 to 9.0.0 in /update-pr-title ([#682](https://github.com/cluerise/actions/issues/682)) ([a952e50](https://github.com/cluerise/actions/commit/a952e50e32dcf9e211265e4a7d891923948b3362))
+- **actions:** Bump actions/setup-node from 6.3.0 to 6.4.0 ([#697](https://github.com/cluerise/actions/issues/697)) ([bfda676](https://github.com/cluerise/actions/commit/bfda676b40c54b04ad0d0633d0d87da3bee79754))
+- **actions:** Bump actions/setup-node from 6.3.0 to 6.4.0 in /install ([#695](https://github.com/cluerise/actions/issues/695)) ([bc3756a](https://github.com/cluerise/actions/commit/bc3756ade5e34139c32eef7d8f980480ac337311))
+- **actions:** Bump pnpm/action-setup from 5.0.0 to 6.0.0 in /install ([#684](https://github.com/cluerise/actions/issues/684)) ([4ec5e31](https://github.com/cluerise/actions/commit/4ec5e3177fbbe189e27970816d8bc4e14698fc61))
+- **actions:** Bump pnpm/action-setup from 6.0.0 to 6.0.1 in /install ([#690](https://github.com/cluerise/actions/issues/690)) ([104675b](https://github.com/cluerise/actions/commit/104675bbf093868d0061e7566f66f0dbb1029e0a))
+- **actions:** Bump pnpm/action-setup from 6.0.1 to 6.0.3 in /install ([#696](https://github.com/cluerise/actions/issues/696)) ([3a8ef33](https://github.com/cluerise/actions/commit/3a8ef339b37f67e55ace8eae156eb24bccc03068))
+- **actions:** Bump pnpm/action-setup from 6.0.3 to 6.0.4 in /install ([#699](https://github.com/cluerise/actions/issues/699)) ([e54bc39](https://github.com/cluerise/actions/commit/e54bc3917efb827b0037d2742a2e2fd5aeda6123))
+- **actions:** Bump pnpm/action-setup from 6.0.4 to 6.0.8 in /install ([#707](https://github.com/cluerise/actions/issues/707)) ([cab8ce0](https://github.com/cluerise/actions/commit/cab8ce0f44d0fd69afd588509490de4d9a37afd5))
+
+</details>
+
 ## [7.2.3](https://github.com/cluerise/actions/compare/v7.2.2...v7.2.3) (2026-04-08)
 
 ### Fixes
