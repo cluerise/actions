@@ -1,5 +1,11 @@
 # Changelog: `@cluerise/actions`
 
+## [7.3.2](https://github.com/cluerise/actions/compare/v7.3.1...v7.3.2) (2026-05-27)
+
+### Fixes
+
+- Update package manager version using npm ([#720](https://github.com/cluerise/actions/issues/720)) ([57dade6](https://github.com/cluerise/actions/commit/57dade67beac86fed742b6d3a0f4accf96e561e2))
+
 ## [7.3.1](https://github.com/cluerise/actions/compare/v7.3.0...v7.3.1) (2026-05-27)
 
 ### Fixes
