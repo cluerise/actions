@@ -1,5 +1,11 @@
 # Changelog: `@cluerise/actions`
 
+## [7.3.3](https://github.com/cluerise/actions/compare/v7.3.2...v7.3.3) (2026-05-27)
+
+### Fixes
+
+- Min release age in update packages ([#723](https://github.com/cluerise/actions/issues/723)) ([51e72ce](https://github.com/cluerise/actions/commit/51e72ce59d21eff6f58042200c68e155224188d1))
+
 ## [7.3.2](https://github.com/cluerise/actions/compare/v7.3.1...v7.3.2) (2026-05-27)
 
 ### Fixes
