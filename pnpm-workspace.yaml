@@ -3,6 +3,9 @@ gitChecks: false
 includeWorkspaceRoot: true
 minimumReleaseAge: 4320 # 3 days
 
+allowBuilds:
+  unrs-resolver: false
+
 minimumReleaseAgeExclude:
   - '@cluerise/*'
 
