@@ -103,7 +103,7 @@ jobs:
 
       - name: Set PNPM engine version
         if: env.INPUT_MANAGER == 'pnpm'
-        run: pnpm pkg set 'engines.pnpm'=$(pnpm -v)
+        run: npm pkg set 'engines.pnpm'=$(pnpm -v)
 
       - name: Update PNPM lock file
         if: env.INPUT_MANAGER == 'pnpm'
