@@ -1,5 +1,11 @@
 # Changelog: `@cluerise/actions`
 
+## [7.3.1](https://github.com/cluerise/actions/compare/v7.3.0...v7.3.1) (2026-05-27)
+
+### Fixes
+
+- Min release age in update lock file ([#718](https://github.com/cluerise/actions/issues/718)) ([e01cc24](https://github.com/cluerise/actions/commit/e01cc24b05af34a471556fa6123345ea670e73af))
+
 ## [7.3.0](https://github.com/cluerise/actions/compare/v7.2.3...v7.3.0) (2026-05-24)
 
 ### Features
