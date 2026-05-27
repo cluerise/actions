@@ -82,7 +82,7 @@ jobs:
 
     steps:
       - name: Install
-        uses: cluerise/actions/install@v7.3.1
+        uses: cluerise/actions/install@v7.3.2
         with:
           manager: ${{ env.INPUT_MANAGER }}
           fetch-depth: 20
