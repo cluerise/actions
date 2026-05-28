@@ -1,1 +1,1 @@
-pnpm run --if-present __git-hook:post-commit "$@"
+pnpm --if-present run __git-hook:post-commit "$@"
