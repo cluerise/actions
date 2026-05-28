@@ -1,0 +1,50 @@
+name: Approve PR
+
+on:
+  workflow_call:
+    inputs:
+      app-id:
+        type: string
+        description: GitHub app ID
+      pr-id:
+        type: string
+        description: ID of the pull request to approve
+    secrets:
+      token:
+        description: GitHub access token
+        required: false
+      app-private-key:
+        description: GitHub app private key
+        required: false
+
+permissions:
+  pull-requests: write
+
+jobs:
+  approve-pr:
+    name: Approve PR
+    runs-on: ubuntu-latest
+    env:
+      INPUT_APP_ID: ${{ inputs.app-id }}
+      INPUT_PR_ID: ${{ inputs.pr-id }}
+      SECRET_TOKEN: ${{ secrets.token }}
+      SECRET_APP_PRIVATE_KEY: ${{ secrets.app-private-key }}
+
+    steps:
+      - name: Check required secrets
+        if: env.SECRET_TOKEN == '' && (env.INPUT_APP_ID == '' || env.SECRET_APP_PRIVATE_KEY == '')
+        run: exit 1
+
+      - name: Get bot token
+        id: get-bot-token
+        if: env.SECRET_TOKEN == ''
+        uses: cluerise/actions/get-github-app-token@v7.3.3
+        with:
+          app-id: ${{ env.INPUT_APP_ID }}
+          app-private-key: ${{ env.SECRET_APP_PRIVATE_KEY }}
+
+      - name: Approve PR
+        uses: cluerise/actions/approve-pr@v7.3.3
+        with:
+          token: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
+          pr-id: ${{ env.INPUT_PR_ID }}

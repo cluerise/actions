@@ -1,0 +1,30 @@
+name: Approve PR (main)
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  approve-pr:
+    name: Approve PR
+    runs-on: ubuntu-latest
+    if: |
+      github.event.issue.pull_request != null &&
+      github.event.comment.body == '/approve' &&
+      github.event.comment.user.login == 'branoholy'
+
+    steps:
+      - name: Get bot token
+        id: get-bot-token
+        uses: cluerise/actions/get-github-app-token@main
+        with:
+          app-id: ${{ vars.CLUERISE_PUBLIC_BOT_APP_ID }}
+          app-private-key: ${{ secrets.CLUERISE_PUBLIC_BOT_APP_PRIVATE_KEY }}
+
+      - name: Approve PR
+        uses: cluerise/actions/approve-pr@main
+        with:
+          token: ${{ steps.get-bot-token.outputs.token }}
