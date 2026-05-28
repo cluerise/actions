@@ -1,5 +1,11 @@
 # Changelog: `@cluerise/actions`
 
+## [7.4.0](https://github.com/cluerise/actions/compare/v7.3.3...v7.4.0) (2026-05-28)
+
+### Features
+
+- Approve PR ([#725](https://github.com/cluerise/actions/issues/725)) ([af72fad](https://github.com/cluerise/actions/commit/af72fad4bbc5df449d50df7bf804aa8a1aa34f7d))
+
 ## [7.3.3](https://github.com/cluerise/actions/compare/v7.3.2...v7.3.3) (2026-05-27)
 
 ### Fixes
