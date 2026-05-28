@@ -1,6 +1,4 @@
-engineStrict: true
 gitChecks: false
-includeWorkspaceRoot: true
 minimumReleaseAge: 4320 # 3 days
 
 allowBuilds:
