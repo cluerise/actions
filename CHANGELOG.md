@@ -1,5 +1,11 @@
 # Changelog: `@cluerise/actions`
 
+## [7.4.2](https://github.com/cluerise/actions/compare/v7.4.1...v7.4.2) (2026-05-29)
+
+### Fixes
+
+- PNPM setup ([#731](https://github.com/cluerise/actions/issues/731)) ([e26cf92](https://github.com/cluerise/actions/commit/e26cf92c7402a8769098324b7d3e032611e53d59))
+
 ## [7.4.1](https://github.com/cluerise/actions/compare/v7.4.0...v7.4.1) (2026-05-29)
 
 ### Fixes
