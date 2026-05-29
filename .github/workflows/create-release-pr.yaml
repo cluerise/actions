@@ -186,7 +186,6 @@ jobs:
 
                 await exec.exec('git', ['stash']);
                 await exec.exec('find', ['.', '-type', 'f', '-name', 'package.json', '!', '-path', '*/node_modules/*', '-exec', 'sed', '-i', `s|"${packageName}": "workspace:\\*"|"${packageName}": "${release.versions.to}"|g`, '{}', '+']);
-                await exec.exec('pnpm', ['install', '--no-frozen-lockfile']);
                 await exec.exec('git', ['commit', '--allow-empty', '--no-verify', '-a', '-m', `deps${scopeName}: Update ${packageName} ${release.versions.from} to ${release.versions.to}`]);
                 await exec.exec('git', ['stash', 'pop']);
               }

@@ -1,6 +1,5 @@
 gitChecks: false
 minimumReleaseAge: 4320 # 3 days
-optimisticRepeatInstall: false
 
 allowBuilds:
   unrs-resolver: false
