@@ -1,1 +1,1 @@
-pnpm --if-present run __git-hook:commit-msg "$@"
+pnpm --config.verify-deps-before-run=false --if-present run __git-hook:commit-msg "$@"
