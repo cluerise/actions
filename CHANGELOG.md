@@ -1,5 +1,11 @@
 # Changelog: `@cluerise/actions`
 
+## [7.4.1](https://github.com/cluerise/actions/compare/v7.4.0...v7.4.1) (2026-05-29)
+
+### Fixes
+
+- Update lockfile during release ([#728](https://github.com/cluerise/actions/issues/728)) ([273431f](https://github.com/cluerise/actions/commit/273431f4f0e1c0bf4ba7207fe37f5b7d7a210b9a))
+
 ## [7.4.0](https://github.com/cluerise/actions/compare/v7.3.3...v7.4.0) (2026-05-28)
 
 ### Features
