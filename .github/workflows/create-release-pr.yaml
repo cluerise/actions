@@ -146,25 +146,20 @@ jobs:
             };
 
             const createRelease = async (packageName) => {
-              try {
-                let releaseData = '';
-                await exec.exec('pnpm', ['--filter', packageName, '--silent', 'run', 'release', 'create', '--silent'], {
-                  listeners: {
-                    stdout: (data) => {
-                      releaseData += data.toString();
-                    }
+              let releaseData = '';
+              await exec.exec('pnpm', ['--config.verify-deps-before-run', 'false', '--filter', packageName, '--silent', 'run', 'release', 'create', '--silent'], {
+                listeners: {
+                  stdout: (data) => {
+                    releaseData += data.toString();
                   }
-                });
-
-                if (releaseData.trim().length === 0) {
-                  return null;
                 }
+              });
 
-                return JSON.parse(releaseData);
-              } catch (error) {
-                core.warning(`Failed to create release for package "${packageName}": ${error.message}`);
+              if (releaseData.trim().length === 0) {
                 return null;
               }
+
+              return JSON.parse(releaseData);
             };
 
             // -----------------------------------------------------------------
