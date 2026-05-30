@@ -1,5 +1,11 @@
 # Changelog: `@cluerise/actions`
 
+## [7.4.3](https://github.com/cluerise/actions/compare/v7.4.2...v7.4.3) (2026-05-30)
+
+### Fixes
+
+- Empty create release ([#733](https://github.com/cluerise/actions/issues/733)) ([5481937](https://github.com/cluerise/actions/commit/5481937a08b2e14915192aa40ffa7c4dc82f3bc7))
+
 ## [7.4.2](https://github.com/cluerise/actions/compare/v7.4.1...v7.4.2) (2026-05-29)
 
 ### Fixes
