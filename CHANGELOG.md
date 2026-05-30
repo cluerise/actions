@@ -1,5 +1,11 @@
 # Changelog: `@cluerise/actions`
 
+## [7.4.4](https://github.com/cluerise/actions/compare/v7.4.3...v7.4.4) (2026-05-30)
+
+### Fixes
+
+- Create release with PNPM 11 ([#735](https://github.com/cluerise/actions/issues/735)) ([5967e6b](https://github.com/cluerise/actions/commit/5967e6bc0af1f07cec525936c6e8e000ff855c71))
+
 ## [7.4.3](https://github.com/cluerise/actions/compare/v7.4.2...v7.4.3) (2026-05-30)
 
 ### Fixes
