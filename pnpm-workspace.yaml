@@ -14,3 +14,6 @@ publicHoistPattern:
   - lint-staged
   - prettier
   - prettier-plugin-sh
+
+overrides:
+  typescript: ^6
