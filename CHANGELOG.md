@@ -1,5 +1,34 @@
 # Changelog: `@cluerise/actions`
 
+## [7.4.5](https://github.com/cluerise/actions/compare/v7.4.4...v7.4.5) (2026-09-29)
+
+### Dependency updates
+
+<details>
+<summary>Show all dependency updates</summary>
+
+- **actions:** Bump actions/checkout from 6.0.2 to 6.0.3 in /install ([#742](https://github.com/cluerise/actions/issues/742)) ([65661e2](https://github.com/cluerise/actions/commit/65661e200816b2944047013dd2b1c6a63bb9260c))
+- **actions:** Bump actions/checkout from 6.0.2 to 6.0.3 in /rebase-pr ([#743](https://github.com/cluerise/actions/issues/743)) ([dc208e2](https://github.com/cluerise/actions/commit/dc208e2f50a42c0ab0e43aaea35f71bc19835da8))
+- **actions:** Bump actions/checkout from 6.0.3 to 7.0.0 in /install ([#751](https://github.com/cluerise/actions/issues/751)) ([213cbc1](https://github.com/cluerise/actions/commit/213cbc11197ae7b28dec03f111856498a11e7200))
+- **actions:** Bump actions/checkout from 6.0.3 to 7.0.0 in /rebase-pr ([#752](https://github.com/cluerise/actions/issues/752)) ([59a5d77](https://github.com/cluerise/actions/commit/59a5d77113661aedd24d1321f10fe1a16907eaab))
+- **actions:** Bump actions/checkout from 7.0.0 to 7.0.1 in /install ([#778](https://github.com/cluerise/actions/issues/778)) ([c346e31](https://github.com/cluerise/actions/commit/c346e318acab109bb8b3283c8353ee902b483ad0))
+- **actions:** Bump actions/checkout from 7.0.0 to 7.0.1 in /rebase-pr ([#779](https://github.com/cluerise/actions/issues/779)) ([5bca018](https://github.com/cluerise/actions/commit/5bca018ec643d8a1f6b2eb6f35ff05bc3871976d))
+- **actions:** Bump actions/setup-java from 5.2.0 to 5.4.0 ([#759](https://github.com/cluerise/actions/issues/759)) ([b062cea](https://github.com/cluerise/actions/commit/b062cea6d29779358144e1c877396c20f3ba2b96))
+- **actions:** Bump actions/setup-java from 5.4.0 to 5.5.0 ([#767](https://github.com/cluerise/actions/issues/767)) ([f220067](https://github.com/cluerise/actions/commit/f2200675378f41c9b7be5600bb6cb4a1b3c1ad91))
+- **actions:** Bump actions/setup-java from 5.5.0 to 5.6.0 ([#774](https://github.com/cluerise/actions/issues/774)) ([d2606f2](https://github.com/cluerise/actions/commit/d2606f2527ca315ce3944324ef522558af032ea8))
+- **actions:** Bump actions/setup-java from 5.6.0 to 5.7.0 ([#789](https://github.com/cluerise/actions/issues/789)) ([241fed5](https://github.com/cluerise/actions/commit/241fed58fb1f52015aa55873dc03e71c5b3559dd))
+- **actions:** Bump actions/setup-java from 5.7.0 to 6.0.0 ([#802](https://github.com/cluerise/actions/issues/802)) ([bd5d82d](https://github.com/cluerise/actions/commit/bd5d82da9a5180cb9fa6e1677e8bcc6680f5adef))
+- **actions:** Bump actions/setup-java from 6.0.0 to 6.0.1 ([#810](https://github.com/cluerise/actions/issues/810)) ([9707453](https://github.com/cluerise/actions/commit/970745321ee200b714edd01eb69dde71f289c43a))
+- **actions:** Bump actions/setup-node from 6.4.0 to 7.0.0 ([#773](https://github.com/cluerise/actions/issues/773)) ([7024285](https://github.com/cluerise/actions/commit/70242851f7c513a1a7e4cfcf48fd99d37ef8eb1c))
+- **actions:** Bump actions/setup-node from 6.4.0 to 7.0.0 in /install ([#772](https://github.com/cluerise/actions/issues/772)) ([c1be3a3](https://github.com/cluerise/actions/commit/c1be3a391c7ec1ec14ef0e4399140dde202e8e93))
+- **actions:** Bump gradle/actions from 6.1.0 to 6.2.0 ([#747](https://github.com/cluerise/actions/issues/747)) ([7fc4ded](https://github.com/cluerise/actions/commit/7fc4ded91f7b86a143b8e7d37aef3f36671772ff))
+- **actions:** Bump gradle/actions from 6.2.0 to 6.3.0 ([#788](https://github.com/cluerise/actions/issues/788)) ([3794368](https://github.com/cluerise/actions/commit/3794368ed864d247d93a9f1e7241a68be3e11fd4))
+- **actions:** Bump pnpm/action-setup from 6.0.10 to 6.1.0 in /install ([#809](https://github.com/cluerise/actions/issues/809)) ([28f438c](https://github.com/cluerise/actions/commit/28f438c288d5d5e3f7d449008ebeb87cfa28d219))
+- **actions:** Bump pnpm/action-setup from 6.0.8 to 6.0.9 in /install ([#753](https://github.com/cluerise/actions/issues/753)) ([d0a65e2](https://github.com/cluerise/actions/commit/d0a65e2fef2b954621a7a0662c50cb5ade5369f6))
+- **actions:** Bump pnpm/action-setup from 6.0.9 to 6.0.10 in /install ([#787](https://github.com/cluerise/actions/issues/787)) ([2efe854](https://github.com/cluerise/actions/commit/2efe85480279e24918df96955fc4fb6d018d880c))
+
+</details>
+
 ## [7.4.4](https://github.com/cluerise/actions/compare/v7.4.3...v7.4.4) (2026-05-30)
 
 ### Fixes
