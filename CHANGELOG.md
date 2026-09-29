@@ -1,5 +1,11 @@
 # Changelog: `@cluerise/actions`
 
+## [7.4.6](https://github.com/cluerise/actions/compare/v7.4.5...v7.4.6) (2026-09-29)
+
+### Fixes
+
+- Release with PNPM 12.6.0 ([#821](https://github.com/cluerise/actions/issues/821)) ([1fb914b](https://github.com/cluerise/actions/commit/1fb914be088c59f263bb3060168b8604ab69db16))
+
 ## [7.4.5](https://github.com/cluerise/actions/compare/v7.4.4...v7.4.5) (2026-09-29)
 
 ### Dependency updates
