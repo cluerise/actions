@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-mkdir -p node_modules
-rm -rf node_modules/*
-rm -rf node_modules/.[^.]*
-touch node_modules/.keep
+mkdir -p ./node_modules
+rm -rf ./node_modules/*
+rm -rf ./node_modules/.[^.]*
+touch ./node_modules/.keep

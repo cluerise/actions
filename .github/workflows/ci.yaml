@@ -21,7 +21,7 @@ jobs:
       - name: Install
         uses: cluerise/actions/install@main
 
-  type-check:
+  check-types:
     name: Check types
     runs-on: ubuntu-latest
     needs: install
@@ -41,4 +41,4 @@ jobs:
         uses: cluerise/actions/install@main
 
       - name: Lint files
-        run: pnpm run lint all
+        run: NODE_OPTIONS=--max-old-space-size=8192 pnpm run lint all
