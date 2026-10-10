@@ -1,0 +1,15 @@
+name: Copilot setup
+
+on: [workflow_dispatch]
+
+jobs:
+  copilot-setup-steps:
+    name: Copilot setup
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Install
+        uses: cluerise/actions/install@main
