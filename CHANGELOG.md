@@ -1,5 +1,22 @@
 # Changelog: `@cluerise/actions`
 
+## [7.5.0](https://github.com/cluerise/actions/compare/v7.4.6...v7.5.0) (2026-10-13)
+
+### Features
+
+- Deployment preview URLs ([#833](https://github.com/cluerise/actions/issues/833)) ([e8abd21](https://github.com/cluerise/actions/commit/e8abd21eee0b49b8b2480bfb7d530822a4a0ed52))
+
+### Dependency updates
+
+<details>
+<summary>Show all dependency updates</summary>
+
+- **actions:** Bump actions/setup-node from 7.0.0 to 7.1.0 ([#830](https://github.com/cluerise/actions/issues/830)) ([10fb41f](https://github.com/cluerise/actions/commit/10fb41faf0f4117a26ab1c8fd615668e8fffc389))
+- **actions:** Bump actions/setup-node from 7.0.0 to 7.1.0 in /install ([#829](https://github.com/cluerise/actions/issues/829)) ([6ae5207](https://github.com/cluerise/actions/commit/6ae52070451dfec1a23c285a580f97ff93f3cc3e))
+- **actions:** Bump gradle/actions from 6.3.0 to 6.4.0 ([#825](https://github.com/cluerise/actions/issues/825)) ([9572afb](https://github.com/cluerise/actions/commit/9572afb6cb2c075b745a27363c18c60c818ccf37))
+
+</details>
+
 ## [7.4.6](https://github.com/cluerise/actions/compare/v7.4.5...v7.4.6) (2026-09-29)
 
 ### Fixes
