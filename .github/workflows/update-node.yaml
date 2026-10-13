@@ -1,4 +1,4 @@
-name: Update Node.js
+name: 🟢 Update Node.js
 
 on:
   schedule:

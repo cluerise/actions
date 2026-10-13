@@ -1,4 +1,4 @@
-name: Copilot setup
+name: 🛠️ Copilot setup
 
 on: [workflow_dispatch]
 

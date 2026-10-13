@@ -1,4 +1,4 @@
-name: Comment deployments
+name: 💬 Comment deployments
 
 on:
   workflow_call:

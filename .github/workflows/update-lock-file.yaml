@@ -1,4 +1,4 @@
-name: Update lock file
+name: 🔒 Update lock file
 
 on:
   schedule:

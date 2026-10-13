@@ -1,4 +1,4 @@
-name: Update package manager
+name: 🔩 Update package manager
 
 on:
   schedule:
