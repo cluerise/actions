@@ -1,4 +1,4 @@
-name: Rebase PR (main)
+name: 🔄 Rebase PR (main)
 
 on:
   issue_comment:

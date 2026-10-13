@@ -1,4 +1,4 @@
-name: Lint merge commit
+name: 🔍 Lint merge commit
 
 on:
   workflow_call:

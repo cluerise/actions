@@ -1,4 +1,4 @@
-name: CI status
+name: 📊 CI status
 
 on:
   workflow_call:

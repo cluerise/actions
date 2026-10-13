@@ -1,4 +1,4 @@
-name: Update packages
+name: 📦 Update packages
 
 on:
   schedule:

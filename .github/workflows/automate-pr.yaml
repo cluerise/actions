@@ -1,4 +1,4 @@
-name: Automate PR
+name: 🤖 Automate PR
 
 on:
   pull_request_target:
