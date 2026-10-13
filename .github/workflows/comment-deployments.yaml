@@ -12,6 +12,9 @@ on:
       branch-name:
         type: string
         description: Branch name
+      preview-name:
+        type: string
+        description: Preview name (defaults to branch name)
       commit-hash:
         type: string
         description: Commit hash
@@ -31,6 +34,7 @@ env:
   INPUT_APP_ID: ${{ inputs.app-id }}
   INPUT_PULL_REQUEST_NUMBER: ${{ inputs.pull-request-number || github.event.pull_request.number }}
   INPUT_BRANCH_NAME: ${{ inputs.branch-name || github.head_ref }}
+  INPUT_PREVIEW_NAME: ${{ inputs.preview-name || inputs.branch-name || github.head_ref }}
   INPUT_COMMIT_HASH: ${{ inputs.commit-hash || github.event.pull_request.head.sha }}
   INPUT_DEPLOYMENTS: ${{ inputs.deployments }}
   SECRET_TOKEN: ${{ secrets.token }}
@@ -67,6 +71,7 @@ jobs:
         with:
           pull-request-number: ${{ env.INPUT_PULL_REQUEST_NUMBER }}
           branch-name: ${{ env.INPUT_BRANCH_NAME }}
+          preview-name: ${{ env.INPUT_PREVIEW_NAME }}
           commit-hash: ${{ env.INPUT_COMMIT_HASH }}
           deployments: ${{ env.INPUT_DEPLOYMENTS }}
           github-token: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
@@ -75,6 +80,7 @@ jobs:
 
             const pullRequestNumber = parseInt(core.getInput('pull-request-number', { required: true }), 10);
             const branchName = core.getInput('branch-name', { required: true });
+            const previewName = core.getInput('preview-name') || branchName;
             const commitHash = core.getInput('commit-hash', { required: true });
             const deployments = JSON.parse(core.getInput('deployments', { required: true }));
 
@@ -93,8 +99,13 @@ jobs:
                     .map(link => {
                       const url = link.url
                         .replaceAll('%branchName%', branchName)
+                        .replaceAll('%previewName%', previewName)
                         .replaceAll('%commitHash%', commitHash)
-                        .replaceAll('%shortCommitHash%', shortCommitHash);
+                        .replaceAll('%shortCommitHash%', shortCommitHash)
+                        .replace(/%previewDomain\(\s*(["'])(.*?)\1\s*\)%/g, (_match, _quote, workerName) => {
+                          const previewSlug = previewName.slice(0, 63 - workerName.length - 1);
+                          return `${previewSlug}-${workerName}`;
+                        });
 
                       return `[${link.name}](${url})`;
                     })
