@@ -1,5 +1,11 @@
 # Changelog: `@cluerise/actions`
 
+## [7.5.1](https://github.com/cluerise/actions/compare/v7.5.0...v7.5.1) (2026-10-14)
+
+### Fixes
+
+- Replace dots in preview domain slugs ([#837](https://github.com/cluerise/actions/issues/837)) ([7aa2255](https://github.com/cluerise/actions/commit/7aa22555cdda69836f2a70f74d2d1be227bc3139))
+
 ## [7.5.0](https://github.com/cluerise/actions/compare/v7.4.6...v7.5.0) (2026-10-13)
 
 ### Features
