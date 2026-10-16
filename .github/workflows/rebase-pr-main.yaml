@@ -13,7 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     if: |
       github.event.issue.pull_request != null &&
-      github.event.comment.body == '/rebase'
+      github.event.comment.body == '/rebase' &&
+      github.event.comment.user.login == 'branoholy'
 
     steps:
       - name: Get bot token
