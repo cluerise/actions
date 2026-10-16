@@ -48,7 +48,7 @@ env:
   NPM_CONFIG_USERCONFIG: ${{ inputs.npm-config-userconfig }}
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   update-lock-file:
@@ -114,7 +114,6 @@ jobs:
             package-lock.json
             yarn.lock
           commit.message: 'deps(lock): Update lock file'
-          commit.token: ${{ env.BOT_TOKEN || secrets.GITHUB_TOKEN }}
           pull-request.body: Automatic update of dependencies in the lock file.
           pull-request.labels: |
             type: deps

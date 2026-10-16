@@ -48,7 +48,7 @@ env:
   NPM_CONFIG_USERCONFIG: ${{ inputs.npm-config-userconfig }}
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   update-node:
@@ -151,7 +151,6 @@ jobs:
             yarn.lock
             .github/workflows/*.yaml
           commit.message: 'deps(dev): Update Node.js to ${{ env.UPDATED_NODE_VERSION }}'
-          commit.token: ${{ env.BOT_TOKEN || secrets.GITHUB_TOKEN }}
           pull-request.body: Automatic update of Node.js to version ${{ env.UPDATED_NODE_VERSION }}.
           pull-request.labels: |
             type: deps
