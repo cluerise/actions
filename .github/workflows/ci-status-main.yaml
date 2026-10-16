@@ -6,9 +6,7 @@ on:
     types: [completed]
     branches: [main]
 
-permissions:
-  contents: read
-  statuses: write
+permissions: {}
 
 jobs:
   send-status:

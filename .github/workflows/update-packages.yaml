@@ -64,7 +64,6 @@ env:
 
 permissions:
   contents: read
-  pull-requests: write
 
 jobs:
   prepare-updates:
@@ -313,6 +312,8 @@ jobs:
   create-pull-requests:
     name: Create pull request
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     needs: prepare-updates
     if: needs.prepare-updates.outputs.updates != '[]'
     strategy:
@@ -361,6 +362,6 @@ jobs:
             **/package.json
             pnpm-lock.yaml
           commit.message: ${{ matrix.update.title }}
-          commit.token: ${{ env.BOT_TOKEN }}
+          commit.token: ${{ env.BOT_TOKEN || secrets.GITHUB_TOKEN }}
           pull-request.body: ${{ matrix.update.body }}
           pull-request.labels: ${{ matrix.update.labels }}

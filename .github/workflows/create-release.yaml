@@ -40,7 +40,7 @@ env:
   NPM_CONFIG_USERCONFIG: ${{ inputs.npm-config-userconfig }}
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   prepare-release-info:
