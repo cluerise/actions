@@ -73,6 +73,8 @@ jobs:
   create-releases:
     name: Create release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     needs: prepare-release-info
     if: needs.prepare-release-info.outputs.package-paths != '[]'
     strategy:

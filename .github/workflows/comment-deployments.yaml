@@ -44,7 +44,8 @@ concurrency:
   group: comment-deployments-${{ inputs.pull-request-number || github.event.pull_request.number }}
   cancel-in-progress: true
 
-permissions: {}
+permissions:
+  issues: write
 
 jobs:
   comment-deployments:

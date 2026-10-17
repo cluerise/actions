@@ -17,7 +17,8 @@ on:
         description: GitHub app private key
         required: false
 
-permissions: {}
+permissions:
+  pull-requests: write
 
 jobs:
   approve-pr:

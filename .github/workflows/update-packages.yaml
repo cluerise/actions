@@ -312,6 +312,9 @@ jobs:
   create-pull-requests:
     name: Create pull request
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
     needs: prepare-updates
     if: needs.prepare-updates.outputs.updates != '[]'
     strategy:

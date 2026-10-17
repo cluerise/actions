@@ -14,7 +14,8 @@ on:
         description: GitHub app private key
         required: false
 
-permissions: {}
+permissions:
+  statuses: write
 
 jobs:
   send-status:

@@ -48,7 +48,8 @@ env:
   NPM_CONFIG_USERCONFIG: ${{ inputs.npm-config-userconfig }}
 
 permissions:
-  contents: read
+  contents: write
+  pull-requests: write
 
 jobs:
   update-lock-file:
