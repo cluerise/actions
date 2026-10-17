@@ -50,7 +50,7 @@ env:
   NPM_CONFIG_USERCONFIG: ${{ inputs.npm-config-userconfig }}
 
 permissions:
-  contents: read
+  contents: write
   pull-requests: write
 
 jobs:
@@ -270,7 +270,6 @@ jobs:
             **/CHANGELOG.md
             .github/workflows/*.yaml
           commit.message: ${{ steps.release-info.outputs.title }}
-          commit.token: ${{ env.BOT_TOKEN }}
           pull-request.body: ${{ steps.release-info.outputs.body }}
           pull-request.labels: 'type: release'
 
@@ -289,6 +288,5 @@ jobs:
             **/CHANGELOG.md
             **/*.pbxproj
           commit.message: ${{ steps.release-info.outputs.title }}
-          commit.token: ${{ env.BOT_TOKEN || secrets.GITHUB_TOKEN }}
           pull-request.body: ${{ steps.release-info.outputs.body }}
           pull-request.labels: 'type: release'

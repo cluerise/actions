@@ -48,7 +48,7 @@ env:
   NPM_CONFIG_USERCONFIG: ${{ inputs.npm-config-userconfig }}
 
 permissions:
-  contents: read
+  contents: write
   pull-requests: write
 
 jobs:
@@ -123,7 +123,6 @@ jobs:
             package.json
             pnpm-lock.yaml
           commit.message: 'deps(dev): Update ${{ env.PM_NAME }} to ${{ env.UPDATED_PM_VERSION }}'
-          commit.token: ${{ env.BOT_TOKEN || secrets.GITHUB_TOKEN }}
           pull-request.body: Automatic update of ${{ env.PM_NAME }} to version ${{ env.UPDATED_PM_VERSION }}.
           pull-request.labels: |
             type: deps
