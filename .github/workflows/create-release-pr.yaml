@@ -5,28 +5,28 @@ on:
   workflow_call:
     inputs:
       app-id:
-        type: string
         description: GitHub app ID
+        type: string
       manager:
+        description: Package manager (pnpm, npm, or yarn)
         type: string
         default: pnpm
-        description: Package manager (pnpm, npm, or yarn)
       release-command:
-        type: string
         description: Release command to run instead of releasing using targets
+        type: string
       release-target:
-        type: string
         description: Release target name
-      release-targets:
         type: string
+      release-targets:
         description: JSON object defining release targets and their packages
+        type: string
         default: '{}'
       npm-config-userconfig:
-        type: string
         description: NPM configuration file path
+        type: string
       __external-call:
-        type: boolean
         description: Do not use this input, it is an internal value to identify the workflow_call event
+        type: boolean
         default: true
     secrets:
       token:

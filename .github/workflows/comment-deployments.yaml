@@ -4,27 +4,27 @@ on:
   workflow_call:
     inputs:
       app-id:
-        type: string
         description: GitHub app ID
+        type: string
       pull-request-number:
+        description: Pull request number
         type: number
         default: ${{ github.event.pull_request.number }}
-        description: Pull request number
       branch-name:
+        description: Branch name
         type: string
         default: ${{ github.head_ref }}
-        description: Branch name
       preview-name:
+        description: Preview name (defaults to branch name)
         type: string
         default: ${{ inputs.branch-name }}
-        description: Preview name (defaults to branch name)
       commit-hash:
+        description: Commit hash
         type: string
         default: ${{ github.event.pull_request.head.sha }}
-        description: Commit hash
       deployments:
-        type: string
         description: JSON array of deployments
+        type: string
         required: true
     secrets:
       token:

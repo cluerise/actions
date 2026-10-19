@@ -7,44 +7,44 @@ on:
         type: string
         required: true
       manager:
+        description: Package manager (pnpm, npm, or yarn)
         type: string
         default: pnpm
-        description: Package manager (pnpm, npm, or yarn)
       java-version:
-        type: string
         description: Java version to use for building the Android app
+        type: string
         required: true
       java-distribution:
-        type: string
         description: Java distribution to use
+        type: string
         default: temurin
       build-command:
-        type: string
         description: Build command to run (-PversionCode will be appended to the command)
+        type: string
         required: true
       get-release-version-command:
-        type: string
         description: Command to get the release version
+        type: string
         required: true
       package-name:
-        type: string
         description: Package name of the Android app (e.g., com.example.app)
+        type: string
         required: true
       package-files:
-        type: string
         description: Path to the Android app bundle or APK files to upload
+        type: string
         required: true
       play-store-service-account:
-        type: string
         description: Service account email for Play Store authentication
+        type: string
         required: true
       play-store-workload-identity-provider:
-        type: string
         description: Workload Identity Provider for Play Store authentication
+        type: string
         required: true
       npm-config-userconfig:
-        type: string
         description: NPM configuration file path
+        type: string
     secrets:
       android-keystore-base64:
         required: true

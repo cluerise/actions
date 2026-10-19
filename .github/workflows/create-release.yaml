@@ -4,23 +4,23 @@ on:
   workflow_call:
     inputs:
       app-id:
-        type: string
         description: GitHub app ID
+        type: string
       manager:
+        description: Package manager (pnpm, npm, or yarn)
         type: string
         default: pnpm
-        description: Package manager (pnpm, npm, or yarn)
       release-info-command:
-        type: string
         description: Release info command to run
+        type: string
         default: pnpm run release info
       repository-type:
-        type: string
         description: Type of the repository (single or monorepo)
+        type: string
         default: single
       npm-config-userconfig:
-        type: string
         description: NPM configuration file path
+        type: string
     secrets:
       token:
         description: GitHub access token
