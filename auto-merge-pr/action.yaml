@@ -41,4 +41,4 @@ runs:
             }
           }
         id: ${{ github.event.pull_request.node_id }}
-        message: '"${{ inputs.title }} (#${{ github.event.pull_request.number }})"'
+        message: '"${{ inputs.title || github.event.pull_request.title }} (#${{ github.event.pull_request.number }})"'

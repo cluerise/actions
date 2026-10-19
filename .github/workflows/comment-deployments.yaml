@@ -49,8 +49,11 @@ jobs:
     steps:
       - name: Check required inputs
         run: |
-          if ${{ secrets.token == '' && (inputs.app-id == '' || secrets.app-private-key == '') }}; then
-            echo '::error::Provide a token or both app-id and app-private-key.'
+          if ${{
+            (secrets.token == '' && (inputs.app-id == '' || secrets.app-private-key == '')) ||
+            (secrets.token != '' && (inputs.app-id != '' || secrets.app-private-key != ''))
+          }}; then
+            echo '::error::Provide either token alone or both app-id and app-private-key without token.'
             exit 1
           fi
 
