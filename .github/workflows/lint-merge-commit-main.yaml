@@ -27,8 +27,8 @@ jobs:
 
       - name: Lint commit message
         env:
-          COMMIT_TITLE: ${{ github.event.pull_request.auto_merge.commit_title }}
           COMMIT_MESSAGE: ${{ github.event.pull_request.auto_merge.commit_message }}
+          COMMIT_TITLE: ${{ github.event.pull_request.auto_merge.commit_title }}
         run: printf '%s\n\n%s' "$COMMIT_TITLE" "$COMMIT_MESSAGE" | pnpm run lint commit
 
       - name: Lint commit title

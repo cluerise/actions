@@ -92,8 +92,8 @@ jobs:
 
       - name: Build
         env:
-          KEYSTORE_PATH: ${{ github.workspace }}/upload-keystore.jks
           KEYSTORE_PASSWORD: ${{ secrets.android-keystore-password }}
+          KEYSTORE_PATH: ${{ github.workspace }}/upload-keystore.jks
           KEY_ALIAS: ${{ inputs.android-key-alias }}
           KEY_PASSWORD: ${{ secrets.android-key-password }}
           RUN_NUMBER: ${{ github.run_number }}
