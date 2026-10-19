@@ -44,7 +44,7 @@ jobs:
       package-paths: ${{ steps.released-packages.outputs.package-paths }}
 
     steps:
-      - name: Check required secrets
+      - name: Check required inputs
         run: |
           if ${{ secrets.token == '' && (inputs.app-id == '' || secrets.app-private-key == '') }}; then
             echo "::error::Provide a token or an App ID and private key."
@@ -83,8 +83,8 @@ jobs:
         package-path: ${{ fromJson(needs.prepare-release-info.outputs.package-paths) }}
 
     steps:
-      - name: Get bot token
-        id: get-bot-token
+      - name: Get app token
+        id: get-app-token
         if: inputs.app-id != ''
         uses: cluerise/actions/get-github-app-token@v7.5.1
         with:
@@ -135,7 +135,7 @@ jobs:
         if: fromJson(steps.get-release-info.outputs.info).latestBranch != null && fromJson(steps.get-latest-ref.outputs.data).repository.ref == null
         uses: octokit/graphql-action@v3.0.2
         with:
-          token: ${{ secrets.token || steps.get-bot-token.outputs.token }}
+          token: ${{ secrets.token || steps.get-app-token.outputs.token }}
           query: |
             mutation CreateRef($id: ID!, $name: String!, $oid: GitObjectID!) {
               createRef(input: { repositoryId: $id, name: $name, oid: $oid }) {
@@ -150,7 +150,7 @@ jobs:
         if: fromJson(steps.get-release-info.outputs.info).latestBranch != null && fromJson(steps.get-latest-ref.outputs.data).repository.ref != null
         uses: octokit/graphql-action@v3.0.2
         with:
-          token: ${{ secrets.token || steps.get-bot-token.outputs.token }}
+          token: ${{ secrets.token || steps.get-app-token.outputs.token }}
           query: |
             mutation UpdateRef($id: ID!, $oid: GitObjectID!) {
               updateRef(input: { refId: $id, oid: $oid }) {
@@ -170,4 +170,4 @@ jobs:
           target_commitish: ${{ github.event.pull_request.merge_commit_sha }}
           name: ${{ toJson(env.RELEASE_TITLE) }}
           body: ${{ toJson(fromJson(steps.get-release-info.outputs.info).changelog) }}
-          GITHUB_TOKEN: ${{ secrets.token || steps.get-bot-token.outputs.token }}
+          GITHUB_TOKEN: ${{ secrets.token || steps.get-app-token.outputs.token }}

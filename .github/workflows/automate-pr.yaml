@@ -13,8 +13,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Get bot token
-        id: get-bot-token
+      - name: Get app token
+        id: get-app-token
         uses: cluerise/actions/get-github-app-token@main
         with:
           app-id: ${{ vars.CLUERISE_PUBLIC_BOT_APP_ID }}
@@ -65,11 +65,11 @@ jobs:
         id: update-title
         uses: cluerise/actions/update-pr-title@main
         with:
-          token: ${{ steps.get-bot-token.outputs.token }}
+          token: ${{ steps.get-app-token.outputs.token }}
 
       - name: Auto-merge
         uses: cluerise/actions/auto-merge-pr@main
         with:
-          token: ${{ steps.get-bot-token.outputs.token }}
+          token: ${{ steps.get-app-token.outputs.token }}
           title: ${{ steps.update-title.outputs.title }}
           trusted-bot: cluerise-public-bot[bot]

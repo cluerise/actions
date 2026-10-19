@@ -25,8 +25,8 @@ jobs:
       CI_STATE: pending
 
     steps:
-      - name: Get bot token
-        id: get-bot-token
+      - name: Get app token
+        id: get-app-token
         uses: cluerise/actions/get-github-app-token@main
         with:
           app-id: ${{ vars.CLUERISE_PUBLIC_BOT_APP_ID }}
@@ -67,4 +67,4 @@ jobs:
           state: ${{ env.CI_STATE }}
           description: ${{ env.CI_DESCRIPTION }}
           target_url: ${{ github.event.workflow_run.html_url }}
-          GITHUB_TOKEN: ${{ steps.get-bot-token.outputs.token }}
+          GITHUB_TOKEN: ${{ steps.get-app-token.outputs.token }}

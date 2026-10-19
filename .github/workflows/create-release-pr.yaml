@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check required secrets
+      - name: Check required inputs
         if: inputs.__external-call
         run: |
           if ${{ secrets.token == '' && (inputs.app-id == '' || secrets.app-private-key == '') }}; then
@@ -57,29 +57,29 @@ jobs:
             exit 1
           fi
 
-      - name: Get bot token (main)
-        id: get-bot-token-main
+      - name: Get app token (internal)
+        id: get-app-token-internal
         if: ${{ !inputs.__external-call }}
         uses: cluerise/actions/get-github-app-token@main
         with:
           app-id: ${{ vars.CLUERISE_PUBLIC_BOT_APP_ID }}
           app-private-key: ${{ secrets.CLUERISE_PUBLIC_BOT_APP_PRIVATE_KEY }}
 
-      - name: Get bot token (version)
-        id: get-bot-token-version
+      - name: Get app token (external)
+        id: get-app-token-external
         if: inputs.__external-call && inputs.app-id != ''
         uses: cluerise/actions/get-github-app-token@v7.5.1
         with:
           app-id: ${{ inputs.app-id }}
           app-private-key: ${{ secrets.app-private-key }}
 
-      - name: Install (main)
+      - name: Install (internal)
         if: ${{ !inputs.__external-call }}
         uses: cluerise/actions/install@main
         with:
           fetch-depth: 0
 
-      - name: Install (version)
+      - name: Install (external)
         env:
           NPM_AUTH_TOKEN: ${{ secrets.npm-auth-token }}
           NPM_CONFIG_USERCONFIG: ${{ inputs.npm-config-userconfig }}
@@ -245,11 +245,11 @@ jobs:
           command-releases: ${{ toJSON(steps.release-command.outputs) }}
           target-releases: ${{ toJSON(steps.release-targets.outputs) }}
 
-      - name: Create a pull request with the release (main)
+      - name: Create a pull request with the release (internal)
         if: ${{ !inputs.__external-call }}
         uses: branoholy/update-files-action@main
         with:
-          token: ${{ steps.get-bot-token-main.outputs.token }}
+          token: ${{ steps.get-app-token-internal.outputs.token }}
           branch.name: release
           branch.recreate: true
           commit.paths: |
@@ -263,11 +263,11 @@ jobs:
           pull-request.body: ${{ steps.release-info.outputs.body }}
           pull-request.labels: 'type: release'
 
-      - name: Create a pull request with the release (version)
+      - name: Create a pull request with the release (external)
         if: inputs.__external-call
         uses: branoholy/update-files-action@main
         with:
-          token: ${{ secrets.token || steps.get-bot-token-version.outputs.token }}
+          token: ${{ secrets.token || steps.get-app-token-external.outputs.token }}
           branch.name: release
           branch.recreate: true
           commit.paths: |

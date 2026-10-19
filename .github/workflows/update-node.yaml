@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check required secrets
+      - name: Check required inputs
         if: inputs.__external-call
         run: |
           if ${{ secrets.token == '' && (inputs.app-id == '' || secrets.app-private-key == '') }}; then
@@ -56,27 +56,27 @@ jobs:
             exit 1
           fi
 
-      - name: Get bot token (main)
-        id: get-bot-token-main
+      - name: Get app token (internal)
+        id: get-app-token-internal
         if: ${{ !inputs.__external-call }}
         uses: cluerise/actions/get-github-app-token@main
         with:
           app-id: ${{ vars.CLUERISE_PUBLIC_BOT_APP_ID }}
           app-private-key: ${{ secrets.CLUERISE_PUBLIC_BOT_APP_PRIVATE_KEY }}
 
-      - name: Get bot token (version)
-        id: get-bot-token-version
+      - name: Get app token (external)
+        id: get-app-token-external
         if: inputs.__external-call && inputs.app-id != ''
         uses: cluerise/actions/get-github-app-token@v7.5.1
         with:
           app-id: ${{ inputs.app-id }}
           app-private-key: ${{ secrets.app-private-key }}
 
-      - name: Install (main)
+      - name: Install (internal)
         if: ${{ !inputs.__external-call }}
         uses: cluerise/actions/install@main
 
-      - name: Install (version)
+      - name: Install (external)
         env:
           NPM_AUTH_TOKEN: ${{ secrets.npm-auth-token }}
           NPM_CONFIG_USERCONFIG: ${{ inputs.npm-config-userconfig }}
@@ -114,14 +114,14 @@ jobs:
         if: inputs.manager == 'yarn'
         run: echo "UPDATED_NODE_VERSION=${{ steps.update-node-versions-yarn.outputs.version }}" >> $GITHUB_ENV
 
-      - name: Setup new Node.js (main)
+      - name: Setup new Node.js (internal)
         if: ${{ !inputs.__external-call }}
         uses: actions/setup-node@v7.1.0
         with:
           cache: pnpm
           node-version-file: .nvmrc
 
-      - name: Setup new Node.js (version)
+      - name: Setup new Node.js (external)
         if: inputs.__external-call
         uses: actions/setup-node@v7.1.0
         with:
@@ -153,7 +153,7 @@ jobs:
       - name: Create a pull request with the updated files
         uses: branoholy/update-files-action@main
         with:
-          token: ${{ secrets.token || steps.get-bot-token-main.outputs.token || steps.get-bot-token-version.outputs.token }}
+          token: ${{ secrets.token || steps.get-app-token-internal.outputs.token || steps.get-app-token-external.outputs.token }}
           branch.name: deps-update-node
           branch.recreate: true
           commit.paths: |
