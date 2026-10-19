@@ -9,20 +9,11 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Set inputs
-      env:
-        INPUT_TOKEN: ${{ inputs.token }}
-      run: |
-        {
-          echo "INPUT_TOKEN=$INPUT_TOKEN"
-        } >> $GITHUB_ENV
-      shell: bash
-
     - name: Assign author
       if: github.event.action == 'opened' && github.event.pull_request.user.type == 'User'
       uses: octokit/graphql-action@v3.0.2
       with:
-        token: ${{ env.INPUT_TOKEN }}
+        token: ${{ inputs.token }}
         query: |
           mutation AddAssigneesToAssignable($id: ID!, $assignee: ID!) {
             addAssigneesToAssignable(input: { assignableId: $id, assigneeIds: [$assignee] }) {

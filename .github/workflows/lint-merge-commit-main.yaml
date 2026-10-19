@@ -26,7 +26,10 @@ jobs:
         uses: cluerise/actions/install@main
 
       - name: Lint commit message
-        run: echo -en '${{ github.event.pull_request.auto_merge.commit_title }}\n\n${{ github.event.pull_request.auto_merge.commit_message }}' | pnpm run lint commit
+        env:
+          COMMIT_TITLE: ${{ github.event.pull_request.auto_merge.commit_title }}
+          COMMIT_MESSAGE: ${{ github.event.pull_request.auto_merge.commit_message }}
+        run: printf '%s\n\n%s' "$COMMIT_TITLE" "$COMMIT_MESSAGE" | pnpm run lint commit
 
       - name: Lint commit title
         if: github.event.pull_request.auto_merge.commit_title != format('{0} (#{1})', github.event.pull_request.title, github.event.number)
@@ -55,9 +58,12 @@ jobs:
           number: ${{ github.event.number }}
 
       - name: Lint commit references
+        env:
+          CLOSING_ISSUE_NUMBERS: ${{ join(fromJSON(steps.get-closing-issues-references.outputs.data).repository.pullRequest.closingIssuesReferences.nodes.*.number, ' ') }}
+          COMMIT_MESSAGE: ${{ github.event.pull_request.auto_merge.commit_message }}
         run: |
-          for ref in ${{ join(fromJSON(steps.get-closing-issues-references.outputs.data).repository.pullRequest.closingIssuesReferences.nodes.*.number, ' ') }}; do
-            if [[ "${{ github.event.pull_request.auto_merge.commit_message }}" != *"#$ref"* ]]; then
+          for ref in $CLOSING_ISSUE_NUMBERS; do
+            if [[ "$COMMIT_MESSAGE" != *"#$ref"* ]]; then
               echo "Error: Invalid commit body, missing reference #$ref" && exit 1
             fi
           done

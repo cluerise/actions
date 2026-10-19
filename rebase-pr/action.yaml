@@ -8,31 +8,20 @@ inputs:
   pr-id:
     description: ID of the pull request to rebase
     required: false
+    default: ${{ github.event.issue.node_id }}
   squash:
     description: Whether to squash the commits in the pull request
     required: false
+    default: 'false'
 
 runs:
   using: composite
   steps:
-    - name: Set inputs
-      env:
-        INPUT_TOKEN: ${{ inputs.token }}
-        INPUT_PR_ID: ${{ inputs.pr-id || github.event.issue.node_id }}
-        INPUT_SQUASH: ${{ inputs.squash || false }}
-      run: |
-        {
-          echo "INPUT_TOKEN=$INPUT_TOKEN"
-          echo "INPUT_PR_ID=$INPUT_PR_ID"
-          echo "INPUT_SQUASH=$INPUT_SQUASH"
-        } >> $GITHUB_ENV
-      shell: bash
-
     - name: Get PR info
       id: get-pr-info
       uses: octokit/graphql-action@v3.0.2
       with:
-        token: ${{ env.INPUT_TOKEN }}
+        token: ${{ inputs.token }}
         query: |
           query GetPullRequestInfo($id: ID!) {
             node(id: $id) {
@@ -49,15 +38,15 @@ runs:
               }
             }
           }
-        id: ${{ env.INPUT_PR_ID }}
+        id: ${{ inputs.pr-id }}
 
     - name: Set squash strategy
-      if: ${{ env.INPUT_SQUASH == 'true' || fromJson(steps.get-pr-info.outputs.data).node.commits.totalCount == 1 }}
+      if: ${{ inputs.squash == 'true' || fromJson(steps.get-pr-info.outputs.data).node.commits.totalCount == 1 }}
       run: echo "STRATEGY=squash" >> $GITHUB_ENV
       shell: bash
 
     - name: Set rebase strategy
-      if: ${{ env.INPUT_SQUASH == 'false' && fromJson(steps.get-pr-info.outputs.data).node.commits.totalCount > 1 }}
+      if: ${{ inputs.squash == 'false' && fromJson(steps.get-pr-info.outputs.data).node.commits.totalCount > 1 }}
       run: echo "STRATEGY=rebase" >> $GITHUB_ENV
       shell: bash
 
@@ -65,7 +54,7 @@ runs:
       if: ${{ env.STRATEGY == 'rebase' }}
       uses: octokit/graphql-action@v3.0.2
       with:
-        token: ${{ env.INPUT_TOKEN }}
+        token: ${{ inputs.token }}
         query: |
           mutation RebasePullRequestBranch($id: ID!) {
             updatePullRequestBranch(input: {
@@ -75,7 +64,7 @@ runs:
               clientMutationId
             }
           }
-        id: ${{ env.INPUT_PR_ID }}
+        id: ${{ inputs.pr-id }}
 
     - name: Checkout
       if: ${{ env.STRATEGY == 'squash' }}
@@ -86,11 +75,13 @@ runs:
 
     - name: Rebase local branch
       if: ${{ env.STRATEGY == 'squash' }}
+      env:
+        BASE_REF_NAME: ${{ fromJson(steps.get-pr-info.outputs.data).node.baseRefName }}
       run: |
         git config user.name "GitHub Action" &&
         git config user.email "action@github.com" &&
-        git rebase origin/${{ fromJson(steps.get-pr-info.outputs.data).node.baseRefName }} &&
-        git reset origin/${{ fromJson(steps.get-pr-info.outputs.data).node.baseRefName }}
+        git rebase "origin/$BASE_REF_NAME" &&
+        git reset "origin/$BASE_REF_NAME"
       shell: bash
 
     - name: Commit squashed changes
@@ -98,7 +89,7 @@ runs:
       if: ${{ env.STRATEGY == 'squash' }}
       uses: branoholy/update-files-action@main
       with:
-        token: ${{ env.INPUT_TOKEN }}
+        token: ${{ inputs.token }}
         branch.name: __rebase-${{ fromJson(steps.get-pr-info.outputs.data).node.headRef.name }}
         branch.recreate: true
         commit.paths: '**/*'
@@ -108,7 +99,7 @@ runs:
       if: ${{ env.STRATEGY == 'squash' }}
       uses: octokit/graphql-action@v3.0.2
       with:
-        token: ${{ env.INPUT_TOKEN }}
+        token: ${{ inputs.token }}
         query: |
           mutation ForceUpdateRef($id: ID!, $oid: GitObjectID!) {
             updateRef(input: { refId: $id, oid: $oid, force: true }) {
@@ -123,7 +114,7 @@ runs:
       if: ${{ env.STRATEGY == 'squash' }}
       uses: octokit/graphql-action@v3.0.2
       with:
-        token: ${{ env.INPUT_TOKEN }}
+        token: ${{ inputs.token }}
         query: |
           query GetBranchId($owner: String!, $repo: String!, $name: String!) {
             repository(owner: $owner, name: $repo) {
@@ -140,7 +131,7 @@ runs:
       if: ${{ env.STRATEGY == 'squash' }}
       uses: octokit/graphql-action@v3.0.2
       with:
-        token: ${{ env.INPUT_TOKEN }}
+        token: ${{ inputs.token }}
         query: |
           mutation DeleteRef($id: ID!) {
             deleteRef(input: { refId: $id }) {

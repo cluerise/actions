@@ -12,12 +12,14 @@ on:
       manager:
         type: string
         description: Package manager (pnpm, npm, or yarn)
+        default: pnpm
       node-version:
         type: string
         description: 'Node.js version to use. Examples: 12.x, 10.15.1, >=10.15.0'
       node-version-file:
         type: string
         description: File containing the Node.js version to use
+        default: .nvmrc
       npm-config-userconfig:
         type: string
         description: NPM configuration file path
@@ -36,17 +38,6 @@ on:
         description: NPM authentication token for private packages
         required: false
 
-env:
-  INPUT_APP_ID: ${{ inputs.app-id || vars.CLUERISE_PUBLIC_BOT_APP_ID }}
-  INPUT_MANAGER: ${{ inputs.manager || 'pnpm' }}
-  INPUT_NODE_VERSION: ${{ inputs.node-version }}
-  INPUT_NODE_VERSION_FILE: ${{ inputs.node-version-file }}
-  INPUT_EXTERNAL_CALL: ${{ inputs.__external-call || false }}
-  SECRET_TOKEN: ${{ secrets.token }}
-  SECRET_APP_PRIVATE_KEY: ${{ secrets.app-private-key || secrets.CLUERISE_PUBLIC_BOT_APP_PRIVATE_KEY }}
-  NPM_AUTH_TOKEN: ${{ secrets.npm-auth-token }}
-  NPM_CONFIG_USERCONFIG: ${{ inputs.npm-config-userconfig }}
-
 permissions:
   contents: write
   pull-requests: write
@@ -58,65 +49,75 @@ jobs:
 
     steps:
       - name: Check required secrets
-        if: env.SECRET_TOKEN == '' && (env.INPUT_APP_ID == '' || env.SECRET_APP_PRIVATE_KEY == '')
-        run: exit 1
+        if: inputs.__external-call
+        run: |
+          if ${{ secrets.token == '' && (inputs.app-id == '' || secrets.app-private-key == '') }}; then
+            echo "::error::Provide a token or an App ID and private key."
+            exit 1
+          fi
 
       - name: Get bot token (main)
         id: get-bot-token-main
-        if: env.INPUT_EXTERNAL_CALL == 'false' && env.SECRET_TOKEN == ''
+        if: ${{ !inputs.__external-call }}
         uses: cluerise/actions/get-github-app-token@main
         with:
-          app-id: ${{ env.INPUT_APP_ID }}
-          app-private-key: ${{ env.SECRET_APP_PRIVATE_KEY }}
+          app-id: ${{ vars.CLUERISE_PUBLIC_BOT_APP_ID }}
+          app-private-key: ${{ secrets.CLUERISE_PUBLIC_BOT_APP_PRIVATE_KEY }}
 
       - name: Get bot token (version)
         id: get-bot-token-version
-        if: env.INPUT_EXTERNAL_CALL == 'true' && env.SECRET_TOKEN == ''
+        if: inputs.__external-call && inputs.app-id != ''
         uses: cluerise/actions/get-github-app-token@v7.5.1
         with:
-          app-id: ${{ env.INPUT_APP_ID }}
-          app-private-key: ${{ env.SECRET_APP_PRIVATE_KEY }}
-
-      - name: Set bot token
-        run: echo "BOT_TOKEN=${{ steps.get-bot-token-main.outputs.token || steps.get-bot-token-version.outputs.token }}" >> $GITHUB_ENV
+          app-id: ${{ inputs.app-id }}
+          app-private-key: ${{ secrets.app-private-key }}
 
       - name: Install (main)
-        if: env.INPUT_EXTERNAL_CALL == 'false'
+        if: ${{ !inputs.__external-call }}
         uses: cluerise/actions/install@main
 
       - name: Install (version)
-        if: env.INPUT_EXTERNAL_CALL == 'true'
+        env:
+          NPM_AUTH_TOKEN: ${{ secrets.npm-auth-token }}
+          NPM_CONFIG_USERCONFIG: ${{ inputs.npm-config-userconfig }}
+        if: inputs.__external-call
         uses: cluerise/actions/install@v7.5.1
         with:
-          manager: ${{ env.INPUT_MANAGER }}
-          node-version: ${{ env.INPUT_NODE_VERSION }}
-          node-version-file: ${{ env.INPUT_NODE_VERSION_FILE }}
+          manager: ${{ inputs.manager }}
+          node-version: ${{ inputs.node-version }}
+          node-version-file: ${{ inputs.node-version-file }}
 
       - name: Set PM name
-        if: env.INPUT_MANAGER == 'pnpm'
+        if: ${{ !inputs.__external-call || inputs.manager == 'pnpm' }}
         run: echo "PM_NAME=PNPM" >> $GITHUB_ENV
 
       - name: Update PNPM
-        if: env.INPUT_MANAGER == 'pnpm'
+        env:
+          NPM_AUTH_TOKEN: ${{ secrets.npm-auth-token }}
+          NPM_CONFIG_USERCONFIG: ${{ inputs.npm-config-userconfig }}
+        if: ${{ !inputs.__external-call || inputs.manager == 'pnpm' }}
         run: corepack enable pnpm && corepack use pnpm@latest
         continue-on-error: true
 
       - name: Set PNPM engine version
-        if: env.INPUT_MANAGER == 'pnpm'
+        if: ${{ !inputs.__external-call || inputs.manager == 'pnpm' }}
         run: npm pkg set 'engines.pnpm'=$(pnpm -v)
 
       - name: Update PNPM lock file
-        if: env.INPUT_MANAGER == 'pnpm'
+        env:
+          NPM_AUTH_TOKEN: ${{ secrets.npm-auth-token }}
+          NPM_CONFIG_USERCONFIG: ${{ inputs.npm-config-userconfig }}
+        if: ${{ !inputs.__external-call || inputs.manager == 'pnpm' }}
         run: pnpm install
 
       - name: Set updated PNPM version
-        if: env.INPUT_MANAGER == 'pnpm'
+        if: ${{ !inputs.__external-call || inputs.manager == 'pnpm' }}
         run: echo "UPDATED_PM_VERSION=$(pnpm -v)" >> $GITHUB_ENV
 
       - name: Create a pull request with the updated file
         uses: branoholy/update-files-action@main
         with:
-          token: ${{ env.SECRET_TOKEN || env.BOT_TOKEN }}
+          token: ${{ secrets.token || steps.get-bot-token-main.outputs.token || steps.get-bot-token-version.outputs.token }}
           branch.name: deps-update-package-manager
           branch.recreate: true
           commit.paths: |

@@ -21,23 +21,6 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Set inputs
-      env:
-        INPUT_TOKEN: ${{ inputs.token }}
-        INPUT_TRUSTED_USER: ${{ inputs.trusted-user }}
-        INPUT_TRUSTED_BOT: ${{ inputs.trusted-bot }}
-        INPUT_REVIEWER: ${{ inputs.reviewer }}
-        INPUT_DEPENDENCY_APPROVED: ${{ inputs.dependency-approved }}
-      run: |
-        {
-          echo "INPUT_TOKEN=$INPUT_TOKEN"
-          echo "INPUT_TRUSTED_USER=$INPUT_TRUSTED_USER"
-          echo "INPUT_TRUSTED_BOT=$INPUT_TRUSTED_BOT"
-          echo "INPUT_REVIEWER=$INPUT_REVIEWER"
-          echo "INPUT_DEPENDENCY_APPROVED=$INPUT_DEPENDENCY_APPROVED"
-        } >> $GITHUB_ENV
-      shell: bash
-
     - name: Approve
       if: >-
         (
@@ -46,20 +29,20 @@ runs:
           github.event.action == 'reopened'
         ) &&
         (
-          github.event.pull_request.user.login == env.INPUT_TRUSTED_USER ||
+          github.event.pull_request.user.login == inputs.trusted-user ||
           (
-            github.event.pull_request.user.login == env.INPUT_TRUSTED_BOT &&
-            (!startsWith(github.head_ref, 'deps-') || env.INPUT_DEPENDENCY_APPROVED == 'true') &&
+            github.event.pull_request.user.login == inputs.trusted-bot &&
+            (!startsWith(github.head_ref, 'deps-') || inputs.dependency-approved == 'true') &&
             github.head_ref != 'release'
           ) ||
           (
             github.event.pull_request.user.login == 'dependabot[bot]' &&
-            env.INPUT_DEPENDENCY_APPROVED == 'true'
+            inputs.dependency-approved == 'true'
           )
         )
       uses: octokit/graphql-action@v3.0.2
       with:
-        token: ${{ env.INPUT_TOKEN }}
+        token: ${{ inputs.token }}
         query: |
           mutation ApprovePullRequest($id: ID!) {
             addPullRequestReview(input: { pullRequestId: $id, event: APPROVE }) {
@@ -72,14 +55,14 @@ runs:
       id: get-user-id
       uses: octokit/graphql-action@v3.0.2
       with:
-        token: ${{ env.INPUT_TOKEN }}
+        token: ${{ inputs.token }}
         query: |
           query GetUserId($login: String!) {
             user(login: $login) {
               id
             }
           }
-        login: ${{ env.INPUT_REVIEWER }}
+        login: ${{ inputs.reviewer }}
 
     - name: Request review
       if: >-
@@ -90,20 +73,20 @@ runs:
         ) &&
         (
           (
-            github.event.pull_request.user.login == env.INPUT_TRUSTED_BOT &&
+            github.event.pull_request.user.login == inputs.trusted-bot &&
             (
-              (startsWith(github.head_ref, 'deps-') && env.INPUT_DEPENDENCY_APPROVED == 'false') ||
+              (startsWith(github.head_ref, 'deps-') && inputs.dependency-approved == 'false') ||
               github.head_ref == 'release'
             )
           ) ||
           (
             github.event.pull_request.user.login == 'dependabot[bot]' &&
-            env.INPUT_DEPENDENCY_APPROVED == 'false'
+            inputs.dependency-approved == 'false'
           )
         )
       uses: octokit/graphql-action@v3.0.2
       with:
-        token: ${{ env.INPUT_TOKEN }}
+        token: ${{ inputs.token }}
         query: |
           mutation RequestReview($id: ID!, $user: ID!) {
             requestReviews(input: { pullRequestId: $id, userIds: [$user] }) {

@@ -12,6 +12,11 @@ jobs:
   send-status:
     name: Send CI status
     runs-on: ubuntu-latest
+    if: >-
+      github.event_name == 'workflow_run' &&
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_repository.id == github.event.repository.id &&
+      github.event.workflow.path == '.github/workflows/ci.yaml'
     concurrency:
       group: ci-status-${{ github.event.workflow_run.head_sha }}
       cancel-in-progress: true

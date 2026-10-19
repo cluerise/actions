@@ -8,15 +8,19 @@ on:
         description: GitHub app ID
       pull-request-number:
         type: number
+        default: ${{ github.event.pull_request.number }}
         description: Pull request number
       branch-name:
         type: string
+        default: ${{ github.head_ref }}
         description: Branch name
       preview-name:
         type: string
+        default: ${{ inputs.branch-name }}
         description: Preview name (defaults to branch name)
       commit-hash:
         type: string
+        default: ${{ github.event.pull_request.head.sha }}
         description: Commit hash
       deployments:
         type: string
@@ -30,18 +34,8 @@ on:
         description: GitHub app private key
         required: false
 
-env:
-  INPUT_APP_ID: ${{ inputs.app-id }}
-  INPUT_PULL_REQUEST_NUMBER: ${{ inputs.pull-request-number || github.event.pull_request.number }}
-  INPUT_BRANCH_NAME: ${{ inputs.branch-name || github.head_ref }}
-  INPUT_PREVIEW_NAME: ${{ inputs.preview-name || inputs.branch-name || github.head_ref }}
-  INPUT_COMMIT_HASH: ${{ inputs.commit-hash || github.event.pull_request.head.sha }}
-  INPUT_DEPLOYMENTS: ${{ inputs.deployments }}
-  SECRET_TOKEN: ${{ secrets.token }}
-  SECRET_APP_PRIVATE_KEY: ${{ secrets.app-private-key }}
-
 concurrency:
-  group: comment-deployments-${{ inputs.pull-request-number || github.event.pull_request.number }}
+  group: comment-deployments-${{ inputs.pull-request-number }}
   cancel-in-progress: true
 
 permissions:
@@ -54,26 +48,29 @@ jobs:
 
     steps:
       - name: Check required secrets
-        if: env.SECRET_TOKEN == '' && (env.INPUT_APP_ID == '' || env.SECRET_APP_PRIVATE_KEY == '')
-        run: exit 1
+        run: |
+          if ${{ secrets.token == '' && (inputs.app-id == '' || secrets.app-private-key == '') }}; then
+            echo '::error::Provide a token or both app-id and app-private-key.'
+            exit 1
+          fi
 
       - name: Get bot token
         id: get-bot-token
-        if: env.SECRET_TOKEN == ''
+        if: inputs.app-id != ''
         uses: cluerise/actions/get-github-app-token@v7.5.1
         with:
-          app-id: ${{ env.INPUT_APP_ID }}
-          app-private-key: ${{ env.SECRET_APP_PRIVATE_KEY }}
+          app-id: ${{ inputs.app-id }}
+          app-private-key: ${{ secrets.app-private-key }}
 
       - name: Comment
         uses: actions/github-script@v9.0.0
         with:
-          pull-request-number: ${{ env.INPUT_PULL_REQUEST_NUMBER }}
-          branch-name: ${{ env.INPUT_BRANCH_NAME }}
-          preview-name: ${{ env.INPUT_PREVIEW_NAME }}
-          commit-hash: ${{ env.INPUT_COMMIT_HASH }}
-          deployments: ${{ env.INPUT_DEPLOYMENTS }}
-          github-token: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
+          pull-request-number: ${{ inputs.pull-request-number }}
+          branch-name: ${{ inputs.branch-name }}
+          preview-name: ${{ inputs.preview-name }}
+          commit-hash: ${{ inputs.commit-hash }}
+          deployments: ${{ inputs.deployments }}
+          github-token: ${{ secrets.token || steps.get-bot-token.outputs.token }}
           script: |
             const commentMarker = '<!-- deployment-comment -->';
 
