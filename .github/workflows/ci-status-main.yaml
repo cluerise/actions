@@ -12,16 +12,21 @@ jobs:
   send-status:
     name: Send CI status
     runs-on: ubuntu-latest
+    if: >-
+      github.event_name == 'workflow_run' &&
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_repository.id == github.event.repository.id &&
+      github.event.workflow.path == '.github/workflows/ci.yaml'
     concurrency:
       group: ci-status-${{ github.event.workflow_run.head_sha }}
       cancel-in-progress: true
     env:
-      CI_STATE: pending
       CI_DESCRIPTION: Waiting
+      CI_STATE: pending
 
     steps:
-      - name: Get bot token
-        id: get-bot-token
+      - name: Get app token
+        id: get-app-token
         uses: cluerise/actions/get-github-app-token@main
         with:
           app-id: ${{ vars.CLUERISE_PUBLIC_BOT_APP_ID }}
@@ -31,24 +36,24 @@ jobs:
         if: github.event.action == 'requested'
         run: |
           {
-            echo "CI_STATE=pending"
             echo "CI_DESCRIPTION=In progress"
+            echo "CI_STATE=pending"
           } >> $GITHUB_ENV
 
       - name: Set success state
         if: github.event.action == 'completed' && github.event.workflow_run.conclusion == 'success'
         run: |
           {
-            echo "CI_STATE=success"
             echo "CI_DESCRIPTION=Passed"
+            echo "CI_STATE=success"
           } >> $GITHUB_ENV
 
       - name: Set failure state
         if: github.event.action == 'completed' && github.event.workflow_run.conclusion == 'failure'
         run: |
           {
-            echo "CI_STATE=failure"
             echo "CI_DESCRIPTION=Failed"
+            echo "CI_STATE=failure"
           } >> $GITHUB_ENV
 
       - name: Send status
@@ -62,4 +67,4 @@ jobs:
           state: ${{ env.CI_STATE }}
           description: ${{ env.CI_DESCRIPTION }}
           target_url: ${{ github.event.workflow_run.html_url }}
-          GITHUB_TOKEN: ${{ steps.get-bot-token.outputs.token }}
+          GITHUB_TOKEN: ${{ steps.get-app-token.outputs.token }}

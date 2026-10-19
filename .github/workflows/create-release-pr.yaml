@@ -5,26 +5,28 @@ on:
   workflow_call:
     inputs:
       app-id:
-        type: string
         description: GitHub app ID
+        type: string
       manager:
-        type: string
         description: Package manager (pnpm, npm, or yarn)
+        type: string
+        default: pnpm
       release-command:
-        type: string
         description: Release command to run instead of releasing using targets
+        type: string
       release-target:
-        type: string
         description: Release target name
+        type: string
       release-targets:
-        type: string
         description: JSON object defining release targets and their packages
-      npm-config-userconfig:
         type: string
+        default: '{}'
+      npm-config-userconfig:
         description: NPM configuration file path
+        type: string
       __external-call:
-        type: boolean
         description: Do not use this input, it is an internal value to identify the workflow_call event
+        type: boolean
         default: true
     secrets:
       token:
@@ -37,18 +39,6 @@ on:
         description: NPM authentication token for private packages
         required: false
 
-env:
-  INPUT_APP_ID: ${{ inputs.app-id || vars.CLUERISE_PUBLIC_BOT_APP_ID }}
-  INPUT_MANAGER: ${{ inputs.manager }}
-  INPUT_RELEASE_COMMAND: ${{ inputs.release-command }}
-  INPUT_RELEASE_TARGET: ${{ inputs.release-target }}
-  INPUT_RELEASE_TARGETS: ${{ inputs.release-targets || '{}' }}
-  INPUT_EXTERNAL_CALL: ${{ inputs.__external-call || false }}
-  SECRET_TOKEN: ${{ secrets.token }}
-  SECRET_APP_PRIVATE_KEY: ${{ secrets.app-private-key || secrets.CLUERISE_PUBLIC_BOT_APP_PRIVATE_KEY }}
-  NPM_AUTH_TOKEN: ${{ secrets.npm-auth-token }}
-  NPM_CONFIG_USERCONFIG: ${{ inputs.npm-config-userconfig }}
-
 permissions:
   contents: write
   pull-requests: write
@@ -59,60 +49,63 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set release command
-        if: env.INPUT_RELEASE_COMMAND == '' && env.INPUT_RELEASE_TARGET == '' && env.INPUT_RELEASE_TARGETS == '{}'
-        run: echo "INPUT_RELEASE_COMMAND=pnpm run release create" >> $GITHUB_ENV
+      - name: Check required inputs
+        if: inputs.__external-call
+        run: |
+          if ${{
+            (secrets.token == '' && (inputs.app-id == '' || secrets.app-private-key == '')) ||
+            (secrets.token != '' && (inputs.app-id != '' || secrets.app-private-key != ''))
+          }}; then
+            echo '::error::Provide either token alone or both app-id and app-private-key without token.'
+            exit 1
+          fi
 
-      - name: Check required secrets
-        if: env.SECRET_TOKEN == '' && (env.INPUT_APP_ID == '' || env.SECRET_APP_PRIVATE_KEY == '')
-        run: exit 1
-
-      - name: Get bot token (main)
-        id: get-bot-token-main
-        if: env.INPUT_EXTERNAL_CALL == 'false' && env.SECRET_TOKEN == ''
+      - name: Get app token (internal)
+        id: get-app-token-internal
+        if: ${{ !inputs.__external-call }}
         uses: cluerise/actions/get-github-app-token@main
         with:
-          app-id: ${{ env.INPUT_APP_ID }}
-          app-private-key: ${{ env.SECRET_APP_PRIVATE_KEY }}
+          app-id: ${{ vars.CLUERISE_PUBLIC_BOT_APP_ID }}
+          app-private-key: ${{ secrets.CLUERISE_PUBLIC_BOT_APP_PRIVATE_KEY }}
 
-      - name: Get bot token (version)
-        id: get-bot-token-version
-        if: env.INPUT_EXTERNAL_CALL == 'true' && env.SECRET_TOKEN == ''
+      - name: Get app token (external)
+        id: get-app-token-external
+        if: inputs.__external-call && inputs.app-id != ''
         uses: cluerise/actions/get-github-app-token@v7.5.1
         with:
-          app-id: ${{ env.INPUT_APP_ID }}
-          app-private-key: ${{ env.SECRET_APP_PRIVATE_KEY }}
+          app-id: ${{ inputs.app-id }}
+          app-private-key: ${{ secrets.app-private-key }}
 
-      - name: Set bot token
-        run: echo "BOT_TOKEN=${{ steps.get-bot-token-main.outputs.token || steps.get-bot-token-version.outputs.token }}" >> $GITHUB_ENV
-
-      - name: Install (main)
-        if: env.INPUT_EXTERNAL_CALL == 'false'
+      - name: Install (internal)
+        if: ${{ !inputs.__external-call }}
         uses: cluerise/actions/install@main
         with:
           fetch-depth: 0
 
-      - name: Install (version)
-        if: env.INPUT_EXTERNAL_CALL == 'true'
+      - name: Install (external)
+        env:
+          NPM_AUTH_TOKEN: ${{ secrets.npm-auth-token }}
+          NPM_CONFIG_USERCONFIG: ${{ inputs.npm-config-userconfig }}
+        if: inputs.__external-call
         uses: cluerise/actions/install@v7.5.1
         with:
-          manager: ${{ env.INPUT_MANAGER }}
+          manager: ${{ inputs.manager }}
           fetch-depth: 0
 
       - name: Run the release command
         id: release-command
-        if: env.INPUT_RELEASE_COMMAND != ''
-        run: ${{ env.INPUT_RELEASE_COMMAND }}
+        if: inputs.release-target == '' || !inputs.__external-call
+        run: ${{ inputs.release-command || 'pnpm run release create' }}
 
       - name: Set Git user for temporary commits
-        if: env.INPUT_RELEASE_COMMAND == ''
+        if: inputs.release-target != ''
         run: |
           git config user.name "Cluerise Bot"
           git config user.email "bot@cluerise.com"
 
       - name: Run the release command for targets
         id: release-targets
-        if: env.INPUT_RELEASE_COMMAND == ''
+        if: inputs.release-target != ''
         uses: actions/github-script@v9.0.0
         with:
           script: |
@@ -196,11 +189,11 @@ jobs:
               core.setOutput(`release.${release.name}`, release);
             }
 
-          release-target: ${{ env.INPUT_RELEASE_TARGET }}
-          release-targets: ${{ env.INPUT_RELEASE_TARGETS }}
+          release-target: ${{ inputs.release-target }}
+          release-targets: ${{ inputs.release-targets }}
 
       - name: Remove temporary commits
-        if: env.INPUT_RELEASE_COMMAND == ''
+        if: inputs.release-target != ''
         run: |
           git stash
           git reset --hard @{upstream}
@@ -255,11 +248,11 @@ jobs:
           command-releases: ${{ toJSON(steps.release-command.outputs) }}
           target-releases: ${{ toJSON(steps.release-targets.outputs) }}
 
-      - name: Create a pull request with the release (main)
-        if: env.INPUT_EXTERNAL_CALL == 'false'
+      - name: Create a pull request with the release (internal)
+        if: ${{ !inputs.__external-call }}
         uses: branoholy/update-files-action@main
         with:
-          token: ${{ env.BOT_TOKEN }}
+          token: ${{ steps.get-app-token-internal.outputs.token }}
           branch.name: release
           branch.recreate: true
           commit.paths: |
@@ -273,11 +266,11 @@ jobs:
           pull-request.body: ${{ steps.release-info.outputs.body }}
           pull-request.labels: 'type: release'
 
-      - name: Create a pull request with the release (version)
-        if: env.INPUT_EXTERNAL_CALL == 'true'
+      - name: Create a pull request with the release (external)
+        if: inputs.__external-call
         uses: branoholy/update-files-action@main
         with:
-          token: ${{ env.SECRET_TOKEN || env.BOT_TOKEN }}
+          token: ${{ secrets.token || steps.get-app-token-external.outputs.token }}
           branch.name: release
           branch.recreate: true
           commit.paths: |

@@ -18,4 +18,6 @@ jobs:
         uses: cluerise/actions/install@main
 
       - name: Lint title
-        run: echo -n '${{ github.event.pull_request.title }}' | pnpm run lint commit
+        env:
+          PULL_REQUEST_TITLE: ${{ github.event.pull_request.title }}
+        run: printf '%s' "$PULL_REQUEST_TITLE" | pnpm run lint commit

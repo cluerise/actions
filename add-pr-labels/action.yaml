@@ -7,30 +7,19 @@ inputs:
     required: true
   types:
     description: Valid commit types (JSON array)
+    default: '["chore", "deps", "docs", "feat", "fix", "perf", "refactor", "release", "revert", "style", "test"]'
   scopes:
     description: Valid commit scopes (JSON array)
+    default: '["actions", "dev", "lock", "prod", "security"]'
 
 runs:
   using: composite
   steps:
-    - name: Set inputs
-      env:
-        INPUT_TOKEN: ${{ inputs.token }}
-        INPUT_TYPES: ${{ inputs.types || '["chore", "deps", "docs", "feat", "fix", "perf", "refactor", "release", "revert", "style", "test"]' }}
-        INPUT_SCOPES: ${{ inputs.scopes || '["actions", "dev", "lock", "prod", "security"]' }}
-      run: |
-        {
-          echo "INPUT_TOKEN=$INPUT_TOKEN"
-          echo "INPUT_TYPES=$INPUT_TYPES"
-          echo "INPUT_SCOPES=$INPUT_SCOPES"
-        } >> $GITHUB_ENV
-      shell: bash
-
     - name: Add labels
       if: github.event.action == 'opened' || github.event.action == 'edited'
       uses: actions/github-script@v9.0.0
       with:
-        github-token: ${{ env.INPUT_TOKEN }}
+        github-token: ${{ inputs.token }}
         script: |
           const types = JSON.parse(core.getInput('types', { required: true }));
           const scopes = JSON.parse(core.getInput('scopes', { required: true }));
@@ -53,5 +42,5 @@ runs:
               labels
             });
           }
-        types: ${{ env.INPUT_TYPES }}
-        scopes: ${{ env.INPUT_SCOPES }}
+        types: ${{ inputs.types }}
+        scopes: ${{ inputs.scopes }}

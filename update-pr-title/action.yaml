@@ -14,15 +14,6 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Set inputs
-      env:
-        INPUT_TOKEN: ${{ inputs.token }}
-      run: |
-        {
-          echo "INPUT_TOKEN=$INPUT_TOKEN"
-        } >> $GITHUB_ENV
-      shell: bash
-
     - name: Update title
       id: update-title
       if: >-
@@ -34,7 +25,7 @@ runs:
         github.event.pull_request.user.login == 'dependabot[bot]'
       uses: actions/github-script@v9.0.0
       with:
-        github-token: ${{ env.INPUT_TOKEN }}
+        github-token: ${{ inputs.token }}
         script: |
           const {title} = context.payload.pull_request;
           const formattedTitle = title.replace(': bump', ': Bump');

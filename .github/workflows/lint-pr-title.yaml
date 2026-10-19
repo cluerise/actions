@@ -4,23 +4,20 @@ on:
   workflow_call:
     inputs:
       manager:
-        type: string
         description: Package manager (pnpm, npm, or yarn)
+        type: string
+        default: pnpm
       command:
-        type: string
         description: Lint command to run
-      npm-config-userconfig:
         type: string
+        default: pnpm run lint commit
+      npm-config-userconfig:
         description: NPM configuration file path
+        type: string
     secrets:
       npm-auth-token:
         description: NPM authentication token for private packages
         required: false
-env:
-  INPUT_MANAGER: ${{ inputs.manager }}
-  INPUT_COMMAND: ${{ inputs.command || 'pnpm run lint commit' }}
-  NPM_AUTH_TOKEN: ${{ secrets.npm-auth-token }}
-  NPM_CONFIG_USERCONFIG: ${{ inputs.npm-config-userconfig }}
 
 permissions:
   contents: read
@@ -34,8 +31,13 @@ jobs:
     steps:
       - name: Install
         uses: cluerise/actions/install@v7.5.1
+        env:
+          NPM_AUTH_TOKEN: ${{ secrets.npm-auth-token }}
+          NPM_CONFIG_USERCONFIG: ${{ inputs.npm-config-userconfig }}
         with:
-          manager: ${{ env.INPUT_MANAGER }}
+          manager: ${{ inputs.manager }}
 
       - name: Lint title
-        run: echo -n '${{ github.event.pull_request.title }}' | ${{ env.INPUT_COMMAND }}
+        env:
+          PULL_REQUEST_TITLE: ${{ github.event.pull_request.title }}
+        run: printf '%s' "$PULL_REQUEST_TITLE" | ${{ inputs.command }}

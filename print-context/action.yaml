@@ -9,9 +9,13 @@ runs:
   using: composite
   steps:
     - name: Dump GitHub context
-      run: echo '${{ toJSON(github) }}'
+      env:
+        CONTEXT_JSON: ${{ toJSON(github) }}
+      run: printf '%s\n' "$CONTEXT_JSON"
       shell: bash
 
     - name: Dump inputs
-      run: echo '${{ toJSON(inputs.data) }}'
+      env:
+        INPUT_DATA_JSON: ${{ toJSON(inputs.data) }}
+      run: printf '%s\n' "$INPUT_DATA_JSON"
       shell: bash

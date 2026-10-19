@@ -8,29 +8,19 @@ inputs:
   pr-id:
     description: ID of the pull request to approve
     required: false
+    default: ${{ github.event.issue.node_id }}
 
 runs:
   using: composite
   steps:
-    - name: Set inputs
-      env:
-        INPUT_TOKEN: ${{ inputs.token }}
-        INPUT_PR_ID: ${{ inputs.pr-id || github.event.issue.node_id }}
-      run: |
-        {
-          echo "INPUT_TOKEN=$INPUT_TOKEN"
-          echo "INPUT_PR_ID=$INPUT_PR_ID"
-        } >> $GITHUB_ENV
-      shell: bash
-
     - name: Approve
       uses: octokit/graphql-action@v3.0.2
       with:
-        token: ${{ env.INPUT_TOKEN }}
+        token: ${{ inputs.token }}
         query: |
           mutation ApprovePullRequest($id: ID!) {
             addPullRequestReview(input: { pullRequestId: $id, event: APPROVE }) {
               clientMutationId
             }
           }
-        id: ${{ env.INPUT_PR_ID }}
+        id: ${{ inputs.pr-id }}

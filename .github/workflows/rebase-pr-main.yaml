@@ -17,8 +17,8 @@ jobs:
       github.event.comment.user.login == 'branoholy'
 
     steps:
-      - name: Get bot token
-        id: get-bot-token
+      - name: Get app token
+        id: get-app-token
         uses: cluerise/actions/get-github-app-token@main
         with:
           app-id: ${{ vars.CLUERISE_PUBLIC_BOT_APP_ID }}
@@ -27,5 +27,5 @@ jobs:
       - name: Rebase PR
         uses: cluerise/actions/rebase-pr@main
         with:
-          token: ${{ steps.get-bot-token.outputs.token }}
+          token: ${{ steps.get-app-token.outputs.token }}
           squash: true

@@ -7,25 +7,13 @@ inputs:
     required: true
   title:
     description: Custom pull request title
+    default: ${{ github.event.pull_request.title }}
   trusted-bot:
     description: Enable auto merge for all pull requests from the trusted bot
 
 runs:
   using: composite
   steps:
-    - name: Set inputs
-      env:
-        INPUT_TOKEN: ${{ inputs.token }}
-        INPUT_TITLE: ${{ inputs.title || github.event.pull_request.title }}
-        INPUT_TRUSTED_BOT: ${{ inputs.trusted-bot }}
-      run: |
-        {
-          echo "INPUT_TOKEN=$INPUT_TOKEN"
-          echo "INPUT_TITLE=$INPUT_TITLE"
-          echo "INPUT_TRUSTED_BOT=$INPUT_TRUSTED_BOT"
-        } >> $GITHUB_ENV
-      shell: bash
-
     - name: Auto-merge
       if: >-
         (
@@ -36,11 +24,11 @@ runs:
         (
           github.event.pull_request.user.login == 'dependabot[bot]' ||
           github.event.pull_request.user.login == 'github-actions[bot]' ||
-          github.event.pull_request.user.login == env.INPUT_TRUSTED_BOT
+          github.event.pull_request.user.login == inputs.trusted-bot
         )
       uses: octokit/graphql-action@v3.0.2
       with:
-        token: ${{ env.INPUT_TOKEN }}
+        token: ${{ inputs.token }}
         query: |
           mutation EnablePullRequestAutoMerge($id: ID!, $message: String!) {
             enablePullRequestAutoMerge(input: {
@@ -53,4 +41,4 @@ runs:
             }
           }
         id: ${{ github.event.pull_request.node_id }}
-        message: '"${{ env.INPUT_TITLE }} (#${{ github.event.pull_request.number }})"'
+        message: '"${{ inputs.title || github.event.pull_request.title }} (#${{ github.event.pull_request.number }})"'

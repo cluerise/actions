@@ -4,14 +4,15 @@ on:
   workflow_call:
     inputs:
       app-id:
-        type: string
         description: GitHub app ID
-      pr-id:
         type: string
+      pr-id:
         description: ID of the pull request to rebase
+        type: string
+        default: ${{ github.event.issue.node_id }}
       squash:
-        type: boolean
         description: Whether to squash the commits in the pull request
+        type: boolean
     secrets:
       token:
         description: GitHub access token
@@ -28,29 +29,29 @@ jobs:
   rebase-pr:
     name: Rebase PR
     runs-on: ubuntu-latest
-    env:
-      INPUT_APP_ID: ${{ inputs.app-id }}
-      INPUT_PR_ID: ${{ inputs.pr-id }}
-      INPUT_SQUASH: ${{ inputs.squash }}
-      SECRET_TOKEN: ${{ secrets.token }}
-      SECRET_APP_PRIVATE_KEY: ${{ secrets.app-private-key }}
 
     steps:
-      - name: Check required secrets
-        if: env.SECRET_TOKEN == '' && (env.INPUT_APP_ID == '' || env.SECRET_APP_PRIVATE_KEY == '')
-        run: exit 1
+      - name: Check required inputs
+        run: |
+          if ${{
+            (secrets.token == '' && (inputs.app-id == '' || secrets.app-private-key == '')) ||
+            (secrets.token != '' && (inputs.app-id != '' || secrets.app-private-key != ''))
+          }}; then
+            echo '::error::Provide either token alone or both app-id and app-private-key without token.'
+            exit 1
+          fi
 
-      - name: Get bot token
-        id: get-bot-token
-        if: env.SECRET_TOKEN == ''
+      - name: Get app token
+        id: get-app-token
+        if: inputs.app-id != ''
         uses: cluerise/actions/get-github-app-token@v7.5.1
         with:
-          app-id: ${{ env.INPUT_APP_ID }}
-          app-private-key: ${{ env.SECRET_APP_PRIVATE_KEY }}
+          app-id: ${{ inputs.app-id }}
+          app-private-key: ${{ secrets.app-private-key }}
 
       - name: Rebase PR
         uses: cluerise/actions/rebase-pr@v7.5.1
         with:
-          token: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
-          pr-id: ${{ env.INPUT_PR_ID }}
-          squash: ${{ env.INPUT_SQUASH }}
+          token: ${{ secrets.token || steps.get-app-token.outputs.token }}
+          pr-id: ${{ inputs.pr-id }}
+          squash: ${{ inputs.squash }}

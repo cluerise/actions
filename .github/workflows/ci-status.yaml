@@ -4,8 +4,12 @@ on:
   workflow_call:
     inputs:
       app-id:
-        type: string
         description: GitHub app ID
+        type: string
+      workflow-path:
+        description: Expected upstream CI workflow file path
+        type: string
+        default: .github/workflows/ci.yaml
     secrets:
       token:
         description: GitHub access token
@@ -21,51 +25,59 @@ jobs:
   send-status:
     name: Send CI status
     runs-on: ubuntu-latest
+    if: >-
+      github.event_name == 'workflow_run' &&
+      github.event.workflow_run.event == 'push' &&
+      github.event.workflow_run.head_repository.id == github.event.repository.id &&
+      github.event.workflow.path == inputs.workflow-path
     concurrency:
       group: ci-status-${{ github.event.workflow_run.head_sha }}
       cancel-in-progress: true
     env:
-      CI_STATE: pending
       CI_DESCRIPTION: Waiting
-      INPUT_APP_ID: ${{ inputs.app-id }}
-      SECRET_TOKEN: ${{ secrets.token }}
-      SECRET_APP_PRIVATE_KEY: ${{ secrets.app-private-key }}
+      CI_STATE: pending
 
     steps:
-      - name: Check required secrets
-        if: env.SECRET_TOKEN == '' && (env.INPUT_APP_ID == '' || env.SECRET_APP_PRIVATE_KEY == '')
-        run: exit 1
+      - name: Check required inputs
+        run: |
+          if ${{
+            (secrets.token == '' && (inputs.app-id == '' || secrets.app-private-key == '')) ||
+            (secrets.token != '' && (inputs.app-id != '' || secrets.app-private-key != ''))
+          }}; then
+            echo '::error::Provide either token alone or both app-id and app-private-key without token.'
+            exit 1
+          fi
 
-      - name: Get bot token
-        id: get-bot-token
-        if: env.SECRET_TOKEN == ''
+      - name: Get app token
+        id: get-app-token
+        if: inputs.app-id != ''
         uses: cluerise/actions/get-github-app-token@v7.5.1
         with:
-          app-id: ${{ env.INPUT_APP_ID }}
-          app-private-key: ${{ env.SECRET_APP_PRIVATE_KEY }}
+          app-id: ${{ inputs.app-id }}
+          app-private-key: ${{ secrets.app-private-key }}
 
       - name: Set initial state
         if: github.event.action == 'requested'
         run: |
           {
-            echo "CI_STATE=pending"
             echo "CI_DESCRIPTION=In progress"
+            echo "CI_STATE=pending"
           } >> $GITHUB_ENV
 
       - name: Set success state
         if: github.event.action == 'completed' && github.event.workflow_run.conclusion == 'success'
         run: |
           {
-            echo "CI_STATE=success"
             echo "CI_DESCRIPTION=Passed"
+            echo "CI_STATE=success"
           } >> $GITHUB_ENV
 
       - name: Set failure state
         if: github.event.action == 'completed' && github.event.workflow_run.conclusion == 'failure'
         run: |
           {
-            echo "CI_STATE=failure"
             echo "CI_DESCRIPTION=Failed"
+            echo "CI_STATE=failure"
           } >> $GITHUB_ENV
 
       - name: Send status
@@ -79,4 +91,4 @@ jobs:
           state: ${{ env.CI_STATE }}
           description: ${{ env.CI_DESCRIPTION }}
           target_url: ${{ github.event.workflow_run.html_url }}
-          GITHUB_TOKEN: ${{ env.SECRET_TOKEN || steps.get-bot-token.outputs.token }}
+          GITHUB_TOKEN: ${{ secrets.token || steps.get-app-token.outputs.token }}
