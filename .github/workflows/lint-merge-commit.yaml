@@ -38,7 +38,7 @@ jobs:
           echo "Error: Auto merge is not enabled" && exit 1
 
       - name: Install
-        uses: cluerise/actions/install@v7.5.1
+        uses: cluerise/actions/install@v7.5.2
         env:
           NPM_AUTH_TOKEN: ${{ secrets.npm-auth-token }}
           NPM_CONFIG_USERCONFIG: ${{ inputs.npm-config-userconfig }}

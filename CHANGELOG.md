@@ -1,5 +1,21 @@
 # Changelog: `@cluerise/actions`
 
+## [7.5.2](https://github.com/cluerise/actions/compare/v7.5.1...v7.5.2) (2026-10-19)
+
+### Fixes
+
+- Improve permissions ([#844](https://github.com/cluerise/actions/issues/844)) ([30bd55d](https://github.com/cluerise/actions/commit/30bd55d1ec896be0efa359559e6e1f23243a2dfd))
+- Improve security ([#847](https://github.com/cluerise/actions/issues/847)) ([88ca824](https://github.com/cluerise/actions/commit/88ca824c3e1e363c2f5933e7d597246de360403e))
+
+### Dependency updates
+
+<details>
+<summary>Show all dependency updates</summary>
+
+- **actions:** Bump actions/setup-java from 6.0.1 to 6.1.0 ([#845](https://github.com/cluerise/actions/issues/845)) ([f4d224c](https://github.com/cluerise/actions/commit/f4d224c52b6dbf5278fdb19725883d333a8c6cac))
+
+</details>
+
 ## [7.5.1](https://github.com/cluerise/actions/compare/v7.5.0...v7.5.1) (2026-10-14)
 
 ### Fixes
