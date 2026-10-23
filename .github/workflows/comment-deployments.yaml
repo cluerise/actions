@@ -79,7 +79,11 @@ jobs:
 
             const pullRequestNumber = parseInt(core.getInput('pull-request-number', { required: true }), 10);
             const branchName = core.getInput('branch-name', { required: true });
-            const previewName = core.getInput('preview-name') || branchName;
+
+            const previewName = (core.getInput('preview-name') || branchName)
+              .replaceAll(/[^a-zA-Z0-9_/.+=-]/g, '-')
+              .replaceAll(/^[^a-zA-Z0-9]+|[^a-zA-Z0-9]+$/g, '') || 'preview';
+
             const commitHash = core.getInput('commit-hash', { required: true });
             const deployments = JSON.parse(core.getInput('deployments', { required: true }));
 
@@ -102,7 +106,13 @@ jobs:
                         .replaceAll('%commitHash%', commitHash)
                         .replaceAll('%shortCommitHash%', shortCommitHash)
                         .replace(/%previewDomain\(\s*(["'])(.*?)\1\s*\)%/g, (_match, _quote, workerName) => {
-                          const previewSlug = previewName.replaceAll('.', '-').slice(0, 63 - workerName.length - 1);
+                          const maxLength = 63 - workerName.length - 1;
+
+                          const previewSlug = previewName
+                            .toLowerCase()
+                            .replaceAll(/[^a-z0-9-]/g, '-')
+                            .slice(0, maxLength);
+
                           return `${previewSlug}-${workerName}`;
                         });
 
