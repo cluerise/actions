@@ -1,5 +1,11 @@
 # Changelog: `@cluerise/actions`
 
+## [7.5.4](https://github.com/cluerise/actions/compare/v7.5.3...v7.5.4) (2026-10-23)
+
+### Fixes
+
+- Preview name hyphens ([#858](https://github.com/cluerise/actions/issues/858)) ([83799d7](https://github.com/cluerise/actions/commit/83799d734a54fedfe8543a2995b86825c63eb8ca))
+
 ## [7.5.3](https://github.com/cluerise/actions/compare/v7.5.2...v7.5.3) (2026-10-23)
 
 ### Fixes
