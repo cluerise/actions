@@ -55,6 +55,8 @@ on:
         description: NPM authentication token for private packages
         required: false
 
+concurrency: update-packages-workflow
+
 permissions:
   contents: read
 

@@ -38,6 +38,8 @@ on:
         description: NPM authentication token for private packages
         required: false
 
+concurrency: update-package-manager-workflow
+
 permissions:
   contents: write
   pull-requests: write
