@@ -30,7 +30,7 @@ jobs:
 
     steps:
       - name: Install
-        uses: cluerise/actions/install@v7.5.2
+        uses: cluerise/actions/install@v7.5.3
         env:
           NPM_AUTH_TOKEN: ${{ secrets.npm-auth-token }}
           NPM_CONFIG_USERCONFIG: ${{ inputs.npm-config-userconfig }}

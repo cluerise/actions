@@ -40,13 +40,13 @@ jobs:
       - name: Get app token
         id: get-app-token
         if: inputs.app-id != ''
-        uses: cluerise/actions/get-github-app-token@v7.5.2
+        uses: cluerise/actions/get-github-app-token@v7.5.3
         with:
           app-id: ${{ inputs.app-id }}
           app-private-key: ${{ secrets.app-private-key }}
 
       - name: Approve PR
-        uses: cluerise/actions/approve-pr@v7.5.2
+        uses: cluerise/actions/approve-pr@v7.5.3
         with:
           token: ${{ secrets.token || steps.get-app-token.outputs.token }}
           pr-id: ${{ inputs.pr-id }}
