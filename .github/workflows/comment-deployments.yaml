@@ -106,7 +106,13 @@ jobs:
                         .replaceAll('%commitHash%', commitHash)
                         .replaceAll('%shortCommitHash%', shortCommitHash)
                         .replace(/%previewDomain\(\s*(["'])(.*?)\1\s*\)%/g, (_match, _quote, workerName) => {
-                          const previewSlug = previewName.replaceAll('.', '-').slice(0, 63 - workerName.length - 1);
+                          const maxLength = 63 - workerName.length - 1;
+
+                          const previewSlug = previewName
+                            .toLowerCase()
+                            .replaceAll(/[^a-z0-9-]/g, '-')
+                            .slice(0, maxLength);
+
                           return `${previewSlug}-${workerName}`;
                         });
 
