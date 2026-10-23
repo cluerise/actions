@@ -87,7 +87,7 @@ runs:
     - name: Commit squashed changes
       id: commit-changes
       if: ${{ env.STRATEGY == 'squash' }}
-      uses: branoholy/update-files-action@v1.0.0
+      uses: branoholy/update-files-action@v1.0.1
       with:
         token: ${{ inputs.token }}
         branch.name: __rebase-${{ fromJson(steps.get-pr-info.outputs.data).node.headRef.name }}
