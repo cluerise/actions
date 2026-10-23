@@ -1,5 +1,22 @@
 # Changelog: `@cluerise/actions`
 
+## [7.5.3](https://github.com/cluerise/actions/compare/v7.5.2...v7.5.3) (2026-10-23)
+
+### Fixes
+
+- Preview name in deployment comments ([#856](https://github.com/cluerise/actions/issues/856)) ([e697ebe](https://github.com/cluerise/actions/commit/e697ebec7ab0e3eae923e80f3b303c0dc4ed0ec8))
+- Remove check-ci-suitability action ([#854](https://github.com/cluerise/actions/issues/854)) ([b5455ec](https://github.com/cluerise/actions/commit/b5455ecf7d67e0cff93d2f29dfb299551bb2ba7b))
+
+### Dependency updates
+
+<details>
+<summary>Show all dependency updates</summary>
+
+- **actions:** Update update-files-action to 1.0.0 ([#851](https://github.com/cluerise/actions/issues/851)) ([647f26c](https://github.com/cluerise/actions/commit/647f26cf73c959d744625b85d600f3db077bef5e))
+- **actions:** Update update-files-action to 1.0.1 ([#853](https://github.com/cluerise/actions/issues/853)) ([206657c](https://github.com/cluerise/actions/commit/206657cd0048415d07af1ba364c220615cb73c39))
+
+</details>
+
 ## [7.5.2](https://github.com/cluerise/actions/compare/v7.5.1...v7.5.2) (2026-10-19)
 
 ### Fixes
