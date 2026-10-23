@@ -250,7 +250,7 @@ jobs:
 
       - name: Create a pull request with the release (internal)
         if: ${{ !inputs.__external-call }}
-        uses: branoholy/update-files-action@main
+        uses: branoholy/update-files-action@v1.0.0
         with:
           token: ${{ steps.get-app-token-internal.outputs.token }}
           branch.name: release
@@ -268,7 +268,7 @@ jobs:
 
       - name: Create a pull request with the release (external)
         if: inputs.__external-call
-        uses: branoholy/update-files-action@main
+        uses: branoholy/update-files-action@v1.0.0
         with:
           token: ${{ secrets.token || steps.get-app-token-external.outputs.token }}
           branch.name: release

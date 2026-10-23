@@ -118,7 +118,7 @@ jobs:
         run: echo "UPDATED_PM_VERSION=$(pnpm -v)" >> $GITHUB_ENV
 
       - name: Create a pull request with the updated file
-        uses: branoholy/update-files-action@main
+        uses: branoholy/update-files-action@v1.0.0
         with:
           token: ${{ secrets.token || steps.get-app-token-internal.outputs.token || steps.get-app-token-external.outputs.token }}
           branch.name: deps-update-package-manager
