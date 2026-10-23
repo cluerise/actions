@@ -51,7 +51,6 @@ jobs:
                 startsWith(github.head_ref, 'dependabot-github_actions-octokit-graphql-action-') ||
                 startsWith(github.head_ref, 'dependabot-github_actions-assign-pr-author-octokit-graphql-action-') ||
                 startsWith(github.head_ref, 'dependabot-github_actions-auto-merge-pr-octokit-graphql-action-') ||
-                startsWith(github.head_ref, 'dependabot-github_actions-check-ci-suitability-octokit-graphql-action-') ||
                 startsWith(github.head_ref, 'dependabot-github_actions-rebase-pr-octokit-graphql-action-') ||
                 startsWith(github.head_ref, 'dependabot-github_actions-review-pr-octokit-graphql-action-') ||
                 startsWith(github.head_ref, 'dependabot-github_actions-actions-checkout-') ||
