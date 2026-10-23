@@ -111,7 +111,8 @@ jobs:
                           const previewSlug = previewName
                             .toLowerCase()
                             .replaceAll(/[^a-z0-9-]/g, '-')
-                            .slice(0, maxLength);
+                            .slice(0, maxLength)
+                            .replace(/-+$/, '');
 
                           return `${previewSlug}-${workerName}`;
                         });
