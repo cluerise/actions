@@ -364,6 +364,12 @@ jobs:
           NPM_CONFIG_USERCONFIG: ${{ inputs.npm-config-userconfig }}
         run: pnpm update --recursive ${{ join(matrix.update.versionedPackageNames, ' ') }}
 
+      - name: Update the lock file
+        env:
+          NPM_AUTH_TOKEN: ${{ secrets.npm-auth-token }}
+          NPM_CONFIG_USERCONFIG: ${{ inputs.npm-config-userconfig }}
+        run: rm -rf node_modules && rm pnpm-lock.yaml && pnpm install
+
       - name: Create a pull request with the updated files
         uses: branoholy/update-files-action@v1.0.1
         with:
