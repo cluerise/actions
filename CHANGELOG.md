@@ -1,5 +1,11 @@
 # Changelog: `@cluerise/actions`
 
+## [7.5.5](https://github.com/cluerise/actions/compare/v7.5.4...v7.5.5) (2026-10-24)
+
+### Fixes
+
+- Update lock file after packages update ([#860](https://github.com/cluerise/actions/issues/860)) ([8666a3c](https://github.com/cluerise/actions/commit/8666a3cb6d92fb9132213c82ae6e189467474d5e))
+
 ## [7.5.4](https://github.com/cluerise/actions/compare/v7.5.3...v7.5.4) (2026-10-23)
 
 ### Fixes
