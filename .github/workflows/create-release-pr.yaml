@@ -71,7 +71,7 @@ jobs:
       - name: Get app token (external)
         id: get-app-token-external
         if: inputs.__external-call && inputs.app-id != ''
-        uses: cluerise/actions/get-github-app-token@v7.5.4
+        uses: cluerise/actions/get-github-app-token@v7.5.5
         with:
           app-id: ${{ inputs.app-id }}
           app-private-key: ${{ secrets.app-private-key }}
@@ -87,7 +87,7 @@ jobs:
           NPM_AUTH_TOKEN: ${{ secrets.npm-auth-token }}
           NPM_CONFIG_USERCONFIG: ${{ inputs.npm-config-userconfig }}
         if: inputs.__external-call
-        uses: cluerise/actions/install@v7.5.4
+        uses: cluerise/actions/install@v7.5.5
         with:
           manager: ${{ inputs.manager }}
           fetch-depth: 0

@@ -51,7 +51,7 @@ jobs:
       - name: Get app token
         id: get-app-token
         if: inputs.app-id != ''
-        uses: cluerise/actions/get-github-app-token@v7.5.4
+        uses: cluerise/actions/get-github-app-token@v7.5.5
         with:
           app-id: ${{ inputs.app-id }}
           app-private-key: ${{ secrets.app-private-key }}
